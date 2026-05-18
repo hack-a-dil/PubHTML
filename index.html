@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPX Condor Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── RESET & BASE ─────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #080c14;
+  --bg2:      #0a0f1a;
+  --bg3:      #0d1420;
+  --border:   #1a2332;
+  --text:     #e2e8f0;
+  --muted:    #64748b;
+  --dim:      #475569;
+  --vdim:     #334155;
+  --green:    #34d399;
+  --yellow:   #fbbf24;
+  --red:      #f87171;
+  --blue:     #38bdf8;
+  --purple:   #818cf8;
+  --font:     'IBM Plex Mono', 'Courier New', monospace;
+}
+html, body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+/* ── LAYOUT ───────────────────────────────────────── */
+.header    { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 12px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.pricebar  { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+.tabbar    { background: var(--bg); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; gap: 4px; }
+.content   { padding: 20px 24px; }
+.footer    { padding: 10px 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; margin-top: 24px; }
+.divider   { width: 1px; height: 44px; background: var(--border); flex-shrink: 0; }
+
+/* ── CARDS ────────────────────────────────────────── */
+.card      { background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; }
+.card.glow { box-shadow: 0 0 20px rgba(56,189,248,0.05); }
+.card.warn { box-shadow: 0 0 24px rgba(251,191,36,0.15); border-color: #3d2e00 !important; }
+.card.safe { box-shadow: 0 0 20px rgba(52,211,153,0.06); }
+
+/* ── GRIDS ────────────────────────────────────────── */
+.grid3  { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid2  { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid5  { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+.grid3t { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; }
+.span3  { grid-column: 1 / -1; }
+.col-r  { display: flex; flex-direction: column; gap: 14px; }
+
+/* ── TABS ─────────────────────────────────────────── */
+.tab { padding: 8px 16px; cursor: pointer; font-size: 11px; letter-spacing: .1em; font-weight: 500; border-bottom: 2px solid transparent; color: var(--muted); transition: all .2s; font-family: var(--font); background: none; border-left: none; border-right: none; border-top: none; }
+.tab:hover { color: #94a3b8; }
+.tab.active { color: var(--blue); border-bottom-color: var(--blue); }
+.tabpanel { display: none; }
+.tabpanel.active { display: block; animation: si .35s ease-out; }
+
+/* ── TAGS & BADGES ────────────────────────────────── */
+.tag   { display: inline-block; padding: 2px 8px; border-radius: 3px; font-size: 10px; font-weight: 600; letter-spacing: .08em; font-family: var(--font); }
+.bull  { background: rgba(52,211,153,.12); color: var(--green); border: 1px solid rgba(52,211,153,.2); }
+.bear  { background: rgba(239,68,68,.15);  color: var(--red);   border: 1px solid rgba(239,68,68,.2); }
+.neut  { background: rgba(148,163,184,.1); color: #94a3b8;      border: 1px solid rgba(148,163,184,.15); }
+.badge { background: rgba(56,189,248,.08); border: 1px solid rgba(56,189,248,.2); border-radius: 4px; padding: 2px 8px; font-size: 9px; color: var(--blue); letter-spacing: .08em; }
+
+/* ── TYPOGRAPHY HELPERS ───────────────────────────── */
+.label  { font-size: 9px; color: var(--dim); letter-spacing: .12em; margin-bottom: 2px; }
+.micro  { font-size: 9px; color: var(--muted); letter-spacing: .1em; }
+.tiny   { font-size: 10px; color: var(--muted); }
+.small  { font-size: 11px; color: var(--muted); line-height: 1.6; }
+
+/* ── GAUGE ────────────────────────────────────────── */
+.gauge-wrap { text-align: center; }
+
+/* ── PROGRESS BAR ─────────────────────────────────── */
+.pbar-track { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.pbar-fill  { height: 100%; border-radius: 3px; transition: width .6s ease; }
+.lbar-track { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+.lbar-fill  { height: 100%; border-radius: 2px; opacity: .7; }
+
+/* ── PULSE DOT ────────────────────────────────────── */
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes si    { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+/* ── MINI GRID CELLS ──────────────────────────────── */
+.cell { background: var(--bg2); border-radius: 4px; padding: 8px; border: 1px solid var(--border); }
+.cell-label { font-size: 9px; color: var(--dim); margin-bottom: 2px; }
+.cell-val   { font-size: 15px; font-weight: 600; }
+
+/* ── NEWS ROW ─────────────────────────────────────── */
+.news-row { display: flex; align-items: flex-start; gap: 14px; padding: 13px 10px; border-bottom: 1px solid #0f1923; }
+.news-row.hot { background: rgba(239,68,68,.02); }
+.news-time { font-size: 10px; color: var(--vdim); min-width: 52px; flex-shrink: 0; }
+.news-text { flex: 1; font-size: 12px; color: var(--muted); line-height: 1.5; }
+.news-text.hot-text { color: #cbd5e1; }
+
+/* ── LEVEL ROW ────────────────────────────────────── */
+.level-row { display: flex; align-items: center; gap: 10px; padding: 9px; border-radius: 4px; border: 1px solid transparent; }
+.level-row.current { background: rgba(56,189,248,.05); border-color: rgba(56,189,248,.15) !important; }
+.level-price { width: 64px; font-size: 14px; font-weight: 700; text-align: right; }
+.level-bar   { flex: 1; }
+.level-label { font-size: 11px; width: 140px; }
+
+/* ── JOURNEY BAR ──────────────────────────────────── */
+.journey-bars { display: flex; align-items: flex-end; gap: 6px; height: 72px; margin-bottom: 6px; }
+.j-bar-wrap   { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.j-bar-val    { font-size: 9px; }
+.j-bar        { width: 100%; border-radius: 2px 2px 0 0; }
+.j-bar-date   { font-size: 9px; color: var(--vdim); }
+.journey-stats { display: flex; justify-content: space-between; padding: 8px; background: var(--bg2); border-radius: 4px; border: 1px solid var(--border); flex-wrap: wrap; gap: 8px; }
+.jstat { font-size: 10px; color: var(--muted); }
+.jstat span { font-weight: 600; }
+
+/* ── CALENDAR CARD ────────────────────────────────── */
+.cal-card { padding: 14px; border-radius: 8px; }
+.cal-card.done { opacity: .45; }
+.cal-day   { font-size: 9px; color: var(--dim); letter-spacing: .1em; margin-bottom: 6px; }
+.cal-event { font-size: 12px; font-weight: 600; line-height: 1.4; margin-bottom: 8px; }
+.cal-dot   { width: 6px; height: 6px; border-radius: 50%; }
+.cal-impact{ font-size: 9px; }
+.cal-done  { font-size: 9px; color: var(--vdim); margin-top: 4px; }
+.cal-footer{ display: flex; justify-content: space-between; align-items: center; }
+
+/* ── TIMELINE ─────────────────────────────────────── */
+.tl-item { padding: 10px; background: var(--bg2); border-radius: 4px; }
+.tl-date { font-size: 11px; font-weight: 600; margin-bottom: 2px; }
+.tl-label{ font-size: 10px; color: var(--muted); }
+
+/* ── SCENARIO ─────────────────────────────────────── */
+.scenario { margin-bottom: 10px; padding: 10px; background: var(--bg2); border-radius: 4px; }
+.sc-head  { display: flex; justify-content: space-between; margin-bottom: 4px; }
+.sc-label { font-size: 11px; font-weight: 600; }
+.sc-tag   { font-size: 9px; color: var(--dim); }
+.sc-desc  { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* ── RESPONSIVE ───────────────────────────────────── */
+@media (max-width: 900px) {
+  .grid3 { grid-template-columns: 1fr 1fr; }
+  .grid5 { grid-template-columns: repeat(3,1fr); }
+}
+@media (max-width: 600px) {
+  .grid3, .grid2 { grid-template-columns: 1fr; }
+  .grid5 { grid-template-columns: repeat(2,1fr); }
+  .pricebar { gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+//  DAILY UPDATE — CHANGE ONLY THIS SECTION
+// ════════════════════════════════════════════════════════════════
+const SPX            = 7408;
+const SPX_AH         = 7397;
+const SPY            = 742.82;
+const SPX_CHANGE_PTS = -93.5;
+const SPX_CHANGE_PCT = -1.24;
+const TIMESTAMP      = "May 15, 2026  4:40 PM ET";
+const CD_DTE         = 34;
+const TD_DTE         = 23;
+const SESSION        = "bearish";     // "bullish" | "bearish" | "neutral"
+const SESSION_NOTE   = "Warsh + tech selloff";
+
+const CANDLE = { open: 7418, high: 7463, low: 7372, close: SPX, volume: "59.12M", avgVol: "49.2M" };
+const STATS  = { pe: 29.245, week52High: 7501, week52Low: 5756 };
+
+// Append one entry per day — always keep last entry as SPX
+const PRICE_HISTORY = [
+  { date: "May 5",  spx: 7248 },
+  { date: "May 6",  spx: 7290 },
+  { date: "May 8",  spx: 7335 },
+  { date: "May 9",  spx: 7320 },
+  { date: "May 12", spx: 7413 },
+  { date: "May 13", spx: 7444 },
+  { date: "May 14", spx: 7501 },
+  { date: "May 15", spx: SPX  },
+];
+
+const NEWS = [
+  { time: "TODAY",  text: "Warsh takes over as Fed chair — 10Y yield spikes to 4.55%, rate hike probability jumps to 45%", impact: "bearish", hot: true  },
+  { time: "TODAY",  text: "SPX drops 93pts — Nvidia -4.4%, Intel -6%, AMD -5.7%, Micron -6.6% lead tech selloff",           impact: "bearish", hot: true  },
+  { time: "TODAY",  text: "30Y Treasury yield hits 5.114% — highest since May 2025. Gold -1.4%, Silver -5%",                impact: "bearish", hot: true  },
+  { time: "TODAY",  text: "Dan Niles: oil spike + Fed unable to cut = rising recession risk",                               impact: "bearish", hot: false },
+  { time: "MAY 14", text: "Trump & Xi agree Strait of Hormuz must stay open",                                              impact: "bullish", hot: false },
+  { time: "MAY 13", text: "April PPI +1.4% — highest monthly gain since March 2022",                                       impact: "bearish", hot: false },
+  { time: "MAY 12", text: "April CPI hotter than expected — 3.8% YoY. Inflation re-accelerating",                         impact: "bearish", hot: false },
+];
+
+const REC = "Buffer restored to 342pts (4.61%) after 93pt selloff. Nvidia earnings Wed May 20 is next major catalyst. Roll trigger: SPX ~7,600.";
+const SESSION_SUMMARY = "Warsh hawkishness + China summit disappointment triggered sharp tech selloff. Volume 59.1M vs 49.2M avg — real institutional selling. Good for condor — call buffer restored.";
+
+const CALENDAR = [
+  { day: "THU 5/15", event: "⚡ Warsh Takes Fed",  done: true,  impact: "high"   },
+  { day: "WED 5/20", event: "🚨 Nvidia Earnings",  done: false, impact: "high"   },
+  { day: "MON 5/26", event: "🇺🇸 Memorial Day",    done: false, impact: "low"    },
+  { day: "WED 6/10", event: "🚨 May CPI",          done: false, impact: "high"   },
+  { day: "TUE 6/17", event: "⚡ FOMC Meeting",      done: false, impact: "high"   },
+];
+
+const TIMELINE = [
+  { date: "May 20",    label: "Nvidia earnings 🚨",    color: "#ef4444" },
+  { date: "May 26",    label: "Memorial Day (closed)", color: "#64748b" },
+  { date: "Jun 10",    label: "May CPI 🚨",            color: "#ef4444" },
+  { date: "Jun 16-17", label: "FOMC meeting",          color: "#f59e0b" },
+  { date: "Jun 18",    label: "🎯 YOUR EXPIRATION",    color: "#38bdf8" },
+];
+
+// ════════════════════════════════════════════════════════════════
+//  STATIC CONFIG — only change if strikes are rolled
+// ════════════════════════════════════════════════════════════════
+const STRIKES  = { putLong: 6770, putShort: 6820, callShort: 7750, callLong: 7800 };
+const EXPIRY   = "June 18, 2026";
+const TOTAL_CD = 36;
+const TOTAL_TD = 25;
+
+// ════════════════════════════════════════════════════════════════
+//  DERIVED — all flow from SPX, do not hardcode
+// ════════════════════════════════════════════════════════════════
+const CALL_BUF     = STRIKES.callShort - SPX;
+const PUT_BUF      = SPX - STRIKES.putShort;
+const CALL_BUF_PCT = ((CALL_BUF / SPX) * 100).toFixed(1);
+const PUT_BUF_PCT  = ((PUT_BUF  / SPX) * 100).toFixed(1);
+const CALL_WARN    = CALL_BUF < 300;
+
+const SESSION_COLOR = SESSION === "bullish" ? "#34d399" : SESSION === "bearish" ? "#f87171" : "#94a3b8";
+const SESSION_TAG   = SESSION === "bullish" ? "bull"    : SESSION === "bearish" ? "bear"    : "neut";
+const SESSION_LABEL = SESSION === "bullish" ? "▲ BULLISH SESSION" : SESSION === "bearish" ? "▼ BEARISH SESSION" : "◆ NEUTRAL SESSION";
+
+const ATH_SPX  = Math.max(...PRICE_HISTORY.map(p => p.spx));
+const OPEN_SPX = PRICE_HISTORY[0].spx;
+
+const KEY_LEVELS = [
+  { price: STRIKES.callLong,  label: "Long Call",       type: "strike"     },
+  { price: STRIKES.callShort, label: "Short Call 🎯",   type: "strike"     },
+  { price: 7600,              label: "Roll Trigger ⚠️", type: "resistance" },
+  { price: ATH_SPX,           label: "ATH (May 14)",    type: "resistance" },
+  { price: SPX,               label: "Current ▶",       type: "current"    },
+  { price: 7320,              label: "Support",         type: "support"    },
+  { price: STRIKES.putShort,  label: "Short Put 🎯",    type: "strike"     },
+  { price: STRIKES.putLong,   label: "Long Put",        type: "support"    },
+];
+
+const SCENARIOS = [
+  { label: "🟢 BULL CASE", desc: `Nvidia blowout + Hormuz reopens. SPX charges toward ${STRIKES.callShort.toLocaleString()}. Roll call spread urgently.`, color: "#34d399", impact: "DANGER ⚠️"   },
+  { label: "🟡 BASE CASE", desc: `Rally stalls 7,400–7,650. Warsh uncertainty caps upside. Theta grinds out ${CALL_BUF}pt buffer.`,                      color: "#fbbf24", impact: "THETA WINS ✓" },
+  { label: "🔴 BEAR CASE", desc: `Iran re-escalates, Nvidia disappoints. SPX toward 7,000–7,200. Put spread safe at ${STRIKES.putShort.toLocaleString()}.`, color: "#f87171", impact: "MAX PROFIT ✓" },
+];
+
+// ════════════════════════════════════════════════════════════════
+//  HELPERS
+// ════════════════════════════════════════════════════════════════
+const fmt  = n => typeof n === "number" ? n.toLocaleString() : n;
+const sign = n => n >= 0 ? `+${n}` : `${n}`;
+
+function gaugeArc(pct) {
+  const r=52,cx=70,cy=68,s=-210,e=-210+240*Math.min(pct,1),rad=a=>a*Math.PI/180;
+  const x1=cx+r*Math.cos(rad(s)),y1=cy+r*Math.sin(rad(s));
+  const x2=cx+r*Math.cos(rad(e)),y2=cy+r*Math.sin(rad(e));
+  return `M ${x1} ${y1} A ${r} ${r} 0 ${e-s>180?1:0} 1 ${x2} ${y2}`;
+}
+
+function gauge(bufPts, bufPct, maxPts, color, label1, label2) {
+  const pct = Math.min(bufPts / maxPts, 1);
+  return `
+    <svg width="150" height="108" viewBox="0 0 140 102" style="display:block;margin:0 auto;">
+      <path d="${gaugeArc(1)}"   fill="none" stroke="#1a2332" stroke-width="8" stroke-linecap="round"/>
+      <path d="${gaugeArc(pct)}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" style="filter:drop-shadow(0 0 5px ${color})"/>
+      <text x="70" y="51" text-anchor="middle" fill="${color}" font-size="22" font-weight="700" font-family="IBM Plex Mono,monospace">${bufPts}</text>
+      <text x="70" y="69" text-anchor="middle" fill="${color}" font-size="14" font-weight="600" font-family="IBM Plex Mono,monospace" opacity="0.9">${bufPct}%</text>
+      <text x="70" y="84" text-anchor="middle" fill="#475569" font-size="8"  font-family="IBM Plex Mono,monospace">PTS / % TO SHORT STRIKE</text>
+    </svg>`;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  RENDER
+// ════════════════════════════════════════════════════════════════
+window.addEventListener("DOMContentLoaded", () => {
+
+  // ── HEADER ──────────────────────────────────────────────────
+  document.getElementById("header").innerHTML = `
+    <div style="display:flex;align-items:center;gap:16px;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="dot"></div>
+        <span class="micro">LIVE</span>
+      </div>
+      <span style="font-size:13px;color:var(--blue);font-weight:600;letter-spacing:.08em;">SPX CONDOR MONITOR</span>
+      <span class="micro" style="color:var(--vdim);">EXP ${EXPIRY}</span>
+      <span class="badge">PUT ROLLED ↑ ${STRIKES.putLong}/${STRIKES.putShort}</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:20px;">
+      <div style="text-align:right;">
+        <div class="micro" style="margin-bottom:2px;">CD / TD REMAINING</div>
+        <div style="font-size:14px;color:var(--blue);font-weight:600;">${CD_DTE}cd &nbsp;/&nbsp; ${TD_DTE}td</div>
+      </div>
+      <span class="tiny">${TIMESTAMP}</span>
+    </div>`;
+
+  // ── PRICE BAR ────────────────────────────────────────────────
+  document.getElementById("pricebar").innerHTML = `
+    <div>
+      <div class="label">SPX INDEX</div>
+      <div style="display:flex;align-items:baseline;gap:10px;">
+        <span style="font-size:30px;font-weight:700;letter-spacing:-.02em;">${fmt(SPX)}</span>
+        <span style="font-size:13px;color:${SESSION_COLOR};font-weight:500;">${sign(SPX_CHANGE_PTS)} (${sign(SPX_CHANGE_PCT)}%)</span>
+      </div>
+      ${SPX_AH > 0 ? `<div class="tiny" style="margin-top:2px;">After hours: <span style="color:#94a3b8;">${fmt(SPX_AH)}</span></div>` : ""}
+    </div>
+    <div class="divider"></div>
+    <div>
+      <div class="label">SPY</div>
+      <div style="font-size:18px;font-weight:600;color:#94a3b8;">$${SPY}</div>
+    </div>
+    <div class="divider"></div>
+    <div style="display:flex;gap:20px;">
+      ${[["OPEN",CANDLE.open,null],["HIGH",CANDLE.high,"var(--green)"],["LOW",CANDLE.low,"var(--red)"],["CLOSE",CANDLE.close,null],["VOL",CANDLE.volume,null],["AVG",CANDLE.avgVol,"var(--dim)"]].map(([l,v,c])=>`
+        <div>
+          <div class="label">${l}</div>
+          <div style="font-size:12px;font-weight:500;color:${c||"#94a3b8"};">${fmt(v)}</div>
+        </div>`).join("")}
+    </div>
+    <div style="margin-left:auto;text-align:right;">
+      <span class="tag ${SESSION_TAG}" style="font-size:11px;padding:4px 12px;">${SESSION_LABEL}</span>
+      <div class="tiny" style="margin-top:3px;">${SESSION_NOTE}</div>
+      <div class="tiny" style="color:var(--muted);margin-top:2px;">P/E ${STATS.pe} · 52W ${fmt(STATS.week52Low)}–${fmt(STATS.week52High)}</div>
+    </div>`;
+
+  // ── TABS ─────────────────────────────────────────────────────
+  document.querySelectorAll(".tab").forEach(t => {
+    t.addEventListener("click", () => {
+      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
+      document.querySelectorAll(".tabpanel").forEach(x => x.classList.remove("active"));
+      t.classList.add("active");
+      document.getElementById("panel-" + t.dataset.tab).classList.add("active");
+    });
+  });
+
+  // ── OVERVIEW ─────────────────────────────────────────────────
+  const callStatus = CALL_WARN
+    ? `<span style="color:var(--yellow);">🟡 WATCH</span>`
+    : `<span style="color:var(--green);">🟢 HEALTHY</span>`;
+
+  document.getElementById("panel-overview").innerHTML = `
+  <div class="grid3">
+
+    <!-- Call gauge -->
+    <div class="card ${CALL_WARN ? "warn" : "glow"}" style="padding:20px;">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:.15em;margin-bottom:10px;display:flex;justify-content:space-between;">
+        <span>CALL SPREAD RISK</span>${callStatus}
+      </div>
+      ${gauge(CALL_BUF, CALL_BUF_PCT, 500, "#fbbf24")}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+        <div class="cell" style="text-align:center;border-color:#2a1f00;">
+          <div class="cell-label">SHORT CALL</div>
+          <div class="cell-val" style="color:var(--yellow);">${fmt(STRIKES.callShort)}</div>
+        </div>
+        <div class="cell" style="text-align:center;">
+          <div class="cell-label">LONG CALL</div>
+          <div class="cell-val" style="color:#94a3b8;">${fmt(STRIKES.callLong)}</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px;background:rgba(52,211,153,.04);border-radius:4px;border:1px solid rgba(52,211,153,.1);">
+        <div style="font-size:10px;color:var(--green);line-height:1.5;">Roll trigger: SPX ~7,600 (+${(7600-SPX).toLocaleString()}pts from here)</div>
+      </div>
+    </div>
+
+    <!-- Put gauge -->
+    <div class="card safe" style="padding:20px;">
+      <div style="font-size:9px;color:var(--muted);letter-spacing:.15em;margin-bottom:10px;display:flex;justify-content:space-between;">
+        <span>PUT SPREAD</span>
+        <div style="display:flex;gap:6px;align-items:center;">
+          <span class="badge">ROLLED ↑</span>
+          <span style="color:var(--green);">✓ SAFE</span>
+        </div>
+      </div>
+      ${gauge(PUT_BUF, PUT_BUF_PCT, 900, "#34d399")}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+        <div class="cell" style="text-align:center;border-color:#1e3a2a;">
+          <div class="cell-label">SHORT PUT</div>
+          <div class="cell-val" style="color:var(--green);">${fmt(STRIKES.putShort)}</div>
+        </div>
+        <div class="cell" style="text-align:center;">
+          <div class="cell-label">LONG PUT</div>
+          <div class="cell-val" style="color:#94a3b8;">${fmt(STRIKES.putLong)}</div>
+        </div>
+      </div>
+      <div style="margin-top:10px;padding:8px;background:rgba(52,211,153,.04);border-radius:4px;border:1px solid rgba(52,211,153,.1);">
+        <div style="font-size:10px;color:var(--green);">Rolled 6750/6800 → ${STRIKES.putLong}/${STRIKES.putShort} · extra credit collected ✓</div>
+      </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="col-r">
+      <div class="card glow" style="padding:14px;">
+        <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">GREEKS ESTIMATE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+          ${[["DELTA","-0.10","#94a3b8"],["THETA/DAY","+24.1","var(--green)"],["VEGA","-91","var(--red)"],["IV%","19.2%","#94a3b8"]].map(([l,v,c])=>`
+            <div class="cell">
+              <div class="cell-label">${l}</div>
+              <div class="cell-val" style="color:${c};">${v}</div>
+            </div>`).join("")}
+        </div>
+      </div>
+
+      <div class="card" style="padding:14px;border-color:#1e3a2f;background:#0a1410;">
+        <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
+        <div style="display:inline-block;padding:3px 10px;border-radius:3px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:var(--green);font-size:11px;font-weight:700;letter-spacing:.1em;margin-bottom:8px;">✓ MONITOR — HEALTHY</div>
+        <div class="small">${REC}</div>
+      </div>
+
+      <div class="card glow" style="padding:14px;">
+        <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">TIME DECAY</div>
+        ${[["cd",CD_DTE,TOTAL_CD,"var(--blue)"],["td",TD_DTE,TOTAL_TD,"var(--purple)"]].map(([l,r,t,c])=>`
+          <div style="margin-bottom:8px;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div class="pbar-track" style="flex:1;">
+                <div class="pbar-fill" style="width:${((t-r)/t*100).toFixed(0)}%;background:${c};"></div>
+              </div>
+              <span style="font-size:11px;color:${c};font-weight:600;min-width:36px;">${r}${l}</span>
+            </div>
+          </div>`).join("")}
+        <div class="tiny">Theta earning ~$24.1/day</div>
+      </div>
+    </div>
+
+    <!-- Journey bar -->
+    <div class="card glow span3" style="padding:18px;">
+      <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">SPX JOURNEY — SINCE CONDOR OPENED</div>
+      <div class="journey-bars">
+        ${PRICE_HISTORY.map((item,i) => {
+          const min=7200,max=7550,h=((item.spx-min)/(max-min)*58+10).toFixed(0);
+          const isLast=i===PRICE_HISTORY.length-1;
+          const isATH=item.spx===ATH_SPX;
+          const bc=isLast?SESSION_COLOR:isATH?"#fbbf24":"#1e3a5f";
+          const tc=isLast?SESSION_COLOR:isATH?"#fbbf24":"var(--vdim)";
+          return `<div class="j-bar-wrap">
+            <div class="j-bar-val" style="color:${tc};">${fmt(item.spx)}</div>
+            <div class="j-bar" style="height:${h}px;background:${bc};"></div>
+            <div class="j-bar-date">${item.date.replace("May ","")}</div>
+          </div>`;
+        }).join("")}
+      </div>
+      <div class="journey-stats">
+        <div class="jstat">Opened: <span style="color:#94a3b8;">~${fmt(OPEN_SPX)}</span></div>
+        <div class="jstat">ATH: <span style="color:var(--yellow);">${fmt(ATH_SPX)}</span></div>
+        <div class="jstat">Today (SPX): <span style="color:${SESSION_COLOR};">${fmt(SPX)}</span></div>
+        <div class="jstat">After Hours: <span style="color:var(--muted);">${SPX_AH>0?"~"+fmt(SPX_AH):"—"}</span></div>
+        <div class="jstat">Move from open: <span style="color:${SPX>OPEN_SPX?"var(--green)":"var(--red)"};">${sign(SPX-OPEN_SPX)}pts</span></div>
+        <div class="jstat">To short call: <span style="color:var(--yellow);">${CALL_BUF}pts (${CALL_BUF_PCT}%)</span></div>
+      </div>
+    </div>
+
+    <!-- Candle summary -->
+    <div class="card glow span3" style="padding:18px;">
+      <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">${TIMESTAMP.split("  ")[0].toUpperCase()} — CANDLE ANALYSIS (SPX)</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr) 2fr;gap:10px;">
+        ${[["OPEN",CANDLE.open,"#94a3b8","var(--border)"],["HIGH",CANDLE.high,"var(--green)","#1e3a2a"],["LOW",CANDLE.low,"var(--red)","#3d1515"],["CLOSE",CANDLE.close,SESSION_COLOR,SESSION==="bearish"?"#3d1515":"#1e3a2a"]].map(([l,v,c,b])=>`
+          <div class="cell" style="border-color:${b};text-align:center;">
+            <div class="cell-label">${l}</div>
+            <div class="cell-val" style="font-size:15px;color:${c};">${fmt(v)}</div>
+          </div>`).join("")}
+        <div class="cell">
+          <div class="cell-label" style="margin-bottom:6px;">SESSION SUMMARY</div>
+          <div class="small">${SESSION_SUMMARY}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>`;
+
+  // ── LEVELS ───────────────────────────────────────────────────
+  document.getElementById("panel-levels").innerHTML = `
+  <div class="grid2">
+    <div class="card glow" style="padding:20px;">
+      <div class="micro" style="margin-bottom:14px;letter-spacing:.15em;">KEY PRICE LEVELS</div>
+      ${KEY_LEVELS.map(lv => {
+        const isCur=lv.type==="current",isStr=lv.type==="strike",isRes=lv.type==="resistance";
+        const color=isCur?"var(--blue)":isStr?"var(--red)":isRes?"var(--yellow)":"var(--green)";
+        const pct=((lv.price-6600)/(7900-6600)*100).toFixed(0);
+        return `<div class="level-row ${isCur?"current":""}">
+          <div class="level-price" style="color:${color};">${fmt(lv.price)}</div>
+          <div class="level-bar"><div class="lbar-track"><div class="lbar-fill" style="width:${pct}%;background:${color};"></div></div></div>
+          <div class="level-label" style="color:${isCur?"var(--blue)":"var(--muted)"};">${lv.label}</div>
+        </div>`;
+      }).join("")}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card glow" style="padding:16px;">
+        <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">SCENARIO ANALYSIS</div>
+        ${SCENARIOS.map(s=>`
+          <div class="scenario" style="border:1px solid ${s.color}22;">
+            <div class="sc-head"><span class="sc-label" style="color:${s.color};">${s.label}</span><span class="sc-tag">${s.impact}</span></div>
+            <div class="sc-desc">${s.desc}</div>
+          </div>`).join("")}
+      </div>
+      <div class="card glow" style="padding:14px;">
+        <div style="font-size:9px;color:var(--blue);letter-spacing:.1em;margin-bottom:8px;">ROLL TRIGGER ZONE</div>
+        <div class="small">If SPX breaks above <span style="color:var(--yellow);font-weight:600;">7,600</span> (${7600-SPX}pts from here), consider rolling call spread to ${fmt(STRIKES.callShort+100)}/${fmt(STRIKES.callLong+100)} to restore buffer.</div>
+      </div>
+    </div>
+  </div>`;
+
+  // ── NEWS ─────────────────────────────────────────────────────
+  document.getElementById("panel-news").innerHTML = `
+  <div class="card glow" style="padding:20px;">
+    <div class="micro" style="margin-bottom:14px;letter-spacing:.15em;">LATEST MARKET-MOVING NEWS</div>
+    ${NEWS.map(item=>`
+      <div class="news-row ${item.hot?"hot":""}">
+        <div class="news-time">${item.time}</div>
+        <div class="news-text ${item.hot?"hot-text":""}">${item.hot?"🔴 ":""}${item.text}</div>
+        <span class="tag ${item.impact==="bullish"?"bull":item.impact==="bearish"?"bear":"neut"}">${item.impact.toUpperCase()}</span>
+      </div>`).join("")}
+  </div>`;
+
+  // ── CALENDAR ─────────────────────────────────────────────────
+  const calCards = CALENDAR.map(item => {
+    const ic=item.impact==="high"?"#ef4444":item.impact==="medium"?"#f59e0b":"#64748b";
+    return `<div class="card cal-card ${item.done?"done":""}" style="border-color:${item.impact==="high"?"#3d1515":"var(--border)"};background:${item.impact==="high"?"#0f0a0a":"var(--bg3)"};">
+      <div class="cal-day">${item.day}</div>
+      <div class="cal-event" style="color:${item.done?"var(--vdim)":"var(--text)"};">${item.event}</div>
+      <div class="cal-footer">
+        <div class="cal-dot" style="background:${ic};${item.impact==="high"?`box-shadow:0 0 6px ${ic};`:""}"></div>
+        <span class="cal-impact" style="color:${ic};">${item.impact.toUpperCase()}</span>
+      </div>
+      ${item.done?`<div class="cal-done">COMPLETE</div>`:""}
+    </div>`;
+  }).join("");
+
+  const tlItems = TIMELINE.map(e=>`
+    <div class="tl-item" style="border:1px solid ${e.color}33;">
+      <div class="tl-date" style="color:${e.color};">${e.date}</div>
+      <div class="tl-label">${e.label}</div>
+    </div>`).join("");
+
+  document.getElementById("panel-calendar").innerHTML = `
+  <div class="grid5" style="margin-bottom:14px;">${calCards}</div>
+  <div class="card glow" style="padding:14px;">
+    <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">FULL TIMELINE TO EXPIRY — ${EXPIRY.toUpperCase()}</div>
+    <div class="grid3t">${tlItems}</div>
+  </div>`;
+
+  // ── FOOTER ───────────────────────────────────────────────────
+  document.getElementById("footer-right").textContent =
+    `PUT ${STRIKES.putLong}/${STRIKES.putShort} · CALL ${STRIKES.callShort}/${STRIKES.callLong} · EXP ${EXPIRY} · SPX ${fmt(SPX)}`;
+
+});
+</script>
+
+<!-- ── MARKUP ──────────────────────────────────────────────── -->
+<div id="header" class="header"></div>
+<div id="pricebar" class="pricebar"></div>
+
+<div class="tabbar">
+  <button class="tab active" data-tab="overview">OVERVIEW</button>
+  <button class="tab"        data-tab="levels">LEVELS</button>
+  <button class="tab"        data-tab="news">NEWS</button>
+  <button class="tab"        data-tab="calendar">CALENDAR</button>
+</div>
+
+<div class="content">
+  <div id="panel-overview" class="tabpanel active"></div>
+  <div id="panel-levels"   class="tabpanel"></div>
+  <div id="panel-news"     class="tabpanel"></div>
+  <div id="panel-calendar" class="tabpanel"></div>
+</div>
+
+<div class="footer">
+  <span style="font-size:9px;color:#1e293b;letter-spacing:.1em;">FOR EDUCATIONAL PURPOSES ONLY — NOT FINANCIAL ADVICE</span>
+  <span id="footer-right" style="font-size:9px;color:#334155;"></span>
+</div>
+
+</body>
+</html>
