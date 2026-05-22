@@ -10,11 +10,12 @@
 :root {
   --bg:#080c14; --bg2:#0a0f1a; --bg3:#0d1420; --border:#1a2332;
   --text:#e2e8f0; --muted:#64748b; --dim:#475569; --vdim:#334155;
-  --green:#34d399; --yellow:#fbbf24; --red:#f87171; --blue:#38bdf8; --purple:#818cf8;
-  --orange:#fb923c; --font:'IBM Plex Mono','Courier New',monospace;
+  --green:#34d399; --yellow:#fbbf24; --red:#f87171; --blue:#38bdf8;
+  --purple:#818cf8; --orange:#fb923c;
+  --font:'IBM Plex Mono','Courier New',monospace;
 }
 html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;}
-::-webkit-scrollbar{width:4px} ::-webkit-scrollbar-track{background:var(--bg)} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 24px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .pricebar{background:var(--bg2);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
 .tabbar{background:var(--bg);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:4px;}
@@ -25,7 +26,6 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 .card.glow{box-shadow:0 0 20px rgba(56,189,248,0.05);}
 .card.warn{box-shadow:0 0 24px rgba(251,191,36,0.15);border-color:#3d2e00!important;}
 .card.safe{box-shadow:0 0 20px rgba(52,211,153,0.06);}
-.card.danger{box-shadow:0 0 24px rgba(239,68,68,0.2);border-color:#3d1515!important;}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
@@ -64,7 +64,7 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 .news-text.hot-text{color:#cbd5e1;}
 .level-row{display:flex;align-items:center;gap:10px;padding:9px;border-radius:4px;border:1px solid transparent;}
 .level-row.current{background:rgba(56,189,248,.05);border-color:rgba(56,189,248,.15)!important;}
-.level-row.flip{background:rgba(251,191,36,.05);border-color:rgba(251,191,36,.15)!important;}
+.level-row.flip{background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.15)!important;}
 .level-price{width:64px;font-size:14px;font-weight:700;text-align:right;}
 .level-bar{flex:1;}
 .level-label{font-size:11px;width:150px;}
@@ -84,91 +84,104 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 // ════════════════════════════════════════════════════════════
 //  DAILY UPDATE — CHANGE ONLY THIS SECTION
 // ════════════════════════════════════════════════════════════
-const SPX            = 7432.97;
-const SPX_AH         = 7401;      // set 0 if no AH data
-const SPY            = 738.55;
-const SPY_AH         = 735.37;    // set 0 if no AH data
-const NVDA_AH_PCT    = -1.10;     // Nvidia AH % (used in banner)
-const SPX_CHANGE_PTS = 79.36;
-const SPX_CHANGE_PCT = 1.08;
-const TIMESTAMP      = "May 20, 2026  4:07 PM ET";
-const CD_DTE         = 29;
-const TD_DTE         = 20;
+const SPX            = 7445.72;
+const SPX_AH         = 0;
+const SPY            = 742.94;
+const SPY_AH         = 0;
+const NVDA_AH_PCT    = 0;
+const SPX_CHANGE_PTS = 12.75;
+const SPX_CHANGE_PCT = 0.17;
+const TIMESTAMP      = "May 21, 2026  4:44 PM ET";
+const CD_DTE         = 28;
+const TD_DTE         = 19;
 const SESSION        = "bullish";
-const SESSION_NOTE   = "Nvidia earnings beat + FOMC minutes";
+const SESSION_NOTE   = "Oil surge offset by afternoon recovery + GEX stabilization";
 
-const CANDLE = { open:7357, high:7419, low:7325, close:SPX, volume:"45.57M", avgVol:"48.46M" };
-const STATS  = { pe:27.99, week52High:7517, week52Low:5756 };
-const MACRO  = { vix:18.06, brent:110.22, brentChg:-0.95, futuresPct:-0.43 };
+const CANDLE = { open:7387, high:7449, low:7370, close:SPX, volume:"42.04M", avgVol:"48.56M" };
+const STATS  = { pe:27.94, week52High:7517, week52Low:5756 };
+const MACRO  = { vix:17.29, brent:107.28, brentChg:2.15, futuresPct:0.11 };
+
+// Greeks — update when conditions change materially
+const GREEKS = { delta:"-0.11", theta:"+25.0", vega:"-82" };
 
 // ════════════════════════════════════════════════════════════
-//  GEX DATA
+//  GEX DATA — from Barchart screenshot May 21
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint: 7321.82,
+  flipPoint: 6842.47,   // 🟢 massive drop from 7,321 — deeply positive gamma now
   putWall:   7400.00,
   callWall:  7400.00,
-  iv:        14.42,
-  hv:        10.67,
-  ivRank:    23.90,
-  ivPct:     55,
+  iv:        13.96,
+  hv:        10.65,
+  ivRank:    21.08,
+  ivPct:     48,
 };
 
 // ════════════════════════════════════════════════════════════
-//  HISTORY LOG — append one row per day
+//  COMPLETED CATALYSTS — append after each major event
+// ════════════════════════════════════════════════════════════
+const COMPLETED_CATALYSTS = [
+  { date:"May 20", event:"Nvidia Q1 FY27",  outcome:"BEAT",    detail:"Rev $81.6B vs $78.8B · Q2 guide $91B vs $87B · AH -1.10% sell-the-news", color:"#34d399" },
+  { date:"May 20", event:"FOMC Minutes",    outcome:"HAWKISH", detail:"Majority open to hike. Most divided Fed since 1992. 4 dissents.",          color:"#f87171" },
+  { date:"May 21", event:"Walmart Q1 FY27", outcome:"MISS",    detail:"Worse-than-expected outlook. Consumer squeezed by oil-driven inflation.",   color:"#f87171" },
+];
+
+// ════════════════════════════════════════════════════════════
+//  HISTORY LOG — one row per day
 // ════════════════════════════════════════════════════════════
 const HISTORY_LOG = [
-  { date:"May 1",  spx:7272,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"ATH hit. Previous condor short call 7250 breached intraday."            },
-  { date:"May 4",  spx:7200.75, callBuf:null, putBuf:null, gexFlip:null,    session:"bearish", note:"UAE missile intercept. Previous condor buffer ~49pts."                  },
-  { date:"May 5",  spx:7248,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"Previous condor closed at loss. New condor 6750/6800/7750/7800 opened."  },
-  { date:"May 8",  spx:7335,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"NFP data. Market continued higher."                                     },
-  { date:"May 9",  spx:7320,    callBuf:null, putBuf:null, gexFlip:null,    session:"bearish", note:"CPI fear pullback."                                                     },
-  { date:"May 12", spx:7413,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"April CPI hotter than expected — market shrugged it off."               },
-  { date:"May 13", spx:7444,    callBuf:316,  putBuf:634,  gexFlip:null,    session:"bullish", note:"China trade delegation + AI rally. New ATH territory."                  },
-  { date:"May 14", spx:7501,    callBuf:249,  putBuf:681,  gexFlip:6739.28, session:"bullish", note:"ATH 7,501. Trump-Xi summit. Put rolled 6750/6800→6770/6820 (+$0.10cr)." },
-  { date:"May 15", spx:7408,    callBuf:342,  putBuf:588,  gexFlip:6739.28, session:"bearish", note:"Warsh takes over Fed. 10Y yield 4.55%. Tech selloff -1.24%."            },
-  { date:"May 18", spx:7399.50, callBuf:350,  putBuf:580,  gexFlip:7345.47, session:"bearish", note:"GEX flip jumped +606pts to 7,345. Only 54pts above flip."              },
-  { date:"May 19", spx:7353.61, callBuf:386,  putBuf:534,  gexFlip:7288.54, session:"bearish", note:"Call rolled 7750/7800→7740/7790 (+$0.25cr). 30Y yield 5.19% (19yr high)." },
-  { date:"May 20", spx:SPX,     callBuf:Math.round(7740-SPX), putBuf:Math.round(SPX-6820), gexFlip:7321.82, session:"bullish", note:"Nvidia $81.6B rev +85%, Q2 guide $91B. FOMC hawkish. AH: NVDA -1.10%, SPY -0.43% — sell the news." },
+  { date:"May 1",  spx:7272,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"ATH hit. Previous condor short call 7250 breached intraday."             },
+  { date:"May 4",  spx:7200.75, callBuf:null, putBuf:null, gexFlip:null,    session:"bearish", note:"UAE missile intercept. Previous condor buffer ~49pts."                   },
+  { date:"May 5",  spx:7248,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"Previous condor closed at loss. New condor 6750/6800/7750/7800 opened."   },
+  { date:"May 8",  spx:7335,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"NFP data. Market continued higher."                                      },
+  { date:"May 9",  spx:7320,    callBuf:null, putBuf:null, gexFlip:null,    session:"bearish", note:"CPI fear pullback."                                                      },
+  { date:"May 12", spx:7413,    callBuf:null, putBuf:null, gexFlip:null,    session:"bullish", note:"April CPI hotter than expected — market shrugged it off."                },
+  { date:"May 13", spx:7444,    callBuf:316,  putBuf:634,  gexFlip:null,    session:"bullish", note:"China trade delegation + AI rally. New ATH territory."                   },
+  { date:"May 14", spx:7501,    callBuf:249,  putBuf:681,  gexFlip:6739.28, session:"bullish", note:"ATH 7,501. Trump-Xi summit. Put rolled 6750/6800→6770/6820 (+$0.10cr)."  },
+  { date:"May 15", spx:7408,    callBuf:342,  putBuf:588,  gexFlip:6739.28, session:"bearish", note:"Warsh takes over Fed. 10Y yield 4.55%. Tech selloff -1.24%."             },
+  { date:"May 18", spx:7399.50, callBuf:350,  putBuf:580,  gexFlip:7345.47, session:"bearish", note:"GEX flip jumped +606pts to 7,345. Only 54pts above flip."               },
+  { date:"May 19", spx:7353.61, callBuf:386,  putBuf:534,  gexFlip:7288.54, session:"bearish", note:"Call rolled 7750/7800→7740/7790 (+$0.25cr). 30Y yield 5.19% (19yr high)."},
+  { date:"May 20", spx:7432.97, callBuf:307,  putBuf:613,  gexFlip:7321.82, session:"bullish", note:"Nvidia $81.6B +85% rev, Q2 guide $91B. FOMC hawkish. AH: NVDA -1.10%, SPY -0.43%."},
+  { date:"May 21", spx:SPX, callBuf:Math.round(7740-SPX), putBuf:Math.round(SPX-6840), gexFlip:GEX.flipPoint, session:"bullish", note:"Put rolled 6770/6820→6790/6840 (+$0.10cr). Walmart miss. GEX flip collapsed to 6,842 — deeply positive gamma. Oil $107." },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  ROLL LOG
 // ════════════════════════════════════════════════════════════
 const ROLL_LOG = [
-  { date:"May 14", side:"PUT",  from:"6750/6800", to:"6770/6820", dir:"↑ +20pts", credit:"$0.10", note:"Rolled up — untested side profit harvest"    },
-  { date:"May 19", side:"CALL", from:"7750/7800", to:"7740/7790", dir:"↓ -10pts", credit:"$0.25", note:"Rolled down — locked gains on 3-day selloff" },
+  { date:"May 14", side:"PUT",  from:"6750/6800", to:"6770/6820", dir:"↑ +20pts", credit:"$0.10", note:"Rolled up — untested side profit harvest"     },
+  { date:"May 19", side:"CALL", from:"7750/7800", to:"7740/7790", dir:"↓ -10pts", credit:"$0.25", note:"Rolled down — locked gains on 3-day selloff"  },
+  { date:"May 21", side:"PUT",  from:"6770/6820", to:"6790/6840", dir:"↑ +20pts", credit:"$0.10", note:"Rolled up again — continued theta harvest"    },
 ];
 
 // ════════════════════════════════════════════════════════════
-//  NEWS — impact: "bullish" | "bearish" | "ah-bear" | "neutral"
+//  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"AH",      text:"🚨 Nvidia -1.10% AH despite massive beat — classic 'sell the news.' Fell after 3 of last 4 earnings. IV crush + 20% pre-earnings run-up already priced in", impact:"ah-bear", hot:true  },
-  { time:"AH",      text:"SPY -0.43% AH → implied SPX open ~7,401 (bearish for market) but call buffer recovers ~32pts to ~339pts (good for condor). GEX wall 7,400 = support",       impact:"ah-bear", hot:true  },
-  { time:"TODAY",   text:"Nvidia Q1 FY27: Revenue $81.6B (+85% YoY) vs $78.8B est. Q2 guide $91B vs $87B. Non-GAAP EPS $1.87 vs $1.77. FCF $48.6B. $80B buyback + dividend 25x",    impact:"bullish", hot:false },
-  { time:"TODAY",   text:"FOMC minutes: Majority open to rate hike if inflation persists. Most divided Fed since 1992 — 4 dissents (1 dove wanting cut, 3 hawks wanting remove easing bias)", impact:"bearish", hot:true  },
-  { time:"TODAY",   text:"Volume 45.57M < 48.46M avg — thin, low-conviction rally. Retail FOMO + short-covering, not institutional accumulation",                                       impact:"bearish", hot:false },
-  { time:"FRI 6/5", text:"📊 May NFP (Jobs Report) — next major catalyst. Labor market signal for Jun 16-17 FOMC rate decision. Verified: BLS ✓",                                      impact:"neutral", hot:false },
-  { time:"WED 6/10",text:"🚨 May CPI 8:30 AM ET — most critical remaining event. Determines if FOMC hikes on Jun 17, one day before expiry. Verified: BLS ✓",                          impact:"neutral", hot:false },
+  { time:"TODAY",   text:"🟢 GEX flip collapsed from 7,321 → 6,842 (-603pts) — SPX now 603pts above flip. Deepest positive gamma regime since condor opened. Most stable setup yet", impact:"bullish", hot:true  },
+  { time:"TODAY",   text:"Put spread rolled 6770/6820 → 6790/6840 (+$0.10cr). Total credits now $0.45 ($45/contract across all 3 rolls)",                                               impact:"bullish", hot:false },
+  { time:"TODAY",   text:"Walmart Q1: Worse-than-expected outlook. Consumer squeezed by oil-driven inflation. Dow lagged all session",                                                    impact:"bearish", hot:true  },
+  { time:"TODAY",   text:"Brent crude +2.15% to $107.28 — Iran uranium retention demand resurfaced as setback for peace deal after Wednesday's 'final stages' optimism",                 impact:"bearish", hot:false },
+  { time:"TODAY",   text:"SPX recovered from 7,370 low to close near session high 7,446 — GEX wall 7,400 held as support all session. Afternoon buyers stepped in",                     impact:"bullish", hot:false },
+  { time:"TODAY",   text:"Volume 42.04M vs 48.56M avg — 3rd below-average volume session this week. Low-conviction rally but still a rally",                                             impact:"neutral", hot:false },
+  { time:"WED 6/10",text:"🚨 May CPI 8:30 AM ET — most critical remaining event. Determines if FOMC hikes Jun 17, one day before expiry. Verified: BLS ✓",                              impact:"neutral", hot:false },
 ];
 
-const REC = "AH: Nvidia -1.10% despite massive beat — 'sell the news' (fell after 3 of last 4 reports). SPY -0.43% AH → implied open ~7,401. Call buffer RECOVERS to ~339pts. GEX wall 7,400 = strong support. Thin volume (45.57M < avg) was a yellow flag today. Roll trigger: +167pts to 7,600.";
-const SESSION_SUMMARY = "SPX +1.08% on Nvidia pre-earnings rally + FOMC minutes less scary than feared. Volume below avg — low conviction. AH: Nvidia -1.10%, SPY -0.43% sell-the-news reaction. Implied SPX open ~7,401 at GEX wall. Call buffer recovers ~32pts overnight to ~339pts.";
+const REC = `Buffer: ${Math.round(7740-SPX)}pts call (${((7740-SPX)/SPX*100).toFixed(1)}%) / ${Math.round(SPX-6840)}pts put (${((SPX-6840)/SPX*100).toFixed(1)}%). GEX flip at 6,842 = deeply positive gamma — most stable regime yet. Put rolled up +$0.10cr. Total credits $0.45. Next catalyst: Jun 10 CPI.`;
+const SESSION_SUMMARY = `SPX +0.17% — messy session with 79pt intraday range. Walmart miss + oil spike ($107) weighed early, GEX wall 7,400 held as support, afternoon recovery to session highs. Volume 42.04M vs 48.56M avg. GEX flip collapsed to 6,842 — deeply positive gamma.`;
 
 // ════════════════════════════════════════════════════════════
-//  CALENDAR — all dates verified from official sources
+//  CALENDAR — all dates verified
 // ════════════════════════════════════════════════════════════
 const CALENDAR = [
-  { day:"WED 5/20", event:"✅ Nvidia earnings + FOMC mins", done:true,  impact:"high",   verified:"✓" },
-  { day:"FRI 5/22", event:"Walmart earnings",               done:false, impact:"medium", verified:"✓" },
-  { day:"MON 5/26", event:"🇺🇸 Memorial Day (closed)",       done:false, impact:"low",    verified:"✓" },
-  { day:"FRI 6/5",  event:"📊 May NFP (Jobs)",              done:false, impact:"high",   verified:"✓ BLS" },
-  { day:"WED 6/10", event:"🚨 May CPI 8:30AM ET",           done:false, impact:"high",   verified:"✓ BLS" },
+  { day:"THU 5/21", event:"✅ Walmart earnings",        done:true,  impact:"medium", verified:"✓" },
+  { day:"MON 5/26", event:"🇺🇸 Memorial Day (closed)",   done:false, impact:"low",    verified:"✓" },
+  { day:"FRI 6/5",  event:"📊 May NFP (Jobs)",          done:false, impact:"high",   verified:"✓ BLS" },
+  { day:"WED 6/10", event:"🚨 May CPI 8:30AM ET",       done:false, impact:"high",   verified:"✓ BLS" },
+  { day:"TUE 6/17", event:"⚡ FOMC decision 2PM ET",    done:false, impact:"high",   verified:"✓ Fed.gov" },
 ];
 
 const TIMELINE = [
-  { date:"May 22",    label:"Walmart earnings",        color:"#f59e0b" },
   { date:"May 26",    label:"Memorial Day (closed)",   color:"#64748b" },
   { date:"Jun 5",     label:"May NFP 🚨",              color:"#ef4444" },
   { date:"Jun 10",    label:"May CPI 8:30AM ET 🚨",   color:"#ef4444" },
@@ -181,7 +194,7 @@ const TIMELINE = [
 // ════════════════════════════════════════════════════════════
 //  STATIC CONFIG
 // ════════════════════════════════════════════════════════════
-const STRIKES  = { putLong:6770, putShort:6820, callShort:7740, callLong:7790 };
+const STRIKES  = { putLong:6790, putShort:6840, callShort:7740, callLong:7790 };
 const EXPIRY   = "June 18, 2026";
 const TOTAL_CD = 36;
 const TOTAL_TD = 25;
@@ -200,52 +213,49 @@ const SESSION_TAG   = SESSION==="bullish"?"bull":"bear";
 const SESSION_LABEL = SESSION==="bullish"?"▲ BULLISH SESSION":"▼ BEARISH SESSION";
 const AH_BEARISH    = SPX_AH > 0 && SPX_AH < SPX;
 const AH_BULLISH    = SPX_AH > 0 && SPX_AH >= SPX;
-const ATH_SPX  = Math.max(...HISTORY_LOG.map(p=>p.spx));
-const OPEN_SPX = HISTORY_LOG[0].spx;
-const IMPLIED_OPEN = SPX_AH > 0 ? SPX_AH : Math.round(SPX * (1 + MACRO.futuresPct/100));
+const ATH_SPX       = Math.max(...HISTORY_LOG.map(p=>p.spx));
+const ATH_DATE      = HISTORY_LOG.find(p=>p.spx===ATH_SPX)?.date||"";
+const OPEN_SPX      = HISTORY_LOG[0].spx;
+const IMPLIED_OPEN  = SPX_AH > 0 ? SPX_AH : Math.round(SPX*(1+MACRO.futuresPct/100));
+const TOTAL_CREDITS = ROLL_LOG.reduce((s,r)=>s+parseFloat(r.credit.replace("$","")),0);
 
-const bufColor  = pts => pts > 400 ? "#34d399" : pts > 200 ? "#fbbf24" : pts > 100 ? "#f97316" : "#ef4444";
-const bufStatus = pts => pts > 400 ? "🟢 HEALTHY" : pts > 200 ? "🟡 MONITOR" : pts > 100 ? "🟠 WARNING" : "🔴 DANGER";
-const newsTag   = impact => impact==="bullish"?"bull":impact==="bearish"?"bear":impact==="ah-bear"?"ah-bear":"neut";
-const newsLabel = impact => impact==="ah-bear"?"AH BEARISH":impact.toUpperCase();
+const bufColor  = pts => pts > 400?"#34d399":pts > 200?"#fbbf24":pts > 100?"#f97316":"#ef4444";
+const bufStatus = pts => pts > 400?"🟢 HEALTHY":pts > 200?"🟡 MONITOR":pts > 100?"🟠 WARNING":"🔴 DANGER";
+const newsTag   = i => i==="bullish"?"bull":i==="bearish"?"bear":i==="ah-bear"?"ah-bear":"neut";
+const newsLabel = i => i==="ah-bear"?"AH BEARISH":i.toUpperCase();
+const fmt       = n => typeof n==="number"?n.toLocaleString():n;
+const sign      = n => n>=0?`+${n}`:`${n}`;
 
 const KEY_LEVELS = [
-  { price:STRIKES.callLong,  label:"Long Call",           type:"strike"     },
-  { price:STRIKES.callShort, label:"Short Call 🎯",       type:"strike"     },
-  { price:7600,              label:"Roll Trigger ⚠️",     type:"resistance" },
-  { price:ATH_SPX,           label:"ATH (May 14)",        type:"resistance" },
-  { price:SPX,               label:"Current ▶",           type:"current"    },
-  { price:GEX.callWall,      label:"GEX Wall (support)",  type:"support"    },
-  { price:GEX.flipPoint,     label:"🟡 GEX Flip",         type:"flip"       },
-  { price:7200,              label:"Support",             type:"support"    },
-  { price:STRIKES.putShort,  label:"Short Put 🎯",        type:"strike"     },
-  { price:STRIKES.putLong,   label:"Long Put",            type:"support"    },
+  { price:STRIKES.callLong,  label:"Long Call",            type:"strike"     },
+  { price:STRIKES.callShort, label:"Short Call 🎯",        type:"strike"     },
+  { price:7600,              label:"Roll Trigger ⚠️",      type:"resistance" },
+  { price:ATH_SPX,           label:`ATH (${ATH_DATE})`,    type:"resistance" },
+  { price:SPX,               label:"Current ▶",            type:"current"    },
+  { price:GEX.callWall,      label:"GEX Wall (support)",   type:"support"    },
+  { price:STRIKES.putShort,  label:"Short Put 🎯",         type:"strike"     },
+  { price:STRIKES.putLong,   label:"Long Put",             type:"support"    },
+  { price:GEX.flipPoint,     label:"🟢 GEX Flip (far below)",type:"flip"     },
 ];
 
 const SCENARIOS = [
-  { label:"🟢 BULL CASE", desc:`Nvidia melt-up continues. SPX charges toward ATH 7,517. Roll call urgently if SPX > 7,600 (+${Math.round(7600-SPX)}pts).`, color:"#34d399", impact:"DANGER ⚠️"    },
-  { label:"🟡 BASE CASE", desc:`Nvidia AH fade continues. SPX consolidates 7,350–7,500. GEX wall 7,400 acts as support. Theta grinds ${Math.round(CALL_BUF)}pts.`, color:"#fbbf24", impact:"THETA WINS ✓"  },
-  { label:"🔴 BEAR CASE", desc:`FOMC hawkishness + yields spike. Rally fully fades. SPX back below 7,400. Call buffer re-expands. Best case for condor.`, color:"#f87171", impact:"MAX PROFIT ✓" },
+  { label:"🟢 BULL CASE", desc:`Iran deal announced. SPX gaps toward ATH ${fmt(ATH_SPX)}. Roll call urgently above 7,600 (+${Math.round(7600-SPX)}pts).`,               color:"#34d399", impact:"DANGER ⚠️"   },
+  { label:"🟡 BASE CASE", desc:`SPX consolidates 7,350–7,550. GEX wall 7,400 = support, flip 6,842 = deep safety net. Theta grinds ${Math.round(CALL_BUF)}pts.`,        color:"#fbbf24", impact:"THETA WINS ✓" },
+  { label:"🔴 BEAR CASE", desc:`Hot CPI Jun 10 + FOMC hike Jun 17. SPX drops. Call buffer expands massively. Put spread at ${fmt(STRIKES.putShort)} — ${Math.round(PUT_BUF)}pts away.`, color:"#f87171", impact:"MAX PROFIT ✓" },
 ];
 
-// ════════════════════════════════════════════════════════════
-//  HELPERS
-// ════════════════════════════════════════════════════════════
-const fmt  = n => typeof n==="number" ? n.toLocaleString() : n;
-const sign = n => n>=0 ? `+${n}` : `${n}`;
-
-function gaugeArc(pct) {
+function gaugeArc(pct){
   const r=52,cx=70,cy=68,s=-210,e=-210+240*Math.min(pct,1),rad=a=>a*Math.PI/180;
   const x1=cx+r*Math.cos(rad(s)),y1=cy+r*Math.sin(rad(s));
   const x2=cx+r*Math.cos(rad(e)),y2=cy+r*Math.sin(rad(e));
   return `M ${x1} ${y1} A ${r} ${r} 0 ${e-s>180?1:0} 1 ${x2} ${y2}`;
 }
-function gauge(bufPts,bufPct,maxPts,color){
-  const pct=Math.min(bufPts/maxPts,1);
+function gauge(buf,bufPct,maxPts,color){
+  const pct=Math.min(buf/maxPts,1);
   return `<svg width="150" height="108" viewBox="0 0 140 102" style="display:block;margin:0 auto;">
     <path d="${gaugeArc(1)}" fill="none" stroke="#1a2332" stroke-width="8" stroke-linecap="round"/>
     <path d="${gaugeArc(pct)}" fill="none" stroke="${color}" stroke-width="8" stroke-linecap="round" style="filter:drop-shadow(0 0 5px ${color})"/>
-    <text x="70" y="51" text-anchor="middle" fill="${color}" font-size="22" font-weight="700" font-family="IBM Plex Mono,monospace">${Math.round(bufPts)}</text>
+    <text x="70" y="51" text-anchor="middle" fill="${color}" font-size="22" font-weight="700" font-family="IBM Plex Mono,monospace">${Math.round(buf)}</text>
     <text x="70" y="69" text-anchor="middle" fill="${color}" font-size="14" font-weight="600" font-family="IBM Plex Mono,monospace" opacity="0.9">${bufPct}%</text>
     <text x="70" y="84" text-anchor="middle" fill="#475569" font-size="8" font-family="IBM Plex Mono,monospace">PTS / % TO SHORT STRIKE</text>
   </svg>`;
@@ -253,7 +263,6 @@ function gauge(bufPts,bufPct,maxPts,color){
 
 window.addEventListener("DOMContentLoaded",()=>{
 
-  // ── HEADER ──────────────────────────────────────────────
   document.getElementById("header").innerHTML=`
     <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
       <div style="display:flex;align-items:center;gap:8px;"><div class="dot"></div><span class="micro">LIVE</span></div>
@@ -261,7 +270,7 @@ window.addEventListener("DOMContentLoaded",()=>{
       <span class="micro" style="color:var(--vdim);">EXP ${EXPIRY}</span>
       <span class="badge">PUT ↑ ${STRIKES.putLong}/${STRIKES.putShort}</span>
       <span class="badge-green">CALL ↓ ${STRIKES.callShort}/${STRIKES.callLong}</span>
-      <span class="badge-warn">GEX FLIP ${fmt(GEX.flipPoint)}</span>
+      <span class="badge-green">GEX FLIP ${fmt(GEX.flipPoint)} 🟢</span>
     </div>
     <div style="display:flex;align-items:center;gap:20px;">
       <div style="text-align:right;">
@@ -271,7 +280,6 @@ window.addEventListener("DOMContentLoaded",()=>{
       <span class="tiny">${TIMESTAMP}</span>
     </div>`;
 
-  // ── PRICE BAR ────────────────────────────────────────────
   document.getElementById("pricebar").innerHTML=`
     <div>
       <div class="label">SPX INDEX</div>
@@ -279,13 +287,12 @@ window.addEventListener("DOMContentLoaded",()=>{
         <span style="font-size:30px;font-weight:700;letter-spacing:-.02em;">${fmt(SPX)}</span>
         <span style="font-size:13px;color:${SESSION_COLOR};font-weight:500;">${sign(SPX_CHANGE_PTS)} (${sign(SPX_CHANGE_PCT)}%)</span>
       </div>
-      ${SPX_AH>0 ? `<div class="tiny" style="margin-top:2px;color:${AH_BEARISH?"var(--orange)":"var(--green)"};">AH ~${fmt(SPX_AH)} · SPY $${SPY_AH} · NVDA ${NVDA_AH_PCT}% · Implied open ~${fmt(IMPLIED_OPEN)}</div>` : `<div class="tiny" style="margin-top:2px;color:var(--yellow);">⚡ ${Math.round(FLIP_BUF)}pts above GEX flip · Implied open ~${fmt(IMPLIED_OPEN)}</div>`}
+      <div class="tiny" style="margin-top:2px;color:var(--green);">🟢 ${Math.round(FLIP_BUF)}pts above GEX flip · Implied open ~${fmt(IMPLIED_OPEN)} (${sign(MACRO.futuresPct)}%)</div>
     </div>
     <div class="divider"></div>
     <div>
       <div class="label">SPY</div>
       <div style="font-size:18px;font-weight:600;color:#94a3b8;">$${SPY}</div>
-      ${SPY_AH>0 ? `<div style="font-size:10px;color:${AH_BEARISH?"var(--orange)":"var(--green)"};margin-top:2px;">AH $${SPY_AH} (${(((SPY_AH-SPY)/SPY)*100).toFixed(2)}%)</div>` : ""}
     </div>
     <div class="divider"></div>
     <div style="display:flex;gap:20px;">
@@ -295,14 +302,11 @@ window.addEventListener("DOMContentLoaded",()=>{
     <div style="margin-left:auto;text-align:right;">
       <div style="display:flex;gap:6px;align-items:center;justify-content:flex-end;flex-wrap:wrap;margin-bottom:3px;">
         <span class="tag ${SESSION_TAG}" style="font-size:11px;padding:4px 12px;">${SESSION_LABEL}</span>
-        ${AH_BEARISH ? `<span class="tag ah-bear" style="font-size:11px;padding:4px 12px;">▼ AH BEARISH</span>` : ""}
-        ${AH_BULLISH ? `<span class="tag bull" style="font-size:11px;padding:4px 12px;">▲ AH BULLISH</span>` : ""}
       </div>
       <div class="tiny">${SESSION_NOTE}</div>
-      <div class="tiny" style="color:var(--muted);margin-top:2px;">VIX ${MACRO.vix} · Brent $${MACRO.brent} (${sign(MACRO.brentChg)}%) · IV ${GEX.iv}%</div>
+      <div class="tiny" style="color:var(--muted);margin-top:2px;">VIX ${MACRO.vix} · Brent $${MACRO.brent} (+${MACRO.brentChg}%) · IV ${GEX.iv}%</div>
     </div>`;
 
-  // ── TABS ─────────────────────────────────────────────────
   document.querySelectorAll(".tab").forEach(t=>{
     t.addEventListener("click",()=>{
       document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
@@ -312,39 +316,31 @@ window.addEventListener("DOMContentLoaded",()=>{
     });
   });
 
-  // ── OVERVIEW ─────────────────────────────────────────────
-  const nvdaAlert=`
-    <div style="background:rgba(52,211,153,.06);border:1px solid rgba(52,211,153,.25);border-radius:6px;padding:12px;margin-bottom:4px;grid-column:1/-1;">
-      <div style="font-size:10px;font-weight:700;letter-spacing:.1em;margin-bottom:8px;">
-        <span style="color:var(--green);">🚀 NVIDIA Q1 FY27 — MASSIVE BEAT</span>
-        &nbsp;|&nbsp;
-        <span style="color:var(--orange);">AH: ${NVDA_AH_PCT}% · Sell the news · Fell after 3 of last 4 reports</span>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
-        ${[
-          ["Revenue","$81.6B","var(--green)","vs $78.8B est (+$2.8B)"],
-          ["Rev Growth","+85% YoY","var(--green)","vs 78% expected"],
-          ["Q2 Guidance","$91B ±2%","var(--green)","vs $87B est (+$4B)"],
-          ["Non-GAAP EPS","$1.87","var(--green)","vs $1.77 est (+6.25%)"],
-          ["AH Reaction",`${NVDA_AH_PCT}%`,"var(--orange)","IV crush + 20% pre-run priced in"],
-        ].map(([l,v,c,sub])=>`
-          <div style="background:rgba(0,0,0,.2);border-radius:4px;padding:8px;">
-            <div style="font-size:9px;color:var(--dim);margin-bottom:2px;">${l}</div>
-            <div style="font-size:13px;font-weight:700;color:${c};margin-bottom:2px;">${v}</div>
-            <div style="font-size:9px;color:var(--muted);">${sub}</div>
+  // Completed Catalysts
+  const catalystBar=`
+    <div style="background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.15);border-radius:6px;padding:12px;grid-column:1/-1;">
+      <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">✅ COMPLETED CATALYSTS</div>
+      <div style="display:grid;grid-template-columns:repeat(${COMPLETED_CATALYSTS.length},1fr);gap:10px;">
+        ${COMPLETED_CATALYSTS.map(c=>`
+          <div style="background:rgba(0,0,0,.2);border-radius:4px;padding:10px;border-left:3px solid ${c.color};">
+            <div style="font-size:9px;color:var(--dim);margin-bottom:3px;">${c.date}</div>
+            <div style="font-size:11px;color:var(--text);font-weight:600;margin-bottom:3px;">${c.event}</div>
+            <div style="display:inline-block;padding:1px 6px;border-radius:2px;background:${c.color}22;color:${c.color};font-size:9px;font-weight:700;margin-bottom:4px;">${c.outcome}</div>
+            <div style="font-size:9px;color:var(--muted);line-height:1.5;">${c.detail}</div>
           </div>`).join("")}
       </div>
     </div>`;
 
+  // GEX banner — now green (flip collapsed to 6,842)
   const gexAlert=`
-    <div style="background:rgba(251,191,36,.04);border:1px solid rgba(251,191,36,.2);border-radius:6px;padding:12px;margin-bottom:4px;grid-column:1/-1;">
-      <div style="font-size:10px;color:var(--yellow);font-weight:700;letter-spacing:.1em;margin-bottom:6px;">🟡 GEX — FLIP ${fmt(GEX.flipPoint)} · SPX ABOVE CALL WALL 7,400 (NOW SUPPORT)</div>
+    <div style="background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.2);border-radius:6px;padding:12px;grid-column:1/-1;">
+      <div style="font-size:10px;color:var(--green);font-weight:700;letter-spacing:.1em;margin-bottom:6px;">🟢 GEX REGIME — FLIP COLLAPSED TO ${fmt(GEX.flipPoint)} · SPX ${Math.round(FLIP_BUF)}pts ABOVE FLIP · DEEPEST POSITIVE GAMMA YET</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
         ${[
-          ["GEX Flip",fmt(GEX.flipPoint),"var(--yellow)",`${Math.round(FLIP_BUF)}pts below SPX`],
-          ["SPX vs Flip",`${Math.round(FLIP_BUF)}pts above`,"var(--green)","Positive gamma regime"],
-          ["Wall 7,400","Now SUPPORT ✓","var(--green)","SPX broke above — flips to floor"],
-          ["Regime","POSITIVE ✓","var(--green)","Stable — 111pts above flip"],
+          ["Flip Point",  fmt(GEX.flipPoint),  "var(--green)", `↓ from 7,321. ${Math.round(FLIP_BUF)}pts below SPX`],
+          ["vs Yesterday",`7,321 → ${fmt(GEX.flipPoint)}`,"var(--green)","Dropped 603pts — maximum stability"],
+          ["Wall ${fmt(GEX.callWall)}", "Support ✓",    "var(--green)", "GEX wall held as floor today"],
+          ["Regime",      "DEEPLY POSITIVE ✓", "var(--green)", "Entire 6,842–7,740 range stabilized"],
         ].map(([l,v,c,sub])=>`
           <div style="background:rgba(0,0,0,.2);border-radius:4px;padding:8px;">
             <div style="font-size:9px;color:var(--dim);margin-bottom:2px;">${l}</div>
@@ -356,10 +352,9 @@ window.addEventListener("DOMContentLoaded",()=>{
 
   document.getElementById("panel-overview").innerHTML=`
   <div class="grid3">
-    ${nvdaAlert}
+    ${catalystBar}
     ${gexAlert}
 
-    <!-- CALL GAUGE -->
     <div class="card ${CALL_WARN?"warn":"glow"}" style="padding:20px;">
       <div style="font-size:9px;color:var(--muted);letter-spacing:.15em;margin-bottom:10px;display:flex;justify-content:space-between;">
         <span>CALL SPREAD RISK</span><span style="color:${bufColor(CALL_BUF)};">${bufStatus(CALL_BUF)}</span>
@@ -369,16 +364,15 @@ window.addEventListener("DOMContentLoaded",()=>{
         <div class="cell" style="text-align:center;"><div class="cell-label">SHORT CALL</div><div class="cell-val" style="color:${bufColor(CALL_BUF)};">${fmt(STRIKES.callShort)}</div></div>
         <div class="cell" style="text-align:center;"><div class="cell-label">LONG CALL</div><div class="cell-val" style="color:#94a3b8;">${fmt(STRIKES.callLong)}</div></div>
       </div>
-      <div style="margin-top:10px;padding:8px;background:rgba(239,68,68,.04);border-radius:4px;border:1px solid rgba(239,68,68,.1);">
-        <div style="font-size:10px;color:var(--red);line-height:1.5;">⚠️ AH fade → buffer recovers to ~339pts. Roll trigger: +${Math.round(7600-SPX)}pts to 7,600</div>
+      <div style="margin-top:10px;padding:8px;background:rgba(52,211,153,.04);border-radius:4px;border:1px solid rgba(52,211,153,.1);">
+        <div style="font-size:10px;color:var(--green);line-height:1.5;">Roll trigger: SPX > 7,600 (+${Math.round(7600-SPX)}pts from here)</div>
       </div>
     </div>
 
-    <!-- PUT GAUGE -->
     <div class="card safe" style="padding:20px;">
       <div style="font-size:9px;color:var(--muted);letter-spacing:.15em;margin-bottom:10px;display:flex;justify-content:space-between;">
         <span>PUT SPREAD</span>
-        <div style="display:flex;gap:6px;align-items:center;"><span class="badge">ROLLED ↑</span><span style="color:${bufColor(PUT_BUF)};">${bufStatus(PUT_BUF)}</span></div>
+        <div style="display:flex;gap:6px;align-items:center;"><span class="badge">ROLLED ↑ ×2</span><span style="color:${bufColor(PUT_BUF)};">${bufStatus(PUT_BUF)}</span></div>
       </div>
       ${gauge(PUT_BUF,PUT_BUF_PCT,900,bufColor(PUT_BUF))}
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
@@ -386,22 +380,21 @@ window.addEventListener("DOMContentLoaded",()=>{
         <div class="cell" style="text-align:center;"><div class="cell-label">LONG PUT</div><div class="cell-val" style="color:#94a3b8;">${fmt(STRIKES.putLong)}</div></div>
       </div>
       <div style="margin-top:10px;padding:8px;background:rgba(52,211,153,.04);border-radius:4px;border:1px solid rgba(52,211,153,.1);">
-        <div style="font-size:10px;color:var(--green);">GEX flip 7,321 · Put wall 7,400 now support ✓</div>
+        <div style="font-size:10px;color:var(--green);">GEX flip ${fmt(GEX.flipPoint)} · ${Math.round(PUT_BUF)}pts buffer · Rolled up today ✓</div>
       </div>
     </div>
 
-    <!-- RIGHT COL -->
     <div class="col-r">
       <div class="card glow" style="padding:14px;">
         <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">GREEKS ESTIMATE</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          ${[["DELTA","-0.12","var(--red)"],["THETA/DAY","+24.5","var(--green)"],["VEGA","-85","var(--red)"],["IV%",`${GEX.iv}%`,"#94a3b8"]].map(([l,v,c])=>`
+          ${[["DELTA",GREEKS.delta,"var(--muted)"],["THETA/DAY",GREEKS.theta,"var(--green)"],["VEGA",GREEKS.vega,"var(--red)"],["IV%",GEX.iv+"%","#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
       </div>
-      <div class="card" style="padding:14px;border-color:#3d2e00;background:#0f0c00;">
+      <div class="card" style="padding:14px;border-color:#1e3a2f;background:#0a1410;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
-        <div style="display:inline-block;padding:3px 10px;border-radius:3px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.2);color:var(--yellow);font-size:11px;font-weight:700;letter-spacing:.1em;margin-bottom:8px;">⚠️ MONITOR — AH FADE HELPS</div>
+        <div style="display:inline-block;padding:3px 10px;border-radius:3px;background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.2);color:var(--green);font-size:11px;font-weight:700;letter-spacing:.1em;margin-bottom:8px;">✓ MONITOR — GEX IDEAL</div>
         <div class="small">${REC}</div>
       </div>
       <div class="card glow" style="padding:14px;">
@@ -411,11 +404,10 @@ window.addEventListener("DOMContentLoaded",()=>{
             <div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${((t-r)/t*100).toFixed(0)}%;background:${c};"></div></div>
             <span style="font-size:11px;color:${c};font-weight:600;min-width:36px;">${r}${l}</span>
           </div></div>`).join("")}
-        <div class="tiny">Theta earning ~$24.5/day</div>
+        <div class="tiny">Theta earning ~${GREEKS.theta}/day</div>
       </div>
     </div>
 
-    <!-- JOURNEY BAR -->
     <div class="card glow span3" style="padding:18px;">
       <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">SPX JOURNEY — SINCE CONDOR OPENED</div>
       <div class="journey-bars">
@@ -433,15 +425,14 @@ window.addEventListener("DOMContentLoaded",()=>{
       </div>
       <div class="journey-stats">
         <div class="jstat">Opened: <span style="color:#94a3b8;">~${fmt(OPEN_SPX)}</span></div>
-        <div class="jstat">ATH: <span style="color:var(--yellow);">${fmt(ATH_SPX)}</span></div>
-        <div class="jstat">Close: <span style="color:${SESSION_COLOR};">${fmt(SPX)}</span></div>
-        <div class="jstat">AH implied: <span style="color:var(--orange);">~${fmt(IMPLIED_OPEN)}</span></div>
+        <div class="jstat">ATH: <span style="color:var(--yellow);">${fmt(ATH_SPX)} (${ATH_DATE})</span></div>
+        <div class="jstat">Today: <span style="color:${SESSION_COLOR};">${fmt(SPX)}</span></div>
+        <div class="jstat">GEX Flip: <span style="color:var(--green);">${fmt(GEX.flipPoint)} (${Math.round(FLIP_BUF)}pts below)</span></div>
         <div class="jstat">To short call: <span style="color:${bufColor(CALL_BUF)};">${Math.round(CALL_BUF)}pts (${CALL_BUF_PCT}%)</span></div>
         <div class="jstat">To short put: <span style="color:${bufColor(PUT_BUF)};">${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%)</span></div>
       </div>
     </div>
 
-    <!-- CANDLE -->
     <div class="card glow span3" style="padding:18px;">
       <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">${TIMESTAMP.split("  ")[0].toUpperCase()} — CANDLE ANALYSIS (SPX)</div>
       <div style="display:grid;grid-template-columns:repeat(4,1fr) 2fr;gap:10px;">
@@ -454,19 +445,18 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
   </div>`;
 
-  // ── LEVELS ───────────────────────────────────────────────
   document.getElementById("panel-levels").innerHTML=`
   <div class="grid2">
     <div class="card glow" style="padding:20px;">
       <div class="micro" style="margin-bottom:14px;letter-spacing:.15em;">KEY PRICE LEVELS (incl. GEX)</div>
       ${KEY_LEVELS.map(lv=>{
         const isCur=lv.type==="current",isStr=lv.type==="strike",isRes=lv.type==="resistance",isFlip=lv.type==="flip";
-        const color=isCur?"var(--blue)":isFlip?"var(--yellow)":isStr?"var(--red)":isRes?"var(--yellow)":"var(--green)";
-        const pct=((lv.price-6600)/(7900-6600)*100).toFixed(0);
+        const color=isCur?"var(--blue)":isFlip?"var(--green)":isStr?"var(--red)":isRes?"var(--yellow)":"var(--green)";
+        const pct=Math.max(((lv.price-5600)/(8000-5600)*100),0).toFixed(0);
         return `<div class="level-row ${isCur?"current":isFlip?"flip":""}">
-          <div class="level-price" style="color:${color};">${fmt(lv.price)}</div>
+          <div class="level-price" style="color:${color};">${lv.price>6000?fmt(lv.price):fmt(lv.price)}</div>
           <div class="level-bar"><div class="lbar-track"><div class="lbar-fill" style="width:${pct}%;background:${color};"></div></div></div>
-          <div class="level-label" style="color:${isCur?"var(--blue)":isFlip?"var(--yellow)":"var(--muted)"};">${lv.label}</div>
+          <div class="level-label" style="color:${isCur?"var(--blue)":isFlip?"var(--green)":"var(--muted)"};">${lv.label}</div>
         </div>`;
       }).join("")}
     </div>
@@ -482,26 +472,26 @@ window.addEventListener("DOMContentLoaded",()=>{
             <div style="font-size:11px;color:var(--muted);line-height:1.5;">${s.desc}</div>
           </div>`).join("")}
       </div>
-      <div class="card warn" style="padding:14px;">
-        <div style="font-size:9px;color:var(--yellow);letter-spacing:.1em;margin-bottom:8px;">🟡 GEX STRUCTURE — MAY 20</div>
+      <div class="card" style="padding:14px;border-color:#1e3a2f;background:#0a1410;">
+        <div style="font-size:9px;color:var(--green);letter-spacing:.1em;margin-bottom:8px;">🟢 GEX STRUCTURE — MAY 21</div>
         <div class="small" style="line-height:2;">
-          Flip: <span style="color:var(--yellow);font-weight:600;">${fmt(GEX.flipPoint)}</span> · ${Math.round(FLIP_BUF)}pts below<br>
-          Wall 7,400: <span style="color:var(--green);font-weight:600;">Now SUPPORT ✓</span><br>
-          Regime: <span style="color:var(--green);font-weight:600;">POSITIVE — stable</span><br>
+          Flip: <span style="color:var(--green);font-weight:600;">${fmt(GEX.flipPoint)}</span> ↓ collapsed from 7,321<br>
+          SPX above flip: <span style="color:var(--green);font-weight:600;">${Math.round(FLIP_BUF)}pts</span> — deepest yet<br>
+          Wall ${fmt(GEX.callWall)}: <span style="color:var(--green);font-weight:600;">Support ✓</span><br>
+          Regime: <span style="color:var(--green);font-weight:600;">DEEPLY POSITIVE</span><br>
           IV/HV: <span style="color:#94a3b8;font-weight:600;">${GEX.iv}% / ${GEX.hv}%</span>
         </div>
       </div>
       <div class="card glow" style="padding:14px;">
         <div style="font-size:9px;color:var(--blue);letter-spacing:.1em;margin-bottom:8px;">ROLL TRIGGERS</div>
         <div class="small" style="line-height:1.8;">
-          Call: SPX > <span style="color:var(--yellow);font-weight:600;">7,600</span> (+${Math.round(7600-SPX)}pts) → roll to ${fmt(STRIKES.callShort+100)}/${fmt(STRIKES.callLong+100)}<br>
-          Put: SPX < <span style="color:var(--yellow);font-weight:600;">${fmt(GEX.flipPoint)}</span> (flip) → monitor closely
+          Call: SPX > <span style="color:var(--yellow);font-weight:600;">7,600</span> (+${Math.round(7600-SPX)}pts) → ${fmt(STRIKES.callShort+100)}/${fmt(STRIKES.callLong+100)}<br>
+          Put: SPX < <span style="color:var(--yellow);font-weight:600;">7,200</span> (support) → consider rolling
         </div>
       </div>
     </div>
   </div>`;
 
-  // ── NEWS ─────────────────────────────────────────────────
   document.getElementById("panel-news").innerHTML=`
   <div class="card glow" style="padding:20px;">
     <div class="micro" style="margin-bottom:14px;letter-spacing:.15em;">LATEST MARKET-MOVING NEWS</div>
@@ -513,7 +503,6 @@ window.addEventListener("DOMContentLoaded",()=>{
       </div>`).join("")}
   </div>`;
 
-  // ── CALENDAR ─────────────────────────────────────────────
   document.getElementById("panel-calendar").innerHTML=`
   <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:14px;">
     ${CALENDAR.map(item=>{
@@ -530,7 +519,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     }).join("")}
   </div>
   <div class="card glow" style="padding:14px;">
-    <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">FULL TIMELINE TO EXPIRY — ${EXPIRY.toUpperCase()} · ALL DATES VERIFIED ✓</div>
+    <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">TIMELINE TO EXPIRY — ${EXPIRY.toUpperCase()} · ALL DATES VERIFIED ✓</div>
     <div class="grid3t">
       ${TIMELINE.map(e=>`
         <div style="padding:10px;background:var(--bg2);border-radius:4px;border:1px solid ${e.color}33;">
@@ -540,7 +529,6 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
   </div>`;
 
-  // ── HISTORY ──────────────────────────────────────────────
   const sColor=s=>s==="bullish"?"#34d399":s==="bearish"?"#f87171":"#94a3b8";
   document.getElementById("panel-history").innerHTML=`
   <div style="display:flex;flex-direction:column;gap:16px;">
@@ -557,7 +545,7 @@ window.addEventListener("DOMContentLoaded",()=>{
               const isToday=i===0;
               const cc=row.callBuf===null?"#334155":bufColor(row.callBuf);
               const pc=row.putBuf===null?"#334155":bufColor(row.putBuf);
-              const fc=row.gexFlip===null?"#334155":row.gexFlip>7000?"#fbbf24":"#34d399";
+              const fc=row.gexFlip===null?"#334155":row.gexFlip>7000?"#fbbf24":row.gexFlip>6000?"#34d399":"#38bdf8";
               return `<tr style="border-bottom:1px solid #0f1923;background:${isToday?"rgba(56,189,248,.04)":"transparent"};">
                 <td style="padding:9px 12px;color:${isToday?"var(--blue)":"#94a3b8"};font-weight:${isToday?600:400};">${row.date}${isToday?" ◀":""}</td>
                 <td style="padding:9px 12px;color:#e2e8f0;font-weight:600;">${fmt(row.spx)}</td>
@@ -598,9 +586,15 @@ window.addEventListener("DOMContentLoaded",()=>{
         </table>
       </div>
       <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:4px;border:1px solid var(--border);display:flex;gap:24px;flex-wrap:wrap;">
-        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL CREDITS</div><div style="font-size:14px;color:var(--green);font-weight:700;">$0.35 <span style="font-size:10px;color:var(--muted);">($35/contract)</span></div></div>
-        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL ROLLS</div><div style="font-size:14px;color:var(--blue);font-weight:700;">${ROLL_LOG.length} <span style="font-size:10px;color:var(--muted);">(1 put · 1 call)</span></div></div>
-        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">CURRENT STRIKES</div><div style="font-size:12px;color:#e2e8f0;font-weight:600;">${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}</div></div>
+        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL CREDITS</div>
+          <div style="font-size:14px;color:var(--green);font-weight:700;">$${TOTAL_CREDITS.toFixed(2)} <span style="font-size:10px;color:var(--muted);">($${(TOTAL_CREDITS*100).toFixed(0)}/contract)</span></div>
+        </div>
+        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL ROLLS</div>
+          <div style="font-size:14px;color:var(--blue);font-weight:700;">${ROLL_LOG.length} <span style="font-size:10px;color:var(--muted);">(${ROLL_LOG.filter(r=>r.side==="PUT").length} put · ${ROLL_LOG.filter(r=>r.side==="CALL").length} call)</span></div>
+        </div>
+        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">CURRENT STRIKES</div>
+          <div style="font-size:12px;color:#e2e8f0;font-weight:600;">${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}</div>
+        </div>
       </div>
     </div>
     <div class="card glow" style="padding:16px;">
@@ -608,7 +602,7 @@ window.addEventListener("DOMContentLoaded",()=>{
       <div class="grid4">
         ${[
           ["Original Condor","6235/6285 · 7250/7300","#64748b","Closed at loss May 5"],
-          ["Current Condor",`${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}`,"var(--blue)","Both sides rolled"],
+          ["Current Condor",`${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}`,"var(--blue)","3 rolls total"],
           ["Expiry",EXPIRY,"var(--blue)",`${CD_DTE}cd / ${TD_DTE}td remaining`],
           ["Days Tracked",`${HISTORY_LOG.length} sessions`,"var(--green)","Since May 1, 2026"],
         ].map(([l,v,c,sub])=>`
@@ -619,14 +613,13 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
   </div>`;
 
-  // ── CHART ────────────────────────────────────────────────
   document.getElementById("panel-chart").innerHTML=`
   <div style="display:flex;flex-direction:column;gap:16px;">
     <div class="grid4">
       ${[
         ["Short Call",fmt(STRIKES.callShort),bufColor(CALL_BUF),`Buffer: ${Math.round(CALL_BUF)}pts (${CALL_BUF_PCT}%)`],
         ["Long Call", fmt(STRIKES.callLong), "#94a3b8","Protection ceiling"],
-        ["Short Put", fmt(STRIKES.putShort), bufColor(PUT_BUF), `Buffer: ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%)`],
+        ["Short Put", fmt(STRIKES.putShort), bufColor(PUT_BUF),`Buffer: ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%)`],
         ["Long Put",  fmt(STRIKES.putLong),  "#94a3b8","Protection floor"],
       ].map(([l,v,c,sub])=>`
         <div class="card glow" style="padding:12px;">
@@ -637,20 +630,19 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
       ${[
-        ["GEX Flip",fmt(GEX.flipPoint),"var(--yellow)",`${Math.round(FLIP_BUF)}pts below SPX`],
-        ["GEX Wall",fmt(GEX.callWall),"var(--green)","Now acting as support ✓"],
-        ["Regime","POSITIVE ✓","var(--green)","111pts above flip — stable"],
+        ["GEX Flip",fmt(GEX.flipPoint),"var(--green)",`${Math.round(FLIP_BUF)}pts below SPX — deeply positive`],
+        ["GEX Wall",fmt(GEX.callWall),"var(--green)","Acting as support ✓"],
+        ["Regime","DEEPLY POSITIVE ✓","var(--green)","Most stable regime of this trade"],
       ].map(([l,v,c,sub])=>`
         <div class="card" style="padding:10px;border-color:${c}33;">
           <div style="font-size:9px;color:var(--dim);margin-bottom:3px;">${l}</div>
-          <div style="font-size:16px;font-weight:700;color:${c};margin-bottom:2px;">${v}</div>
+          <div style="font-size:15px;font-weight:700;color:${c};margin-bottom:2px;">${v}</div>
           <div style="font-size:9px;color:var(--muted);">${sub}</div>
         </div>`).join("")}
     </div>
     <div class="card glow" style="padding:0;overflow:hidden;border-radius:8px;">
       <div style="padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="dot"></div>
+        <div style="display:flex;align-items:center;gap:10px;"><div class="dot"></div>
           <span style="font-size:11px;color:var(--blue);font-weight:600;letter-spacing:.08em;">SPX500 LIVE CHART — TradingView</span>
         </div>
         <span style="font-size:9px;color:var(--green);">● Live data · Updates in real time</span>
@@ -660,31 +652,28 @@ window.addEventListener("DOMContentLoaded",()=>{
       </div>
     </div>
     <div style="padding:10px 14px;background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.1);border-radius:6px;">
-      <div style="font-size:10px;color:var(--muted);line-height:1.7;">
-        📊 Draw horizontal lines at Call ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} · Put ${fmt(STRIKES.putShort)}/${fmt(STRIKES.putLong)} · GEX flip ${fmt(GEX.flipPoint)} · GEX wall ${fmt(GEX.callWall)} for visual overlay. Chart requires internet connection.
-      </div>
+      <div style="font-size:10px;color:var(--muted);">📊 Draw lines at Call ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} · Put ${fmt(STRIKES.putShort)}/${fmt(STRIKES.putLong)} · GEX wall ${fmt(GEX.callWall)} for overlay. Chart requires internet.</div>
     </div>
   </div>`;
 
   setTimeout(()=>{
-    const container=document.querySelector(".tradingview-widget-container__widget");
-    if(!container)return;
+    const c=document.querySelector(".tradingview-widget-container__widget");
+    if(!c)return;
     const s=document.createElement("script");
     s.type="text/javascript";
     s.src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
     s.async=true;
     s.innerHTML=JSON.stringify({
-      autosize:true, symbol:"SPX500", interval:"5",
-      timezone:"America/New_York", theme:"dark", style:"1", locale:"en",
-      backgroundColor:"#080c14", gridColor:"rgba(26,35,50,0.6)",
-      hide_top_toolbar:false, hide_legend:false, save_image:false,
-      hide_volume:false, support_host:"https://www.tradingview.com"
+      autosize:true,symbol:"SPX500",interval:"5",timezone:"America/New_York",
+      theme:"dark",style:"1",locale:"en",backgroundColor:"#080c14",
+      gridColor:"rgba(26,35,50,0.6)",hide_top_toolbar:false,hide_legend:false,
+      save_image:false,hide_volume:false,support_host:"https://www.tradingview.com"
     });
-    container.appendChild(s);
+    c.appendChild(s);
   },100);
 
   document.getElementById("footer-right").textContent=
-    `PUT ${STRIKES.putLong}/${STRIKES.putShort} · CALL ${STRIKES.callShort}/${STRIKES.callLong} · EXP ${EXPIRY} · SPX ${fmt(SPX)} · AH ~${fmt(SPX_AH)} · FLIP ${fmt(GEX.flipPoint)}`;
+    `PUT ${STRIKES.putLong}/${STRIKES.putShort} · CALL ${STRIKES.callShort}/${STRIKES.callLong} · EXP ${EXPIRY} · SPX ${fmt(SPX)} · FLIP ${fmt(GEX.flipPoint)}`;
 });
 </script>
 
