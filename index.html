@@ -229,7 +229,7 @@ const TOTAL_CREDITS = ROLL_LOG.filter(r=>r.side!=="OPEN").reduce((s,r)=>s+parseF
 const TOTAL_COLLECTED = INITIAL_CREDIT + TOTAL_CREDITS;  // $7.95
 const UNREALIZED_PL   = TOTAL_COLLECTED - MARK;           // -$1.25
 const PL_PCT          = ((UNREALIZED_PL / TOTAL_COLLECTED) * 100).toFixed(1);
-const THETA_TO_BE     = UNREALIZED_PL < 0 ? Math.ceil(Math.abs(UNREALIZED_PL) / parseFloat(GREEKS.theta)) : 0;
+const THETA_TO_BE     = UNREALIZED_PL < 0 ? Math.ceil(Math.abs(UNREALIZED_PL) / (parseFloat(GREEKS.theta)/100)) : 0;
 const PL_COLOR        = UNREALIZED_PL >= 0 ? "#34d399" : "#f87171";
 
 const bufColor  = pts => pts > 400?"#34d399":pts > 200?"#fbbf24":pts > 100?"#f97316":"#ef4444";
@@ -499,7 +499,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         <div style="font-size:9px;color:var(--blue);letter-spacing:.1em;margin-bottom:8px;">ROLL TRIGGERS</div>
         <div class="small" style="line-height:1.8;">
           Call: SPX > <span style="color:var(--yellow);font-weight:600;">7,600</span> (+${Math.round(7600-SPX)}pts) → ${fmt(STRIKES.callShort+100)}/${fmt(STRIKES.callLong+100)}<br>
-          Put: SPX < <span style="color:var(--yellow);font-weight:600;">7,200</span> (support) → consider rolling
+          Put: SPX < <span style="color:var(--yellow);font-weight:600;">${fmt(GEX.flipPoint)}</span> (flip) → monitor closely
         </div>
       </div>
     </div>
@@ -642,9 +642,9 @@ window.addEventListener("DOMContentLoaded",()=>{
       <div class="grid4">
         ${[
           ["Original Condor","6235/6285 · 7250/7300","#64748b","Closed at loss May 5"],
-          ["Current Condor",`${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}`,"var(--blue)","3 rolls total"],
+          ["Current Condor",`${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}`,"var(--blue)",`${ROLL_LOG.filter(r=>r.side!=="OPEN").length} rolls total`],
           ["Expiry",EXPIRY,"var(--blue)",`${CD_DTE}cd / ${TD_DTE}td remaining`],
-          ["Days Tracked",`${HISTORY_LOG.length} sessions`,"var(--green)","Since May 1, 2026"],
+          ["Days Tracked",`${HISTORY_LOG.length} sessions`,"var(--green)",`Since ${HISTORY_LOG[0].date}, 2026`],
         ].map(([l,v,c,sub])=>`
           <div><div style="font-size:9px;color:var(--dim);margin-bottom:3px;">${l}</div>
           <div style="font-size:12px;font-weight:600;color:${c};margin-bottom:2px;">${v}</div>
