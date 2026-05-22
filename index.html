@@ -104,6 +104,10 @@ const MACRO  = { vix:17.29, brent:107.28, brentChg:2.15, futuresPct:0.11 };
 // Greeks — update when conditions change materially
 const GREEKS = { delta:"-0.11", theta:"+25.0", vega:"-82" };
 
+// P&L tracking — update MARK daily
+const INITIAL_CREDIT = 7.25;   // premium collected on open May 6
+const MARK           = 9.20;   // current spread mark (update daily)
+
 // ════════════════════════════════════════════════════════════
 //  GEX DATA — from Barchart screenshot May 21
 // ════════════════════════════════════════════════════════════
@@ -146,12 +150,16 @@ const HISTORY_LOG = [
 ];
 
 // ════════════════════════════════════════════════════════════
-//  ROLL LOG
+//  ROLL LOG — includes condor open + all rolls
 // ════════════════════════════════════════════════════════════
 const ROLL_LOG = [
-  { date:"May 14", side:"PUT",  from:"6750/6800", to:"6770/6820", dir:"↑ +20pts", credit:"$0.10", note:"Rolled up — untested side profit harvest"     },
-  { date:"May 19", side:"CALL", from:"7750/7800", to:"7740/7790", dir:"↓ -10pts", credit:"$0.25", note:"Rolled down — locked gains on 3-day selloff"  },
-  { date:"May 21", side:"PUT",  from:"6770/6820", to:"6790/6840", dir:"↑ +20pts", credit:"$0.10", note:"Rolled up again — continued theta harvest"    },
+  { date:"May 6",  side:"OPEN", from:"—",         to:"6700/6750 · 7750/7800", dir:"—",        credit:"$7.25", note:"Condor opened. Put 6700/6750 · Call 7750/7800 · EXP 6/18/26" },
+  { date:"May 7",  side:"PUT",  from:"6750/6700",  to:"6765/6715",             dir:"↑ +15pts", credit:"$0.10", note:"Rolled up — early theta harvest"                              },
+  { date:"May 11", side:"PUT",  from:"6765/6715",  to:"6780/6730",             dir:"↑ +15pts", credit:"$0.05", note:"Rolled up — continued grind higher"                           },
+  { date:"May 13", side:"PUT",  from:"6780/6730",  to:"6800/6750",             dir:"↑ +20pts", credit:"$0.10", note:"Rolled up — SPX approaching ATH"                              },
+  { date:"May 14", side:"PUT",  from:"6800/6750",  to:"6820/6770",             dir:"↑ +20pts", credit:"$0.10", note:"Rolled up — ATH day, untested side harvest"                   },
+  { date:"May 19", side:"CALL", from:"7800/7750",  to:"7790/7740",             dir:"↓ -10pts", credit:"$0.25", note:"Rolled down — locked gains on 3-day selloff"                  },
+  { date:"May 21", side:"PUT",  from:"6820/6770",  to:"6840/6790",             dir:"↑ +20pts", credit:"$0.10", note:"Rolled up — continued theta harvest"                          },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -217,7 +225,12 @@ const ATH_SPX       = Math.max(...HISTORY_LOG.map(p=>p.spx));
 const ATH_DATE      = HISTORY_LOG.find(p=>p.spx===ATH_SPX)?.date||"";
 const OPEN_SPX      = HISTORY_LOG[0].spx;
 const IMPLIED_OPEN  = SPX_AH > 0 ? SPX_AH : Math.round(SPX*(1+MACRO.futuresPct/100));
-const TOTAL_CREDITS = ROLL_LOG.reduce((s,r)=>s+parseFloat(r.credit.replace("$","")),0);
+const TOTAL_CREDITS = ROLL_LOG.filter(r=>r.side!=="OPEN").reduce((s,r)=>s+parseFloat(r.credit.replace("$","")),0);
+const TOTAL_COLLECTED = INITIAL_CREDIT + TOTAL_CREDITS;  // $7.95
+const UNREALIZED_PL   = TOTAL_COLLECTED - MARK;           // -$1.25
+const PL_PCT          = ((UNREALIZED_PL / TOTAL_COLLECTED) * 100).toFixed(1);
+const THETA_TO_BE     = UNREALIZED_PL < 0 ? Math.ceil(Math.abs(UNREALIZED_PL) / parseFloat(GREEKS.theta)) : 0;
+const PL_COLOR        = UNREALIZED_PL >= 0 ? "#34d399" : "#f87171";
 
 const bufColor  = pts => pts > 400?"#34d399":pts > 200?"#fbbf24":pts > 100?"#f97316":"#ef4444";
 const bufStatus = pts => pts > 400?"🟢 HEALTHY":pts > 200?"🟡 MONITOR":pts > 100?"🟠 WARNING":"🔴 DANGER";
@@ -564,6 +577,26 @@ window.addEventListener("DOMContentLoaded",()=>{
       </div>
     </div>
     <div class="card glow" style="padding:20px;">
+      <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">P&L SUMMARY</div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:0;">
+        ${[
+          ["Initial Credit",  `$${INITIAL_CREDIT.toFixed(2)}`,       "var(--green)",  "Collected on open May 6"],
+          ["Roll Credits",    `+$${TOTAL_CREDITS.toFixed(2)}`,        "var(--green)",  `${ROLL_LOG.filter(r=>r.side!=="OPEN").length} rolls · $${(TOTAL_CREDITS*100).toFixed(0)}/contract`],
+          ["Total Collected", `$${TOTAL_COLLECTED.toFixed(2)}`,       "var(--green)",  `$${(TOTAL_COLLECTED*100).toFixed(0)}/contract`],
+          ["Current Mark",    `$${MARK.toFixed(2)}`,                  "#94a3b8",       "Cost to close today"],
+          ["Unrealized P&L",  `${UNREALIZED_PL>=0?"+":""}$${UNREALIZED_PL.toFixed(2)}`, PL_COLOR,
+            UNREALIZED_PL >= 0
+              ? `+${PL_PCT}% · profitable`
+              : `${PL_PCT}% · ~${THETA_TO_BE}td to breakeven`],
+        ].map(([l,v,c,sub])=>`
+          <div style="background:var(--bg2);border-radius:4px;padding:12px;border:1px solid ${c==="var(--green)"?"rgba(52,211,153,.2)":c===PL_COLOR&&UNREALIZED_PL<0?"rgba(248,113,113,.2)":"var(--border)"};">
+            <div style="font-size:9px;color:var(--dim);margin-bottom:4px;">${l}</div>
+            <div style="font-size:16px;font-weight:700;color:${c};margin-bottom:3px;">${v}</div>
+            <div style="font-size:9px;color:var(--muted);">${sub}</div>
+          </div>`).join("")}
+      </div>
+    </div>
+    <div class="card glow" style="padding:20px;">
       <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">ROLL LOG</div>
       <div style="overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
@@ -572,28 +605,35 @@ window.addEventListener("DOMContentLoaded",()=>{
               <th style="padding:8px 12px;text-align:left;font-size:9px;color:var(--dim);letter-spacing:.1em;font-weight:500;">${h}</th>`).join("")}
           </tr></thead>
           <tbody>
-            ${ROLL_LOG.map(row=>`
-              <tr style="border-bottom:1px solid #0f1923;">
-                <td style="padding:9px 12px;color:#94a3b8;">${row.date}</td>
-                <td style="padding:9px 12px;"><span style="color:${row.side==="PUT"?"var(--green)":"var(--yellow)"};font-weight:600;font-size:10px;">${row.side}</span></td>
-                <td style="padding:9px 12px;color:var(--dim);">${row.from}</td>
-                <td style="padding:9px 12px;color:#e2e8f0;font-weight:600;">${row.to}</td>
-                <td style="padding:9px 12px;color:${row.dir.includes("↑")?"var(--green)":"var(--blue)"};">${row.dir}</td>
+            ${ROLL_LOG.map(row=>{
+              const isOpen=row.side==="OPEN";
+              const sideColor=isOpen?"var(--blue)":row.side==="PUT"?"var(--green)":"var(--yellow)";
+              const dirColor=row.dir==="—"?"var(--muted)":row.dir.includes("↑")?"var(--green)":"var(--blue)";
+              return `<tr style="border-bottom:1px solid #0f1923;background:${isOpen?"rgba(56,189,248,.04)":"transparent"};">
+                <td style="padding:9px 12px;color:${isOpen?"var(--blue)":"#94a3b8"};font-weight:${isOpen?600:400};">${row.date}</td>
+                <td style="padding:9px 12px;"><span style="color:${sideColor};font-weight:600;font-size:10px;">${row.side}</span></td>
+                <td style="padding:9px 12px;color:var(--dim);font-size:10px;">${row.from}</td>
+                <td style="padding:9px 12px;color:#e2e8f0;font-weight:600;font-size:10px;">${row.to}</td>
+                <td style="padding:9px 12px;color:${dirColor};">${row.dir}</td>
                 <td style="padding:9px 12px;color:var(--green);font-weight:600;">${row.credit}</td>
                 <td style="padding:9px 12px;color:var(--muted);font-size:10px;">${row.note}</td>
-              </tr>`).join("")}
+              </tr>`;
+            }).join("")}
           </tbody>
         </table>
       </div>
       <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:4px;border:1px solid var(--border);display:flex;gap:24px;flex-wrap:wrap;">
-        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL CREDITS</div>
-          <div style="font-size:14px;color:var(--green);font-weight:700;">$${TOTAL_CREDITS.toFixed(2)} <span style="font-size:10px;color:var(--muted);">($${(TOTAL_CREDITS*100).toFixed(0)}/contract)</span></div>
+        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL COLLECTED</div>
+          <div style="font-size:14px;color:var(--green);font-weight:700;">$${TOTAL_COLLECTED.toFixed(2)} <span style="font-size:10px;color:var(--muted);">($${(TOTAL_COLLECTED*100).toFixed(0)}/contract)</span></div>
         </div>
         <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL ROLLS</div>
-          <div style="font-size:14px;color:var(--blue);font-weight:700;">${ROLL_LOG.length} <span style="font-size:10px;color:var(--muted);">(${ROLL_LOG.filter(r=>r.side==="PUT").length} put · ${ROLL_LOG.filter(r=>r.side==="CALL").length} call)</span></div>
+          <div style="font-size:14px;color:var(--blue);font-weight:700;">${ROLL_LOG.filter(r=>r.side!=="OPEN").length} <span style="font-size:10px;color:var(--muted);">(${ROLL_LOG.filter(r=>r.side==="PUT").length} put · ${ROLL_LOG.filter(r=>r.side==="CALL").length} call)</span></div>
         </div>
         <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">CURRENT STRIKES</div>
           <div style="font-size:12px;color:#e2e8f0;font-weight:600;">${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}</div>
+        </div>
+        <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">UNREALIZED P&L</div>
+          <div style="font-size:14px;color:${PL_COLOR};font-weight:700;">${UNREALIZED_PL>=0?"+":""}$${UNREALIZED_PL.toFixed(2)} <span style="font-size:10px;color:var(--muted);">(${PL_PCT}%)</span></div>
         </div>
       </div>
     </div>
