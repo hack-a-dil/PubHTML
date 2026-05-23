@@ -93,6 +93,7 @@ const SPX_CHANGE_PCT = 0.30;
 const TIMESTAMP      = "May 22, 2026  4:00 PM ET";
 const CD_DTE         = 27;
 const TD_DTE         = 18;
+const TODAY          = new Date("May 22, 2026");  // update daily alongside SPX
 const SESSION        = "bullish";
 const SESSION_NOTE   = "Iran deal hopes + SpaceX IPO · call wall rejection at 7,500";
 
@@ -106,6 +107,7 @@ const GREEKS = { delta:"-0.10", theta:"+25.0", vega:"-80" };
 // P&L tracking — update MARK daily
 const INITIAL_CREDIT = 7.25;
 const MARK           = 9.10;   // update daily
+const CONDOR_OPEN_DATE = "May 6"; // date current condor was opened
 
 // ════════════════════════════════════════════════════════════
 //  GEX DATA
@@ -230,7 +232,10 @@ const AH_BEARISH    = SPX_AH > 0 && SPX_AH < SPX;
 const AH_BULLISH    = SPX_AH > 0 && SPX_AH >= SPX;
 const ATH_SPX       = Math.max(...HISTORY_LOG.map(p=>p.spx));
 const ATH_DATE      = HISTORY_LOG.find(p=>p.spx===ATH_SPX)?.date||"";
-const OPEN_SPX      = HISTORY_LOG[0].spx;
+const OPEN_SPX      = HISTORY_LOG.find(p=>p.date===CONDOR_OPEN_DATE)?.spx || HISTORY_LOG[0].spx;
+const WINDOW_DAYS   = 30;
+const WINDOW_CUTOFF = new Date(TODAY); WINDOW_CUTOFF.setDate(WINDOW_CUTOFF.getDate() - WINDOW_DAYS);
+const HISTORY_WINDOW = HISTORY_LOG.filter(row => new Date(row.date + ", 2026") >= WINDOW_CUTOFF);
 const IMPLIED_OPEN  = SPX_AH > 0 ? SPX_AH : Math.round(SPX*(1+MACRO.futuresPct/100));
 const TOTAL_CREDITS = ROLL_LOG.filter(r=>r.side!=="OPEN").reduce((s,r)=>s+parseFloat(r.credit.replace("$","")),0);
 const TOTAL_COLLECTED = INITIAL_CREDIT + TOTAL_CREDITS;
@@ -259,7 +264,7 @@ const KEY_LEVELS = [
   { price:GEX.expectedMoveDown,   label:"Expected Move ↓ (±1σ)",  type:"support"    },
   { price:STRIKES.putShort,       label:"Short Put 🎯",           type:"strike"     },
   { price:STRIKES.putLong,        label:"Long Put",               type:"support"    },
-];
+].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
   { label:"🔴 IRAN DEAL WEEKEND", desc:`Deal confirmed over weekend. Tuesday gap up 2-3%. SPX ~7,600-7,650. Call buffer 90-140pts. Emergency roll needed at open.`,                             color:"#f87171", impact:"DANGER ⚠️"    },
@@ -436,11 +441,11 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
 
     <div class="card glow span3" style="padding:18px;">
-      <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">SPX JOURNEY — SINCE CONDOR OPENED</div>
+      <div class="micro" style="margin-bottom:12px;letter-spacing:.15em;">SPX JOURNEY — ROLLING 30-DAY WINDOW (${HISTORY_WINDOW.length} sessions shown)</div>
       <div class="journey-bars">
-        ${HISTORY_LOG.map((item,i)=>{
+        ${HISTORY_WINDOW.map((item,i)=>{
           const min=7150,max=7550,h=Math.max(((item.spx-min)/(max-min)*58+10),4).toFixed(0);
-          const isLast=i===HISTORY_LOG.length-1,isATH=item.spx===ATH_SPX;
+          const isLast=i===HISTORY_WINDOW.length-1,isATH=item.spx===ATH_SPX;
           const bc=isLast?SESSION_COLOR:isATH?"#fbbf24":"#1e3a5f";
           const tc=isLast?SESSION_COLOR:isATH?"#fbbf24":"var(--vdim)";
           return `<div class="j-bar-wrap">
@@ -451,7 +456,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         }).join("")}
       </div>
       <div class="journey-stats">
-        <div style="font-size:10px;color:var(--muted);">Opened: <span style="font-weight:600;color:#94a3b8;">~${fmt(OPEN_SPX)}</span></div>
+        <div style="font-size:10px;color:var(--muted);">Opened (${CONDOR_OPEN_DATE}): <span style="font-weight:600;color:#94a3b8;">~${fmt(OPEN_SPX)}</span></div>
         <div style="font-size:10px;color:var(--muted);">ATH: <span style="font-weight:600;color:var(--yellow);">${fmt(ATH_SPX)} (${ATH_DATE})</span></div>
         <div style="font-size:10px;color:var(--muted);">Today: <span style="font-weight:600;color:${SESSION_COLOR};">${fmt(SPX)}</span></div>
         <div style="font-size:10px;color:var(--muted);">GEX Flip: <span style="font-weight:600;color:var(--green);">${fmt(GEX.flipPoint)}</span></div>
@@ -482,7 +487,7 @@ window.addEventListener("DOMContentLoaded",()=>{
         const color=isCur?"var(--blue)":isFlip?"var(--green)":isWall?"var(--yellow)":isStr?"var(--red)":isRes?"#f59e0b":"var(--green)";
         const pct=Math.max(((lv.price-6600)/(8000-6600)*100),0).toFixed(0);
         return `<div class="level-row ${isCur?"current":isFlip?"flip":isWall?"wall":""}">
-          <div class="level-price" style="color:${color};font-size:${lv.price<7000?11:14}px;">${fmt(lv.price)}</div>
+          <div class="level-price" style="color:${color};font-size:14px;">${fmt(lv.price)}</div>
           <div class="level-bar"><div class="lbar-track"><div class="lbar-fill" style="width:${pct}%;background:${color};"></div></div></div>
           <div class="level-label" style="color:${isCur?"var(--blue)":isFlip?"var(--green)":isWall?"var(--yellow)":"var(--muted)"};">${lv.label}</div>
         </div>`;
@@ -569,7 +574,7 @@ window.addEventListener("DOMContentLoaded",()=>{
       <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">P&L SUMMARY</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
         ${[
-          ["Initial Credit", `$${INITIAL_CREDIT.toFixed(2)}`,                                    "#34d399", `Collected on open ${HISTORY_LOG[0].date}`],
+          ["Initial Credit", `$${INITIAL_CREDIT.toFixed(2)}`,                                    "#34d399", `Collected on open ${CONDOR_OPEN_DATE}`],
           ["Roll Credits",   `+$${TOTAL_CREDITS.toFixed(2)}`,                                    "#34d399", `${ROLL_LOG.filter(r=>r.side!=="OPEN").length} rolls · $${(TOTAL_CREDITS*100).toFixed(0)}/contract`],
           ["Total Collected",`$${TOTAL_COLLECTED.toFixed(2)}`,                                   "#34d399", `$${(TOTAL_COLLECTED*100).toFixed(0)}/contract`],
           ["Current Mark",   `$${MARK.toFixed(2)}`,                                              "#94a3b8", `Cost to close today`],
@@ -584,7 +589,7 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
 
     <div class="card glow" style="padding:20px;">
-      <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">DAILY PRICE & BUFFER LOG</div>
+      <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">DAILY PRICE & BUFFER LOG — ROLLING 30-DAY WINDOW (${HISTORY_WINDOW.length} of ${HISTORY_LOG.length} sessions)</div>
       <div style="overflow-x:auto;">
         <table style="width:100%;border-collapse:collapse;font-size:11px;">
           <thead><tr style="border-bottom:1px solid #1a2332;">
@@ -592,7 +597,7 @@ window.addEventListener("DOMContentLoaded",()=>{
               <th style="padding:8px 12px;text-align:left;font-size:9px;color:var(--dim);letter-spacing:.1em;font-weight:500;">${h}</th>`).join("")}
           </tr></thead>
           <tbody>
-            ${[...HISTORY_LOG].reverse().map((row,i)=>{
+            ${[...HISTORY_WINDOW].reverse().map((row,i)=>{
               const isToday=i===0;
               const cc=row.callBuf===null?"#334155":bufColor(row.callBuf);
               const pc=row.putBuf===null?"#334155":bufColor(row.putBuf);
@@ -664,7 +669,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ["Original Condor","6235/6285 · 7250/7300","#64748b","Closed at loss May 5"],
           ["Current Condor",`${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}`,"var(--blue)",`${ROLL_LOG.filter(r=>r.side!=="OPEN").length} rolls total`],
           ["Expiry",EXPIRY,"var(--blue)",`${CD_DTE}cd / ${TD_DTE}td remaining`],
-          ["Days Tracked",`${HISTORY_LOG.length} sessions`,"var(--green)",`Since ${HISTORY_LOG[0].date}, 2026`],
+          ["Days Tracked",`${HISTORY_LOG.length} sessions`,"var(--green)",`Since ${CONDOR_OPEN_DATE}, 2026`],
         ].map(([l,v,c,sub])=>`
           <div><div style="font-size:9px;color:var(--dim);margin-bottom:3px;">${l}</div>
           <div style="font-size:12px;font-weight:600;color:${c};margin-bottom:2px;">${v}</div>
