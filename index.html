@@ -87,25 +87,25 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 //                GEX/IV/EM = Barchart screenshot
 //                Greeks = TOS (exact, manual paste)
 // ════════════════════════════════════════════════════════════
-const SPX            = 7609.78;   // Schwab = Barchart authority
+const SPX            = 7553.68;   // Schwab = Barchart authority
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = 9.82;
-const SPX_CHANGE_PCT = 0.13;
-const TIMESTAMP      = "Jun 2, 2026  4:00 PM ET";
-const SESSION        = "bullish";
-const SESSION_NOTE   = "New condor opened May 29 · wide wings 6925/6975 · 8050/8100 · quiet drift up";
+const SPX_CHANGE_PTS = -56.10;
+const SPX_CHANGE_PCT = -0.74;
+const TIMESTAMP      = "Jun 3, 2026  4:00 PM ET";
+const SESSION        = "bearish";
+const SESSION_NOTE   = "First down day for new condor · sold off all session, closed near low · selloff widened call buffer";
 
-const CANDLE = { open:7595.40, high:7620.90, low:7582.99, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:15.77, brent:97.23, wti:95.05 };
+const CANDLE = { open:7605.31, high:7605.35, low:7551.22, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:16.06, brent:97.76, wti:96.04 };
 
-// Greeks — from TOS (exact net position values, 34-lot). Cross-checked vs Schwab chain aggregate.
-const GREEKS = { delta:"-42.28", theta:"+656.17", gamma:"-0.54", vega:"-3920.68" };
+// Greeks — from TOS (exact net position values, 46-lot).
+const GREEKS = { delta:"-33.50", theta:"+873.64", gamma:"-0.75", vega:"-5184.88" };
 
-const INITIAL_CREDIT   = 5.00;
-const MARK             = 5.05;   // computed from Schwab net market value, confirmed vs Schwab UI
+const INITIAL_CREDIT   = 5.45;
+const MARK             = 5.00;   // computed from Schwab net market value ($-23000 / 46 / 100), confirmed vs Schwab UI
 
-const CONDOR_OPEN_DATE = "May 29";
+const CONDOR_OPEN_DATE = "Jun 3";
 
 // ════════════════════════════════════════════════════════════
 //  DATE / DTE — fully dynamic
@@ -129,15 +129,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 2)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        6863.53,
-  putWall:          7600.00,
+  flipPoint:        7487.54,
+  putWall:          7500.00,
   callWall:         7600.00,
-  iv:               13.27,
-  hv:               9.58,
-  ivRank:           16.64,
-  ivPct:            36,
-  expectedMoveUp:   7836.41,
-  expectedMoveDown: 7383.15,
+  iv:               13.43,
+  hv:               9.66,
+  ivRank:           17.71,
+  ivPct:            41,
+  expectedMoveUp:   7794.82,
+  expectedMoveDown: 7345.40,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -147,23 +147,22 @@ const COMPLETED_CATALYSTS = [
   { date:"May 20", event:"Nvidia Q1 FY27",    outcome:"BEAT",    detail:"Rev $81.6B vs $78.8B · Q2 guide $91B", color:"#34d399" },
   { date:"May 20", event:"FOMC Minutes",      outcome:"HAWKISH", detail:"Majority open to hike. Most divided Fed since 1992.", color:"#f87171" },
   { date:"May 27", event:"Snowflake/Micron",  outcome:"BULLISH", detail:"Snowflake +25% AH (AWS $6B Graviton). Micron +73% MTD.", color:"#34d399" },
-  { date:"May 29", event:"Iran MoU Tentative",outcome:"NEUTRAL", detail:"Tentative 60-day MoU. Trump unsigned. JPMorgan: headline fatigue.", color:"#94a3b8" },
-  { date:"May 29", event:"Prior Condor Closed",outcome:"LOSS",   detail:"Bought back at $11.00 vs $8.30 collected = -$2.70/contract realized.", color:"#f87171" },
+  { date:"May 29", event:"Iran MoU Tentative",outcome:"NEUTRAL", detail:"Tentative 60-day MoU. Trump unsigned, later sent back for tougher terms.", color:"#94a3b8" },
+  { date:"Jun 3", event:"34-lot Condor Closed",outcome:"WIN",   detail:"8050/8100 condor bought back $4.45 vs $5.00 credit = +$0.55/ct, +$1,870. Reopened tighter/larger.", color:"#34d399" },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  HISTORY LOG — fresh from May 29 (new condor)
 // ════════════════════════════════════════════════════════════
 const HISTORY_LOG = [
-  { date:"May 29", spx:7580.06, callBuf:null, putBuf:null, gexFlip:6638.38, session:"neutral", note:"New condor opened: PUT 6925/6975 · CALL 8050/8100 for $5.00 credit. Prior condor closed same day at -$2.70 loss." },
-  { date:"Jun 2",  spx:SPX, callBuf:Math.round(8050-SPX), putBuf:Math.round(SPX-6975), gexFlip:GEX.flipPoint, session:"bullish", note:"Quiet drift higher +0.13%. O 7595 H 7621 L 7583. VIX 15.77. Both walls at 7,600. Mark $5.05, near flat." },
+  { date:"Jun 3", spx:SPX, callBuf:Math.round(8000-SPX), putBuf:Math.round(SPX-6975), gexFlip:GEX.flipPoint, session:"bearish", note:"New condor opened: PUT 6925/6975 · CALL 8000/8050 x46 for $5.45 credit (replaced 8050/8100 x34, closed +$1,870). SPX -0.74% to 7,553.68, closed near low. Flip jumped to 7,487 — only 66pts below spot." },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  ROLL LOG — fresh, starts with new condor OPEN
 // ════════════════════════════════════════════════════════════
 const ROLL_LOG = [
-  { date:"May 29", side:"OPEN", from:"—", to:"6925/6975 · 8050/8100", dir:"—", credit:"$5.00", note:"New condor opened. EXP 7/10/26. 34 contracts. Wide wings vs prior condor." },
+  { date:"Jun 3", side:"OPEN", from:"—", to:"6925/6975 · 8000/8050", dir:"—", credit:"$5.45", note:"New condor opened. EXP 7/10/26. 46 contracts. Replaced 8050/8100 x34 condor (closed +$0.55/ct, +$1,870) — brought call side down to 8000/8050, upsized to 46." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -180,8 +179,8 @@ const NEWS = [
   { time:"WED 6/10",text:"🚨 May CPI 8:30 AM ET — most critical catalyst. Verified: BLS ✓", impact:"neutral", hot:false },
 ];
 
-const SESSION_SUMMARY = `SPX +0.13% to 7,609.78 — quiet drift up. O 7595.40 · H 7620.90 · L 7582.99. New condor (opened May 29) sits comfortably: 440pts to short call 8050, 635pts to short put 6975. VIX 15.77, low-vol regime. Both GEX walls at 7,600, just overhead.`;
-const REC = `Position is well-centered with wide wings — 440pts call buffer, 635pts put buffer, both healthy. EM upper 7,836 sits 214pts BELOW short call 8050 ✓. Mark $5.05 vs $5.00 credit = essentially flat (-$170). Theta +$656/day across 34 lots. Comfortable hold; next catalysts NFP 6/5 and CPI 6/10.`;
+const SESSION_SUMMARY = `SPX -0.74% to 7,553.68 — first down day for the new condor, closed near the low (O 7605.31 · H 7605.35 · L 7551.22). VIX up to 16.06. GEX flip jumped to 7,487.54, now only 66pts below spot — watch for a slip into negative-gamma territory. Selloff widened the call buffer to 446pts. Both wings comfortably outside the expected-move range.`;
+const REC = `Position is green and comfortable — call buffer 446pts (EM upper 7,795 sits 205pts below short call 8000 ✓), put buffer 579pts. Mark $5.00 vs $5.45 credit = +$0.45/ct (+$2,070 across 46 lots). Theta +$873.64/day. One watch item: flip 7,487 is just 66pts below spot — a close below flips gamma negative and could accelerate a downmove, though put wing (6975) is far away. Comfortable hold.`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -207,8 +206,8 @@ const TIMELINE = [
 // ════════════════════════════════════════════════════════════
 //  STATIC CONFIG
 // ════════════════════════════════════════════════════════════
-const STRIKES  = { putLong:6925, putShort:6975, callShort:8050, callLong:8100 };
-const CONTRACTS = 34;
+const STRIKES  = { putLong:6925, putShort:6975, callShort:8000, callLong:8050 };
+const CONTRACTS = 46;
 const EXPIRY   = "July 10, 2026";
 const TOTAL_CD = 42;
 const TOTAL_TD = 29;
