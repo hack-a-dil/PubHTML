@@ -87,23 +87,23 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 //                GEX/IV/EM = Barchart screenshot
 //                Greeks = TOS (exact, manual paste)
 // ════════════════════════════════════════════════════════════
-const SPX            = 7383.74;   // Schwab = Barchart authority
+const SPX            = 7405.73;   // Schwab = Barchart authority
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = -200.57;
-const SPX_CHANGE_PCT = -2.64;
-const TIMESTAMP      = "Jun 5, 2026  4:00 PM ET";
-const SESSION        = "bearish";
-const SESSION_NOTE   = "Semi-led rout: Broadcom AI outlook + hot jobs report spike yields · VIX 21.5 · SPX now BELOW GEX flip (negative gamma)";
+const SPX_CHANGE_PTS = 21.99;
+const SPX_CHANGE_PCT = 0.30;
+const TIMESTAMP      = "Jun 8, 2026  4:00 PM ET";
+const SESSION        = "bullish";
+const SESSION_NOTE   = "Relief bounce: chips rebound (MU +10%, SOXX +6%) after Fri rout · VIX -12% to 18.9 · still below GEX flip but closing the gap";
 
-const CANDLE = { open:7537.36, high:7541.81, low:7368.63, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:21.51, brent:92.87, wti:90.25 };
+const CANDLE = { open:7440.57, high:7466.81, low:7395.13, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:18.92, brent:94.19, wti:91.18 };
 
-// Greeks — Schwab chain Δ/Θ/V (live cross-check); GAMMA n/a until TOS paste (Schwab 3-dec rounding zeroes far-OTM SPX gamma)
-const GREEKS = { delta:"+72.0", theta:"+585.6", gamma:"n/a", vega:"-4075.2" };
+// Greeks — TOS net (exact, summed across the 48 call spread + 48 put spread). Schwab chain cross-check: Δ+52.8/Θ+734/Γ-4.8/V-4613 (delta tight, gamma unreliable).
+const GREEKS = { delta:"+53.17", theta:"+646.04", gamma:"-0.5453", vega:"-4303.93" };
 
 const INITIAL_CREDIT   = 5.85;   // entry credit on open 6/4; roll credits ($0.55) added via TOTAL_CREDITS
-const MARK             = 7.75;   // Schwab net MV (-$37,200 / 48 / 100), confirmed vs Schwab UI
+const MARK             = 6.575;  // Schwab net MV (-$31,560 / 48 / 100), confirmed vs Schwab UI
 
 const CONDOR_OPEN_DATE = "Jun 4";
 
@@ -129,15 +129,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 5)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        7550.01,
+  flipPoint:        7478.11,
   putWall:          7400.00,
-  callWall:         7400.00,
-  iv:               16.61,
-  hv:               12.40,
-  ivRank:           37.88,
-  ivPct:            83,
-  expectedMoveUp:   7481.66,
-  expectedMoveDown: 7285.82,
+  callWall:         7500.00,
+  iv:               15.50,
+  hv:               12.25,
+  ivRank:           30.88,
+  ivPct:            73,
+  expectedMoveUp:   7652.81,
+  expectedMoveDown: 7158.65,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -157,7 +157,8 @@ const COMPLETED_CATALYSTS = [
 // ════════════════════════════════════════════════════════════
 const HISTORY_LOG = [
   { date:"Jun 4", spx:7600.00, callBuf:null, putBuf:null, gexFlip:null, session:"neutral", note:"New condor opened: PUT 6925/6975 · CALL 8030/8080 x48 for $5.85 (exp 7/17). Same-day rolled puts to 6950/7000 (+$0.15). Replaced 8000/8050 x46 condor (closed +$2,760)." },
-  { date:"Jun 5", spx:SPX, callBuf:Math.round(7990-SPX), putBuf:Math.round(SPX-7000), gexFlip:GEX.flipPoint, session:"bearish", note:"Semi rout: Broadcom AI outlook + hot NFP spiked yields. SPX -2.64% to 7,383.74. VIX +34% to 21.5. Rolled calls DOWN 8030→7990 (4 steps, +$0.40) locking call-side profit. SPX now BELOW flip 7,550 = negative gamma." },
+  { date:"Jun 5", spx:7383.74, callBuf:Math.round(7990-7383.74), putBuf:Math.round(7383.74-7000), gexFlip:7550.01, session:"bearish", note:"Semi rout: Broadcom AI outlook + hot NFP spiked yields. SPX -2.64% to 7,383.74. VIX +34% to 21.5. Rolled calls DOWN 8030→7990 (4 steps, +$0.40) locking call-side profit. SPX now BELOW flip 7,550 = negative gamma." },
+  { date:"Jun 8", spx:SPX, callBuf:Math.round(7990-SPX), putBuf:Math.round(SPX-7000), gexFlip:GEX.flipPoint, session:"bullish", note:"Relief bounce +0.30% to 7,405.73. Chips rebounded (MU +10%, SOXX +6%) after Fri rout. VIX -12% to 18.9 → mark recovered $7.75→$6.575, P&L -$6,480→-$840. Flip eased to 7,478; still neg gamma but gap to flip narrowing. Iran ceasefire 'in name only.' 10Y 4.564%." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -176,14 +177,13 @@ const ROLL_LOG = [
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 5",   text:"🚨 SEMI-LED ROUT: Nasdaq -4.18% (worst day since Apr 2025), SPX -2.64% to 7,383.74. Chip carnage over 2 sessions — Micron -17%, AMD -12.6%, Intel -9%. Triggered by Broadcom leaving its full-year AI chip target unchanged (despite record Q2). $1T wiped from markets.", impact:"bearish", hot:true },
-  { time:"Jun 5",   text:"🚨 VIX SPIKED +34% to 21.51 — first close above 20 in months. SPX fell BELOW the GEX flip (7,550), into negative-gamma territory where dealers amplify moves. IV Pct jumped to 83%. Position vega -4,075 means the IV spike hurt today's mark.", impact:"bearish", hot:true },
-  { time:"Jun 5",   text:"Hot May jobs report (+172k, unemployment 4.3%) was the second blow — stronger than expected, pushed 20Y/30Y Treasury yields back above 5% on inflation fears, hammering high-multiple tech further.", impact:"bearish", hot:false },
-  { time:"Jun 5",   text:"Position management: rolled call side DOWN 8030→7990 across 4 steps (+$0.40 credit) locking profit on the untested call side as SPX fell. Call buffer now 606pts, put buffer 384pts. Total credit up to $6.40/ct.", impact:"neutral", hot:false },
-  { time:"Jun 4",   text:"Closed 8000/8050 x46 condor at $4.85 vs $5.45 = +$0.60/ct (+$2,760 gain). Opened new 8030/8080 x48, exp 7/17, for $5.85. Strong realized run: +$2,760 and +$1,870 on last two closes.", impact:"bullish", hot:false },
-  { time:"Jun 1-2", text:"Iran deal stalled: Trump sent framework back for tougher terms (uranium stockpile, Strait of Hormuz). Polymarket 67.5% NO deal by Jun 30. Oil has since eased to Brent $92.87 / WTI $90.25.", impact:"neutral", hot:false },
-  { time:"WED 6/10",text:"🚨 May CPI 8:30 AM ET — most critical upcoming catalyst, especially with yields rising on inflation fears. Verified: BLS ✓", impact:"neutral", hot:false },
-  { time:"TUE 6/16-17",text:"⚡ FOMC meeting — decision Jun 17 2PM ET. Hot jobs + rising yields raise the stakes. Verified: Fed.gov ✓", impact:"neutral", hot:false },
+  { time:"Jun 8",   text:"🟢 RELIEF BOUNCE: Chips rebounded hard after Friday's rout — Micron +10% (after -13% Fri), SOXX semis ETF +6% (after -10% Fri), Nvidia/Broadcom higher. SPX +0.30% to 7,405.73, Nasdaq +0.86%. VIX dropped -12% to 18.92, easing the vega pressure on the position.", impact:"bullish", hot:true },
+  { time:"Jun 8",   text:"Position recovered sharply: VIX contraction took mark from $7.75 → $6.575, cutting unrealized loss from -$6,480 to just -$840 in one session. The vega that hurt Friday helped today. Put buffer back to 406pts, call buffer 584pts.", impact:"bullish", hot:true },
+  { time:"Jun 8",   text:"Recovery not total — S&P (+0.30%) and Dow (-0.16%) lagged the Nasdaq, partly on weekend Middle East tension: the US-Iran ceasefire is now a 'ceasefire in name only,' with strike exchanges becoming regular weekend events that markets increasingly shrug off.", impact:"neutral", hot:false },
+  { time:"Jun 8",   text:"GEX flip eased to 7,478 (from 7,550 Fri). SPX still ~72pts below it = negative gamma, but the gap is narrowing — a push above 7,478 would flip dealers back to stabilizing. 10Y yield ticked up to 4.564% on lingering hot-jobs inflation read.", impact:"neutral", hot:false },
+  { time:"Jun 5",   text:"Friday's semi rout: Nasdaq -4.18% (worst since Apr 2025), SPX -2.64%. Broadcom left full-year AI target unchanged; hot NFP (+172k) pushed yields above 5%. VIX spiked to 21.5. Today's bounce recovered part of it.", impact:"neutral", hot:false },
+  { time:"WED 6/10",text:"🚨 May CPI 8:30 AM ET — the key near-term catalyst, 2 days out. With yields rising on inflation fears, a hot print could renew pressure; a soft one could confirm the bounce. Verified: BLS ✓", impact:"neutral", hot:false },
+  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET — ~5 weeks before your 7/17 expiry. Hot jobs + rising yields raise the stakes for the rate path. Verified: Fed.gov ✓", impact:"neutral", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -417,12 +417,12 @@ window.addEventListener("DOMContentLoaded",()=>{
     </div>
     <div class="col-r">
       <div class="card glow" style="padding:14px;">
-        <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">GREEKS — SCHWAB (net, ${CONTRACTS}-lot) · γ via TOS</div>
+        <div class="micro" style="margin-bottom:10px;letter-spacing:.15em;">GREEKS — TOS (net, ${CONTRACTS}-lot)</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#64748b"]].map(([l,v,c])=>`
+          ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V from Schwab chain (live cross-check) · γ n/a until TOS paste</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Net of 48 call spread + 48 put spread · Schwab chain Δ cross-check +52.8 (tight)</div>
       </div>
       <div class="card ${UNREALIZED_PL>=0?'safe':'warn'}" style="padding:14px;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
