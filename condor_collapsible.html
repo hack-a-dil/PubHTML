@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SPX Iron Condor — Trade Summary</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:         #080c12;
+    --surface:    #0d1520;
+    --surface2:   #111d2e;
+    --border:     #1a2d45;
+    --border2:    #243d57;
+    --text:       #c9d8e8;
+    --text-dim:   #4d6a84;
+    --text-muted: #2d4a62;
+    --green:      #00e5a0;
+    --green-dim:  #00b87d;
+    --green-bg:   rgba(0,229,160,0.07);
+    --red:        #ff4d6a;
+    --red-dim:    #cc3d55;
+    --red-bg:     rgba(255,77,106,0.07);
+    --amber:      #f5a623;
+    --blue:       #4d9fff;
+    --blue-dim:   #2d7acc;
+    --cyan:       #00d4ff;
+    --accent:     #00e5a0;
+    --mono:       'IBM Plex Mono', monospace;
+    --sans:       'IBM Plex Sans', sans-serif;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    padding: 40px 24px;
+    min-height: 100vh;
+  }
+
+  .page-title {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .page-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── CONDOR CARD ── */
+  .condor-card {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 980px;
+    margin: 0 auto;
+    background: var(--surface);
+  }
+
+  /* ── SUMMARY ROW (always visible) ── */
+  summary {
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    display: grid;
+    grid-template-columns: 28px 1fr 430px;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid transparent;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary:hover { background: var(--surface2); }
+  details[open] summary {
+    background: var(--surface2);
+    border-bottom-color: var(--border);
+  }
+
+  .toggle-icon {
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dim);
+    font-size: 0.6rem;
+    flex-shrink: 0;
+    transition: border-color 0.15s, color 0.15s, background 0.15s;
+    font-family: var(--mono);
+  }
+  summary:hover .toggle-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--green-bg);
+  }
+  details[open] .toggle-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--green-bg);
+  }
+
+  .summary-strikes {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .summary-label {
+    font-family: var(--mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.02em;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .summary-meta {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+  .summary-meta span { color: var(--text-muted); margin: 0 4px; }
+
+  .summary-stats {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+    min-width: 100px;
+  }
+  .stat-label {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .stat-value {
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .stat-value.positive { color: var(--green); }
+  .stat-value.negative { color: var(--red); }
+  .stat-value.neutral  { color: var(--text-dim); }
+
+  .status-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+  }
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+  .badge-active {
+    background: rgba(245,166,35,0.12);
+    color: var(--amber);
+    border: 1px solid rgba(245,166,35,0.25);
+  }
+  .badge-exp {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    color: var(--text-muted);
+  }
+
+  /* ── DETAIL PANEL ── */
+  .detail-panel {
+    overflow-x: auto;
+  }
+
+  /* ── UBER TABLE ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    min-width: 820px;
+  }
+
+  thead th {
+    background: #0a1520;
+    color: var(--text-muted);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 9px 14px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  thead th:first-child { text-align: left; }
+  thead th:nth-child(2),
+  thead th:nth-child(3) { text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(0,229,160,0.03); }
+
+  /* open rows */
+  tbody tr.row-open { background: rgba(245,166,35,0.03); }
+  tbody tr.row-open:hover { background: rgba(245,166,35,0.06); }
+
+  td {
+    padding: 10px 14px;
+    text-align: right;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  td:first-child { text-align: left; }
+  td:nth-child(2),
+  td:nth-child(3) { text-align: center; color: var(--text-dim); }
+
+  .leg-main { color: var(--text); font-size: 0.78rem; }
+
+  .side-put  { color: #a78bfa; }
+  .side-call { color: var(--blue); }
+
+  .pnl-pos  { color: var(--green); font-weight: 600; }
+  .pnl-neg  { color: var(--red); font-weight: 600; }
+  .pnl-open { color: var(--text-muted); font-style: italic; }
+  .fee-val  { color: var(--red-dim); }
+  .credit-val { color: var(--green); }
+
+  .open-tag {
+    display: inline-block;
+    font-size: 0.58rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: rgba(245,166,35,0.1);
+    color: var(--amber);
+    border: 1px solid rgba(245,166,35,0.2);
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── TOTALS ROW ── */
+  tfoot tr td {
+    text-align: right;
+    background: #0a1520;
+    padding: 11px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border-top: 1px solid var(--border2);
+    color: var(--text-dim);
+  }
+  tfoot tr td:first-child { color: var(--text); letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.68rem; }
+  tfoot .total-credit { color: var(--green); }
+  tfoot .total-gross  { color: var(--text); }
+  tfoot .total-fees   { color: var(--red-dim); }
+  tfoot .total-net    { color: var(--green); font-size: 0.9rem; }
+
+  /* divider between put and call sections */
+  tr.section-divider td {
+    background: #08111c;
+    padding: 5px 14px;
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  tr.section-divider.call-divider td { color: var(--blue-dim); }
+  tr.section-divider.put-divider td  { color: #8b6fff; }
+
+  /* ── ACCOUNT HEADER ── */
+  .account-header {
+    max-width: 980px;
+    margin: 32px auto 10px auto;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+  }
+  .account-header h2 {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .account-header h2 span {
+    color: var(--accent);
+    margin-right: 8px;
+  }
+  .account-stats {
+    display: flex;
+    gap: 24px;
+  }
+  .account-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+  }
+  .account-stat-label {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .account-stat-value {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+  .account-stat-value.pos { color: var(--green); }
+  .account-stat-value.neg { color: var(--red-dim); }
+
+  /* days held */
+  .days-val { color: var(--text-dim); font-family: var(--mono); }
+  .days-open-val { color: var(--amber); font-family: var(--mono); font-weight: 600; }
+</style></head><body>
+<div class="page-title">SPX Options — Position History</div>
+<div class="account-header" style="" id="ira-header">
+  <h2><span>▸</span>IRA Account · XXX941</h2>
+  <div class="account-stats">
+    <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ira-gross"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ira-fees"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="ira-net"></div></div>
+  </div>
+</div>
+<div class="condor-card" data-account="IRA_XXX941" style="margin-top:16px;">
+  <details id="det1">
+    <summary>
+      <div class="toggle-icon" id="tog1">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6700P/6750P</span>
+          <span class="side-call">7750C/7800C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>63 contracts<br>Exp 06/18/2026<br>Opened 05/06/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value negative">–$15,435.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$2,787.84</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value negative">–$18,222.84</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
+          <div class="badge-exp" style="margin-bottom:4px">06/01/2026</div>
+          <div class="stat-label">Days Held</div>
+          <div class="stat-value neutral" id="days-c1"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6750 / Long Put 6700</div></td>
+            <td>05/06</td><td>05/07</td><td>63</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$3.38</td>
+            <td>$3.05</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$2,079.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$1,846.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6765 / Long Put 6715</div></td>
+            <td>05/07</td><td>05/11</td><td>63</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$3.15</td>
+            <td>$2.62</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$3,339.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$3,106.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6780 / Long Put 6730</div></td>
+            <td>05/11</td><td>05/13</td><td>63</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$2.67</td>
+            <td>$2.30</td>
+            <td class="credit-val">+$0.05</td>
+            <td class="pnl-pos">+$2,331.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$2,098.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td>05/13</td><td>05/14</td><td>63</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.40</td>
+            <td>$2.00</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$2,520.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$2,287.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6820 / Long Put 6770</div></td>
+            <td>05/14</td><td>05/21</td><td>63</td>
+            <td class="days-val" style="text-align:center">7</td>
+            <td>$2.10</td>
+            <td>$1.80</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,890.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$1,657.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6840 / Long Put 6790</div></td>
+            <td>05/21</td><td>05/22</td><td>63</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.90</td>
+            <td>$1.55</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$2,205.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$1,972.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6870 / Long Put 6820</div></td>
+            <td>05/22</td><td>05/26</td><td>63</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$1.65</td>
+            <td>$1.30</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$2,205.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$1,972.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850</div></td>
+            <td>05/26</td><td>05/27</td><td>63</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.40</td>
+            <td>$1.20</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,260.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$1,012.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6925 / Long Put 6875</div></td>
+            <td>05/27</td><td>05/28</td><td>63</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.30</td>
+            <td>$0.92</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$2,394.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$2,176.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td>05/28</td><td>06/01</td><td>63</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$0.97</td>
+            <td>$0.81</td>
+            <td class="credit-val">+$0.05</td>
+            <td class="pnl-pos">+$1,008.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$775.68</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7750 / Long Call 7800</div></td>
+            <td>05/06</td><td>05/19</td><td>63</td>
+            <td class="days-val" style="text-align:center">13</td>
+            <td>$4.12</td>
+            <td>$3.47</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$4,095.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-pos">+$3,862.68</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7740 / Long Call 7790</div></td>
+            <td>05/19</td><td>06/01</td><td>63</td>
+            <td class="days-val" style="text-align:center">13</td>
+            <td>$3.72</td>
+            <td>$10.19</td>
+            <td class="credit-val">+$0.25</td>
+            <td class="pnl-neg">–$40,761.00</td>
+            <td class="fee-val">–$232.32</td>
+            <td class="pnl-neg">–$40,993.32</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (12 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">+$1.05</td>
+        <td class="total-gross" style="color:var(--red)" data-value="-15435.0" data-account-group="c1">–$15,435.00</td>
+        <td class="total-fees" data-value="-2787.84" data-account-group="c1">–$2,787.84</td>
+        <td class="total-net" style="color:var(--red)" data-value="-18222.84" data-account-group="c1">–$18,222.84</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="condor-card" data-account="IRA_XXX941" style="margin-top:16px;">
+  <details id="det4">
+    <summary>
+      <div class="toggle-icon" id="tog4">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6925P/6975P</span>
+          <span class="side-call">8050C/8100C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>56→57 contracts<br>Exp 07/10/2026<br>Opened 06/01/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$6,500.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$833.24</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$5,666.56</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
+          <div class="badge-exp" style="margin-bottom:4px">06/04/2026</div>
+          <div class="stat-label">Days Held</div>
+          <div class="stat-value neutral" id="days-c4"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td>06/01</td><td>06/03</td><td>56</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$2.44</td>
+            <td>$2.48</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-neg">–$224.00</td>
+            <td class="fee-val">–$206.52</td>
+            <td class="pnl-neg">–$430.52</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td>06/03</td><td>06/04</td><td>57</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.40</td>
+            <td>$2.64</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-neg">–$1,368.00</td>
+            <td class="fee-val">–$210.10</td>
+            <td class="pnl-neg">–$1,578.10</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td>06/01</td><td>06/03</td><td>56</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$2.56</td>
+            <td>$1.97</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$3,304.00</td>
+            <td class="fee-val">–$206.52</td>
+            <td class="pnl-pos">+$3,097.48</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td>06/03</td><td>06/04</td><td>57</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$3.05</td>
+            <td>$2.21</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$4,788.00</td>
+            <td class="fee-val">–$210.10</td>
+            <td class="pnl-pos">+$4,577.90</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (4 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">—</td>
+        <td class="total-gross" data-value="6500.0" data-account-group="c4">+$6,500.00</td>
+        <td class="total-fees" data-value="-833.24" data-account-group="c4">–$833.24</td>
+        <td class="total-net" data-value="5666.56" data-account-group="c4">+$5,666.56</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="condor-card" data-account="IRA_XXX941" style="margin-top:16px;">
+  <details id="det6">
+    <summary>
+      <div class="toggle-icon" id="tog6">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6950P/7000P</span>
+          <span class="side-call">7990C/8040C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>58→59 contracts<br>Exp 07/17/2026<br>Opened 06/04/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$26,157.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$1,711.04</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$16,870.16</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge badge-active" style="margin-bottom:2px">Active</div>
+          <div class="badge-exp" style="margin-bottom:4px">2 legs open</div>
+          <div class="stat-label">Days Open</div>
+          <div class="stat-value neutral" id="days-c6"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td>06/04</td><td>06/04</td><td>58</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$3.16</td>
+            <td>$2.65</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$2,958.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$2,744.12</td>
+          </tr>
+          <tr class="row-open">
+            <td><div class="leg-main side-put">Short Put 7000 / Long Put 6950 <span class="open-tag">Open</span></div></td>
+            <td>06/04</td><td>—</td><td>59</td>
+            <td class="days-open-val" style="text-align:center" data-open="2026-06-04"></td>
+            <td>$2.80</td>
+            <td>—</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-open">—</td>
+            <td class="fee-val">–$106.94</td>
+            <td class="pnl-open">—</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td>06/04</td><td>06/05</td><td>58</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.69</td>
+            <td>$2.07</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$3,596.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$3,382.12</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td>06/05</td><td>06/05</td><td>58</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$2.22</td>
+            <td>$1.87</td>
+            <td class="credit-val">+$0.15</td>
+            <td class="pnl-pos">+$2,030.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$1,816.12</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td>06/04</td><td>06/05</td><td>58</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.69</td>
+            <td>$2.07</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$3,596.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$3,382.12</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td>06/05</td><td>06/05</td><td>58</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$2.22</td>
+            <td>$1.87</td>
+            <td class="credit-val">+$0.15</td>
+            <td class="pnl-pos">+$2,030.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$1,816.12</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8010 / Long Call 8060</div></td>
+            <td>06/05</td><td>06/05</td><td>58</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$5.53</td>
+            <td>$4.64</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$5,162.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$4,948.12</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td>06/05</td><td>06/05</td><td>59</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$5.02</td>
+            <td>$3.87</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$6,785.00</td>
+            <td class="fee-val">–$213.88</td>
+            <td class="pnl-pos">+$6,571.12</td>
+          </tr>
+          <tr class="row-open">
+            <td><div class="leg-main side-call">Short Call 7990 / Long Call 8040 <span class="open-tag">Open</span></div></td>
+            <td>06/05</td><td>—</td><td>59</td>
+            <td class="days-open-val" style="text-align:center" data-open="2026-06-05"></td>
+            <td>$1.41</td>
+            <td>—</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-open">—</td>
+            <td class="fee-val">–$106.94</td>
+            <td class="pnl-open">—</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (7 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">+$0.30</td>
+        <td class="total-gross" data-value="26157.0" data-account-group="c6">+$26,157.00</td>
+        <td class="total-fees" data-value="-1711.04" data-account-group="c6">–$1,711.04</td>
+        <td class="total-net" data-value="16870.16" data-account-group="c6">+$16,870.16</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="account-header" style="margin-top:40px;" id="ind1-header">
+  <h2><span>▸</span>Individual Account · XXX735</h2>
+  <div class="account-stats">
+    <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ind1-gross"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ind1-fees"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="ind1-net"></div></div>
+  </div>
+</div>
+<div class="condor-card" data-account="IND_XXX735" style="margin-top:16px;">
+  <details id="det2">
+    <summary>
+      <div class="toggle-icon" id="tog2">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6700P/6750P</span>
+          <span class="side-call">7750C/7800C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>38 contracts<br>Exp 06/18/2026<br>Opened 05/06/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value negative">–$10,184.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$1,499.04</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value negative">–$11,659.04</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
+          <div class="badge-exp" style="margin-bottom:4px">06/01/2026</div>
+          <div class="stat-label">Days Held</div>
+          <div class="stat-value neutral" id="days-c2"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6750 / Long Put 6700</div></td>
+            <td>05/06</td><td>05/07</td><td>38</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$3.36</td>
+            <td>$3.02</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$1,292.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,167.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6765 / Long Put 6715</div></td>
+            <td>05/07</td><td>05/11</td><td>38</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$3.12</td>
+            <td>$2.62</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,900.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,775.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6780 / Long Put 6730</div></td>
+            <td>05/11</td><td>05/13</td><td>38</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$2.67</td>
+            <td>$2.30</td>
+            <td class="credit-val">+$0.05</td>
+            <td class="pnl-pos">+$1,406.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,281.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td>05/13</td><td>05/14</td><td>38</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.40</td>
+            <td>$2.00</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,520.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,395.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6820 / Long Put 6770</div></td>
+            <td>05/14</td><td>05/21</td><td>38</td>
+            <td class="days-val" style="text-align:center">7</td>
+            <td>$2.10</td>
+            <td>$1.80</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,140.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,015.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6840 / Long Put 6790</div></td>
+            <td>05/21</td><td>05/22</td><td>38</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.90</td>
+            <td>$1.54</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,368.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,259.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6870 / Long Put 6820</div></td>
+            <td>05/22</td><td>05/26</td><td>38</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$1.66</td>
+            <td>$1.30</td>
+            <td class="credit-val">+$0.12</td>
+            <td class="pnl-pos">+$1,368.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,251.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850</div></td>
+            <td>05/26</td><td>05/27</td><td>38</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.40</td>
+            <td>$1.20</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$760.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$635.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6925 / Long Put 6875</div></td>
+            <td>05/27</td><td>05/28</td><td>38</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.30</td>
+            <td>$0.92</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$1,444.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,319.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td>05/28</td><td>06/01</td><td>38</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$0.97</td>
+            <td>$0.81</td>
+            <td class="credit-val">+$0.05</td>
+            <td class="pnl-pos">+$608.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$483.08</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7750 / Long Call 7800</div></td>
+            <td>05/06</td><td>05/19</td><td>38</td>
+            <td class="days-val" style="text-align:center">13</td>
+            <td>$3.89</td>
+            <td>$3.49</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$1,520.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-pos">+$1,395.08</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7740 / Long Call 7790</div></td>
+            <td>05/19</td><td>06/01</td><td>38</td>
+            <td class="days-val" style="text-align:center">13</td>
+            <td>$3.74</td>
+            <td>$10.19</td>
+            <td class="credit-val">+$0.25</td>
+            <td class="pnl-neg">–$24,510.00</td>
+            <td class="fee-val">–$124.92</td>
+            <td class="pnl-neg">–$24,634.92</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (12 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">+$1.07</td>
+        <td class="total-gross" style="color:var(--red)" data-value="-10184.0" data-account-group="c2">–$10,184.00</td>
+        <td class="total-fees" data-value="-1499.04" data-account-group="c2">–$1,499.04</td>
+        <td class="total-net" style="color:var(--red)" data-value="-11659.04" data-account-group="c2">–$11,659.04</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="condor-card" data-account="IND_XXX735" style="margin-top:16px;">
+  <details id="det3">
+    <summary>
+      <div class="toggle-icon" id="tog3">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6750P/6800P</span>
+          <span class="side-call">8050C/8100C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>11 contracts<br>Exp 06/26/2026<br>Opened 05/14/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$3,520.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$361.60</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$3,158.40</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
+          <div class="badge-exp" style="margin-bottom:4px">06/03/2026</div>
+          <div class="stat-label">Days Held</div>
+          <div class="stat-value neutral" id="days-c3"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td>05/14</td><td>05/14</td><td>11</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$2.70</td>
+            <td>$2.32</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$418.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$381.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6825 / Long Put 6775</div></td>
+            <td>05/14</td><td>05/22</td><td>11</td>
+            <td class="days-val" style="text-align:center">8</td>
+            <td>$2.42</td>
+            <td>$1.97</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$495.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$458.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6850 / Long Put 6800</div></td>
+            <td>05/22</td><td>05/26</td><td>11</td>
+            <td class="days-val" style="text-align:center">4</td>
+            <td>$2.07</td>
+            <td>$1.67</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$440.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$403.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6880 / Long Put 6830</div></td>
+            <td>05/26</td><td>05/28</td><td>11</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$1.77</td>
+            <td>$1.27</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-pos">+$550.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$513.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850</div></td>
+            <td>05/28</td><td>06/02</td><td>11</td>
+            <td class="days-val" style="text-align:center">5</td>
+            <td>$1.32</td>
+            <td>$0.90</td>
+            <td class="credit-val">+$0.05</td>
+            <td class="pnl-pos">+$462.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$425.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6940 / Long Put 6890</div></td>
+            <td>06/02</td><td>06/03</td><td>11</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.00</td>
+            <td>$1.10</td>
+            <td class="credit-val">+$0.10</td>
+            <td class="pnl-neg">–$110.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-neg">–$146.16</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td>05/14</td><td>05/15</td><td>11</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.35</td>
+            <td>$1.57</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$858.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$821.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7975 / Long Call 8025</div></td>
+            <td>05/15</td><td>05/18</td><td>11</td>
+            <td class="days-val" style="text-align:center">3</td>
+            <td>$2.67</td>
+            <td>$1.67</td>
+            <td class="credit-val">+$1.10</td>
+            <td class="pnl-pos">+$1,100.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$1,063.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7950 / Long Call 8000</div></td>
+            <td>05/18</td><td>05/19</td><td>11</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$1.97</td>
+            <td>$1.18</td>
+            <td class="credit-val">+$0.30</td>
+            <td class="pnl-pos">+$869.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-pos">+$832.84</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 7925 / Long Call 7975</div></td>
+            <td>05/19</td><td>06/03</td><td>11</td>
+            <td class="days-val" style="text-align:center">15</td>
+            <td>$1.38</td>
+            <td>$2.80</td>
+            <td class="credit-val">+$0.20</td>
+            <td class="pnl-neg">–$1,562.00</td>
+            <td class="fee-val">–$36.16</td>
+            <td class="pnl-neg">–$1,598.16</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (10 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">+$2.05</td>
+        <td class="total-gross" data-value="3520.0" data-account-group="c3">+$3,520.00</td>
+        <td class="total-fees" data-value="-361.6" data-account-group="c3">–$361.60</td>
+        <td class="total-net" data-value="3158.4" data-account-group="c3">+$3,158.40</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="condor-card" data-account="IND_XXX735" style="margin-top:16px;">
+  <details id="det5">
+    <summary>
+      <div class="toggle-icon" id="tog5">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6925P/6975P</span>
+          <span class="side-call">8050C/8100C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>34→46 contracts<br>Exp 07/10/2026<br>Opened 06/01/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$4,965.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$597.27</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$4,361.64</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
+          <div class="badge-exp" style="margin-bottom:4px">06/04/2026</div>
+          <div class="stat-label">Days Held</div>
+          <div class="stat-value neutral" id="days-c5"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925 (34ct+11ct)</div></td>
+            <td>06/01</td><td>06/03</td><td>34+11</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$2.37</td>
+            <td>$2.47</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-neg">–$450.00</td>
+            <td class="fee-val">–$139.85</td>
+            <td class="pnl-neg">–$595.94</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td>06/03</td><td>06/04</td><td>46</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.40</td>
+            <td>$2.64</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-neg">–$1,104.00</td>
+            <td class="fee-val">–$151.24</td>
+            <td class="pnl-neg">–$1,255.24</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100 (34ct+11ct)</div></td>
+            <td>06/01</td><td>06/03</td><td>34+11</td>
+            <td class="days-val" style="text-align:center">2</td>
+            <td>$2.57</td>
+            <td>$1.98</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$2,655.00</td>
+            <td class="fee-val">–$154.94</td>
+            <td class="pnl-pos">+$2,500.06</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td>06/03</td><td>06/04</td><td>46</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$3.05</td>
+            <td>$2.21</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$3,864.00</td>
+            <td class="fee-val">–$151.24</td>
+            <td class="pnl-pos">+$3,712.76</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (4 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">—</td>
+        <td class="total-gross" data-value="4965.0" data-account-group="c5">+$4,965.00</td>
+        <td class="total-fees" data-value="-597.27" data-account-group="c5">–$597.27</td>
+        <td class="total-net" data-value="4361.64" data-account-group="c5">+$4,361.64</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="condor-card" data-account="IND_XXX735" style="margin-top:16px;">
+  <details id="det7">
+    <summary>
+      <div class="toggle-icon" id="tog7">+</div>
+      <div class="summary-strikes">
+        <div class="summary-label">
+          <span class="side-put">6950P/7000P</span>
+          <span class="side-call">7990C/8040C</span>
+        </div>
+        <div class="summary-meta">Iron Condor<br>47→48 contracts<br>Exp 07/17/2026<br>Opened 06/04/2026</div>
+      </div>
+      <div class="summary-stats">
+        <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$21,614.00</div></div>
+        <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$1,297.28</div></div>
+        <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$13,967.24</div></div>
+        <div class="stat" style="margin-top:-42px">
+          <div class="badge badge-active" style="margin-bottom:2px">Active</div>
+          <div class="badge-exp" style="margin-bottom:4px">2 legs open</div>
+          <div class="stat-label">Days Open</div>
+          <div class="stat-value neutral" id="days-c7"></div>
+        </div>
+      </div>
+    </summary>
+    <div class="detail-panel"><table>
+      <thead><tr>
+        <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
+        <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
+        <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
+      </tr></thead>
+      <tbody>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td>06/04</td><td>06/04</td><td>47</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$3.16</td>
+            <td>$2.62</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$2,538.00</td>
+            <td class="fee-val">–$154.52</td>
+            <td class="pnl-pos">+$2,383.48</td>
+          </tr>
+          <tr class="row-open">
+            <td><div class="leg-main side-put">Short Put 7000 / Long Put 6950 <span class="open-tag">Open</span></div></td>
+            <td>06/04</td><td>—</td><td>48</td>
+            <td class="days-open-val" style="text-align:center" data-open="2026-06-04"></td>
+            <td>$2.77</td>
+            <td>—</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-open">—</td>
+            <td class="fee-val">–$77.26</td>
+            <td class="pnl-open">—</td>
+          </tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td>06/04</td><td>06/05</td><td>47</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.69</td>
+            <td>$2.07</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$2,914.00</td>
+            <td class="fee-val">–$154.52</td>
+            <td class="pnl-pos">+$2,759.48</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td>06/05</td><td>06/05</td><td>48</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$2.22</td>
+            <td>$1.87</td>
+            <td class="credit-val">+$0.15</td>
+            <td class="pnl-pos">+$1,680.00</td>
+            <td class="fee-val">–$169.80</td>
+            <td class="pnl-pos">+$1,510.20</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td>06/04</td><td>06/05</td><td>47</td>
+            <td class="days-val" style="text-align:center">1</td>
+            <td>$2.69</td>
+            <td>$2.07</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$2,914.00</td>
+            <td class="fee-val">–$154.52</td>
+            <td class="pnl-pos">+$2,759.48</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td>06/05</td><td>06/05</td><td>48</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$2.22</td>
+            <td>$1.87</td>
+            <td class="credit-val">+$0.15</td>
+            <td class="pnl-pos">+$1,680.00</td>
+            <td class="fee-val">–$169.80</td>
+            <td class="pnl-pos">+$1,510.20</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8010 / Long Call 8060</div></td>
+            <td>06/05</td><td>06/05</td><td>48</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$5.53</td>
+            <td>$4.65</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$4,224.00</td>
+            <td class="fee-val">–$169.80</td>
+            <td class="pnl-pos">+$4,054.20</td>
+          </tr>
+          <tr>
+            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td>06/05</td><td>06/05</td><td>48</td>
+            <td class="days-val" style="text-align:center">0</td>
+            <td>$5.05</td>
+            <td>$3.87</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-pos">+$5,664.00</td>
+            <td class="fee-val">–$169.80</td>
+            <td class="pnl-pos">+$5,494.20</td>
+          </tr>
+          <tr class="row-open">
+            <td><div class="leg-main side-call">Short Call 7990 / Long Call 8040 <span class="open-tag">Open</span></div></td>
+            <td>06/05</td><td>—</td><td>48</td>
+            <td class="days-open-val" style="text-align:center" data-open="2026-06-05"></td>
+            <td>$1.42</td>
+            <td>—</td>
+            <td class="pnl-open">—</td>
+            <td class="pnl-open">—</td>
+            <td class="fee-val">–$77.26</td>
+            <td class="pnl-open">—</td>
+          </tr>
+      </tbody>
+      <tfoot><tr>
+        <td colspan="7" style="text-align:left">Total (7 closed spreads)</td>
+        <td class="total-credit" style="text-align:right">+$0.30</td>
+        <td class="total-gross" data-value="21614.0" data-account-group="c7">+$21,614.00</td>
+        <td class="total-fees" data-value="-1297.28" data-account-group="c7">–$1,297.28</td>
+        <td class="total-net" data-value="13967.24" data-account-group="c7">+$13,967.24</td>
+      </tr></tfoot>
+    </table></div>
+  </details>
+</div>
+<div class="account-header" style="margin-top:24px;border-top:1px solid var(--border2);padding-top:16px;">
+  <h2><span>▸</span>All Accounts · Total</h2>
+  <div class="account-stats">
+    <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="all-gross"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="all-fees"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="all-net"></div></div>
+  </div>
+</div>
+<script>
+  [['#det1','tog1'], ['#det4','tog4'], ['#det6','tog6'], ['#det2','tog2'], ['#det3','tog3'], ['#det5','tog5'], ['#det7','tog7']].forEach(([s,t])=>{const d=document.querySelector(s),e=document.getElementById(t);if(d&&e)d.addEventListener('toggle',()=>e.textContent=d.open?'−':'+');});
+  function db(s,e){const f=new Date(s),t=e?new Date(e):new Date();t.setHours(0,0,0,0);f.setHours(0,0,0,0);return Math.floor((t-f)/86400000);}
+  function ud(){[     {id:'days-c1',open:'2026-05-06',close:'2026-06-01'},
+     {id:'days-c4',open:'2026-06-01',close:'2026-06-04'},
+     {id:'days-c6',open:'2026-06-04',close:null},
+     {id:'days-c2',open:'2026-05-06',close:'2026-06-01'},
+     {id:'days-c3',open:'2026-05-14',close:'2026-06-03'},
+     {id:'days-c5',open:'2026-06-01',close:'2026-06-04'},
+     {id:'days-c7',open:'2026-06-04',close:null}].forEach(({id,open,close})=>{const e=document.getElementById(id);if(e)e.textContent=db(open,close)+'d';});document.querySelectorAll('.days-open-val[data-open]').forEach(e=>e.textContent=db(e.dataset.open,null)+'d');}
+  function fv(n){if(n===null)return{text:'—',cls:'neutral'};const a=Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});return n<0?{text:'–$'+a,cls:'neg'}:n>0?{text:'+$'+a,cls:'pos'}:{text:'$0.00',cls:'neutral'};}
+  function sg(g,col){let t=0,h=false;document.querySelectorAll(`td.${col}[data-account-group="${g}"]`).forEach(td=>{const v=parseFloat(td.dataset.value);if(!isNaN(v)){t+=v;h=true;}});return h?t:null;}
+  function sh(gi,fi,ni,ids){let g=0,f=0,n=0,hg=false,hf=false,hn=false;ids.forEach(id=>{const gv=sg(id,'total-gross'),fv=sg(id,'total-fees'),nv=sg(id,'total-net');if(gv!==null){g+=gv;hg=true;}if(fv!==null){f+=fv;hf=true;}if(nv!==null){n+=nv;hn=true;}});[[gi,hg?g:null],[fi,hf?f:null],[ni,hn?n:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});return{gross:hg?g:null,fees:hf?f:null,net:hn?n:null};}
+  function uh(){const a=sh('ira-gross','ira-fees','ira-net',["c1", "c4", "c6"]),b=sh('ind1-gross','ind1-fees','ind1-net',["c2", "c3", "c5", "c7"]);let ag=0,af=0,an=0,hg=false,hf=false,hn=false;[a,b].forEach(x=>{if(x.gross!==null){ag+=x.gross;hg=true;}if(x.fees!==null){af+=x.fees;hf=true;}if(x.net!==null){an+=x.net;hn=true;}});[['all-gross',hg?ag:null],['all-fees',hf?af:null],['all-net',hn?an:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});}
+  ud();uh();const now=new Date();setTimeout(()=>{ud();setInterval(ud,86400000);},new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
+</script>
+</body></html>
