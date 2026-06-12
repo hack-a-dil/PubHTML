@@ -218,7 +218,7 @@ const TOTAL_COLLECTED = INITIAL_CREDIT + TOTAL_CREDITS;
 const UNREALIZED_PL   = TOTAL_COLLECTED - MARK;
 const PL_PCT          = ((UNREALIZED_PL / TOTAL_COLLECTED) * 100).toFixed(1);
 const THETA_PER_DAY_1LOT = parseFloat(GREEKS.theta) / CONTRACTS;
-const THETA_TO_BE     = UNREALIZED_PL < 0 ? Math.ceil(Math.abs(UNREALIZED_PL) / (THETA_PER_DAY_1LOT/100)) : 0;
+const THETA_TO_BE     = UNREALIZED_PL < 0 ? Math.ceil(Math.abs(UNREALIZED_PL*100*CONTRACTS) / parseFloat(GREEKS.theta)) : 0;  // total loss $ ÷ total theta $/day
 const PL_COLOR        = UNREALIZED_PL >= 0 ? "#34d399" : "#f87171";
 const CALL_WARN       = CALL_BUF < 300;
 const EM_DANGER       = Math.abs(EM_CALL_BUF) < 50;
@@ -552,6 +552,13 @@ window.addEventListener("DOMContentLoaded",()=>{
       <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:4px;border:1px solid var(--border);">
         <div style="font-size:10px;color:var(--muted);line-height:1.6;">Max profit if SPX expires between ${fmt(STRIKES.putShort)}–${fmt(STRIKES.callShort)} = keep full $${TOTAL_COLLECTED.toFixed(2)} credit ($${(TOTAL_COLLECTED*100*CONTRACTS).toFixed(0)} across ${CONTRACTS} lots). Max risk per side = $${((50-TOTAL_COLLECTED)*100).toFixed(0)}/contract (50-wide spreads).</div>
       </div>
+      ${UNREALIZED_PL < 0 ? `
+      <div style="margin-top:10px;padding:10px;background:rgba(56,189,248,.05);border-radius:4px;border:1px solid rgba(56,189,248,.2);">
+        <div style="font-size:10px;color:#38bdf8;line-height:1.6;">⏳ <strong>Theta to break-even:</strong> at the current theta of $${GREEKS.theta.replace("+","")}/day, the $${Math.abs(UNREALIZED_PL*100*CONTRACTS).toFixed(0)} unrealized loss is recovered in <strong>~${THETA_TO_BE} trading day${THETA_TO_BE===1?"":"s"}</strong> if SPX holds and IV is steady (${TD_DTE} trading days remain to expiry). Assumes no further move against the position — a directional move or IV spike changes this.</div>
+      </div>` : `
+      <div style="margin-top:10px;padding:10px;background:rgba(52,211,153,.05);border-radius:4px;border:1px solid rgba(52,211,153,.2);">
+        <div style="font-size:10px;color:var(--green);line-height:1.6;">✓ Position is at or above break-even — theta of $${GREEKS.theta.replace("+","")}/day is now accruing profit (${TD_DTE} trading days to expiry).</div>
+      </div>`}
     </div>
     <div class="card glow" style="padding:20px;">
       <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">DAILY PRICE & BUFFER LOG — SINCE OPEN (${HISTORY_LOG.length} sessions)</div>
