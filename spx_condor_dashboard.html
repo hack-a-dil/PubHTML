@@ -92,9 +92,9 @@ const SPX_AH         = 0;
 const SPY            = 0;
 const SPX_CHANGE_PTS = 127.31;
 const SPX_CHANGE_PCT = 1.75;
-const TIMESTAMP      = "Jun 11, 2026  4:00 PM ET";
+const TIMESTAMP      = "Jun 11, 2026  (AH update)";
 const SESSION        = "bullish";
-const SESSION_NOTE   = "Rebound +1.75% off yesterday's CPI-driven low (7,266) · VIX -12.5% to 19.4 · SPX now sitting right at the GEX flip · core CPI softer than feared";
+const SESSION_NOTE   = "Rebound +1.75% off yesterday's CPI low · VIX -12.5% to 19.4 · SPX right at GEX flip · mark improved to $7.25 AH → P&L -$3,120";
 
 const CANDLE = { open:7287.67, high:7412.68, low:7257.33, close:SPX, volume:"n/a", avgVol:"n/a" };
 const MACRO  = { vix:19.44, brent:89.05, wti:86.33 };
@@ -103,7 +103,7 @@ const MACRO  = { vix:19.44, brent:89.05, wti:86.33 };
 const GREEKS = { delta:"+48.0", theta:"+873.6", gamma:"n/a", vega:"-4728.0" };
 
 const INITIAL_CREDIT   = 5.85;   // entry credit on open 6/4; roll credits ($0.75) added via TOTAL_CREDITS
-const MARK             = 7.55;   // Schwab net MV (-$36,240 / 48 / 100) = cost to close. Confirmed vs Schwab.
+const MARK             = 7.25;   // AH mark same day (6/11); close mark was $7.55. Confirmed vs Schwab.
 
 const CONDOR_OPEN_DATE = "Jun 4";
 
