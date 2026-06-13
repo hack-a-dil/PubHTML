@@ -87,23 +87,23 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 //                GEX/IV/EM = Barchart screenshot
 //                Greeks = TOS (exact, manual paste)
 // ════════════════════════════════════════════════════════════
-const SPX            = 7394.30;   // Schwab = Barchart authority
+const SPX            = 7431.46;   // Schwab = Barchart authority
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = 127.31;
-const SPX_CHANGE_PCT = 1.75;
-const TIMESTAMP      = "Jun 11, 2026  (AH update)";
+const SPX_CHANGE_PTS = 37.16;
+const SPX_CHANGE_PCT = 0.50;
+const TIMESTAMP      = "Jun 12, 2026  4:00 PM ET";
 const SESSION        = "bullish";
-const SESSION_NOTE   = "Rebound +1.75% off yesterday's CPI low · VIX -12.5% to 19.4 · SPX right at GEX flip · mark improved to $7.25 AH → P&L -$3,120";
+const SESSION_NOTE   = "Week ends green: Iran peace deal may sign Sunday · oil & VIX falling (VIX 17.7) · SPX back ABOVE GEX flip = positive gamma · position +$3,360";
 
-const CANDLE = { open:7287.67, high:7412.68, low:7257.33, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:19.44, brent:89.05, wti:86.33 };
+const CANDLE = { open:7410.85, high:7456.40, low:7363.01, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:17.68, brent:86.71, wti:84.29 };
 
-// Greeks — Δ/Θ/V from Schwab chain (source of truth); GAMMA n/a this print (TOS gamma not taken). 6/11: Δ+48.0 Θ+873.6 V-4728 (Schwab).
-const GREEKS = { delta:"+48.0", theta:"+873.6", gamma:"n/a", vega:"-4728.0" };
+// Greeks — Δ/Θ/V from Schwab chain (source of truth); GAMMA from TOS. 6/12: Δ+38.4 Θ+830.4 V-4608 (Schwab), Γ-0.68 (TOS).
+const GREEKS = { delta:"+38.4", theta:"+830.4", gamma:"-0.68", vega:"-4608.0" };
 
 const INITIAL_CREDIT   = 5.85;   // entry credit on open 6/4; roll credits ($0.75) added via TOTAL_CREDITS
-const MARK             = 7.25;   // AH mark same day (6/11); close mark was $7.55. Confirmed vs Schwab.
+const MARK             = 5.90;   // Schwab net MV (-$28,320 / 48 / 100) = cost to close. Confirmed vs Schwab.
 
 const CONDOR_OPEN_DATE = "Jun 4";
 
@@ -129,15 +129,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 5)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        7393.28,
+  flipPoint:        7382.11,
   putWall:          7400.00,
-  callWall:         7400.00,
-  iv:               16.33,
-  hv:               13.99,
-  ivRank:           36.11,
-  ivPct:            80,
-  expectedMoveUp:   7661.19,
-  expectedMoveDown: 7122.80,
+  callWall:         7500.00,
+  iv:               15.01,
+  hv:               13.79,
+  ivRank:           27.72,
+  ivPct:            66,
+  expectedMoveUp:   7666.23,
+  expectedMoveDown: 7196.69,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -161,7 +161,8 @@ const HISTORY_LOG = [
   { date:"Jun 8", spx:7405.73, callBuf:Math.round(7990-7405.73), putBuf:Math.round(7405.73-7000), gexFlip:7478.11, session:"bullish", note:"Relief bounce +0.30% to 7,405.73. Chips rebounded (MU +10%, SOXX +6%). VIX -12% to 18.9 → mark recovered, position green +$480 AH. Rolled calls down 7990→7950 (+$0.20) after close. Flip eased to 7,478." },
   { date:"Jun 9", spx:7386.65, callBuf:Math.round(7950-7386.65), putBuf:Math.round(7386.65-7000), gexFlip:7465.96, session:"bearish", note:"Volatile swing: -2.3% intraday to low 7,237, recovered to -0.26% close. VIX spiked to 23.34 intraday. Mark $7.75, P&L -$5,520." },
   { date:"Jun 10",spx:7266.99, callBuf:Math.round(7950-7266.99), putBuf:Math.round(7266.99-7000), gexFlip:null, session:"bearish", note:"CPI day: May CPI hot at 4.2% YoY (3-yr high), though core softer (0.2% m/m). Markets sold off — SPX -1.62% to 7,266.99, near put side (267pts). Nasdaq -1.98%." },
-  { date:"Jun 11",spx:SPX, callBuf:Math.round(7950-SPX), putBuf:Math.round(SPX-7000), gexFlip:GEX.flipPoint, session:"bullish", note:"Rebound +1.75% to 7,394.30 off yesterday's CPI low. VIX -12.5% to 19.44. Mark recovered to $7.55, P&L -$4,560. SPX now sitting right ON the GEX flip (7,393) — knife's edge between neg/pos gamma. Iran strikes ongoing but oil fell." },
+  { date:"Jun 11",spx:7394.30, callBuf:Math.round(7950-7394.30), putBuf:Math.round(7394.30-7000), gexFlip:7393.28, session:"bullish", note:"Rebound +1.75% to 7,394.30 off CPI low. VIX -12.5% to 19.44. Mark recovered to $7.55 close ($7.25 AH). SPX right ON the flip. Iran de-escalation hopes building." },
+  { date:"Jun 12",spx:SPX, callBuf:Math.round(7950-SPX), putBuf:Math.round(SPX-7000), gexFlip:GEX.flipPoint, session:"bullish", note:"Week ends GREEN +$3,360. SPX +0.50% to 7,431.46, now ABOVE flip 7,382 = positive gamma. VIX -9% to 17.68, oil falling. Trump canceled Iran strikes, peace deal may sign Sunday in Switzerland. SpaceX IPO'd +22%. Mark $5.90, best since the roll." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -181,11 +182,12 @@ const ROLL_LOG = [
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 11",  text:"🟢 REBOUND +1.75% to 7,394.30 — recovered most of the CPI-day selloff. Bounced off yesterday's low of 7,266. VIX fell -12.5% to 19.44. The hot headline CPI was digested once the market focused on the softer core reading. Position improved to -$4,560 from -$5,520.", impact:"bullish", hot:true },
-  { time:"Jun 11",  text:"⚖️ SPX now sitting almost exactly ON the GEX flip (7,393, ~1pt margin). This is the pivot between negative gamma (below, moves amplify) and positive gamma (above, dealers stabilize). A hold here is constructive for the position; a slip back below resumes the choppy regime.", impact:"neutral", hot:true },
-  { time:"Jun 10",  text:"🚨 CPI DAY: May headline CPI hit 4.2% YoY — a 3-year high — but core was softer than feared (0.2% m/m vs 0.3% est, 2.9% YoY in-line). Markets initially sold off hard: SPX -1.62% to 7,266.99, Nasdaq -1.98%, Dow -953pts. SPX got within ~267pts of the put side.", impact:"bearish", hot:false },
-  { time:"Jun 11",  text:"Iran strikes ongoing — US reportedly striking positions again in the fracturing 'ceasefire' — but oil FELL anyway (WTI 86.33, Brent 89.05), signaling the market isn't pricing a supply shock. Position theta +$873/day still working.", impact:"neutral", hot:false },
-  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET — now the key upcoming catalyst, ~5 weeks before your 7/17 expiry. Hot 4.2% headline CPI complicates the rate path; soft core gives the Fed some room. Verified: Fed.gov ✓", impact:"neutral", hot:false },
+  { time:"Jun 12",  text:"🕊️ IRAN PEACE DEAL NEAR: Trump canceled planned strikes overnight and said a deal to end the war and reopen the Strait of Hormuz could be 'finalized' — a signing is possible Sunday in Switzerland, coinciding with the G7 (Jun 15-17). This removes the biggest tail risk that's whipsawed markets all week. Oil fell hard (WTI 84.29, Brent 86.71).", impact:"bullish", hot:true },
+  { time:"Jun 12",  text:"🟢 Position closed the week GREEN +$3,360 (best since the roll). SPX +0.50% to 7,431.46, now ABOVE the GEX flip (7,382) = positive gamma. VIX -9% to 17.68 — vol fully unwound from the 6/5 spike to 21.5. Mark down to $5.90.", impact:"bullish", hot:true },
+  { time:"Jun 12",  text:"🚀 SpaceX (SPCX) IPO'd on the Nasdaq — opened $150 (~11% over the $135 IPO price), traded up ~22% to ~$162, valuing it above $2 trillion. Drove some tech-stock rotation; Nasdaq lagged the Dow on the day even as the broad market rose.", impact:"neutral", hot:false },
+  { time:"Jun 12",  text:"Market structure improved: SPX above flip, walls re-separated to put 7,400 / call 7,500, IV Pct down to 66 (from 80). The whole GEX picture has normalized from the negative-gamma, high-IV regime of the past week.", impact:"bullish", hot:false },
+  { time:"Jun 10-11",text:"CPI week recap: May headline CPI hot at 4.2% (3-yr high) but core soft (0.2% m/m). Sold off -1.62% on the 10th to 7,266, then rebounded +1.75% on the 11th as Iran de-escalation hopes built.", impact:"neutral", hot:false },
+  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET — the next scheduled catalyst, ~5 weeks before your 7/17 expiry. With IV easing and Iran resolving, focus shifts to the rate path. Verified: Fed.gov ✓", impact:"neutral", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -233,9 +235,15 @@ const newsTag   = i => i==="bullish"?"bull":i==="bearish"?"bear":i==="ah-bear"?"
 const newsLabel = i => i==="ah-bear"?"AH BEARISH":i.toUpperCase();
 const fmt       = n => typeof n==="number"?n.toLocaleString():n;
 const sign      = n => n>=0?`+${n}`:`${n}`;
+// Currency formatter: always $ + commas + 2 decimals. usd(3360,true) -> "+$3,360.00"; usd(-6480) -> "-$6,480.00"
+const usd       = (n, showPlus=false) => {
+  const neg = n < 0;
+  const body = "$" + Math.abs(n).toLocaleString("en-US", {minimumFractionDigits:2, maximumFractionDigits:2});
+  return neg ? "-" + body : (showPlus ? "+" + body : body);
+};
 
-const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} — a strong rebound off yesterday's CPI-driven low (7,266). O ${CANDLE.open} · H ${CANDLE.high} · L ${CANDLE.low}, closed near the high. The hot 4.2% headline CPI (a 3-yr high) was offset by softer-than-feared core (0.2% m/m), and the market bounced. VIX fell -12.5% to ${MACRO.vix}. Notably, SPX is now sitting almost exactly ON the GEX flip (${fmt(GEX.flipPoint)}, ${Math.round(Math.abs(SPX-GEX.flipPoint))}pt margin) — the knife's edge between negative and positive gamma. Call side ${fmt(STRIKES.callShort)} is ${Math.round(CALL_BUF)}pts away; put side ${fmt(STRIKES.putShort)} is ${Math.round(PUT_BUF)}pts away — the closer wing.`;
-const REC = `Position is ${UNREALIZED_PL>=0?"green":"red"} at ${UNREALIZED_PL>=0?"+":""}$${UNREALIZED_PL.toFixed(2)}/ct ($${(UNREALIZED_PL*100*CONTRACTS).toFixed(0)} across ${CONTRACTS} lots) — improved from -$5,520 as today's rebound + VIX drop to ${MACRO.vix} helped. Both wings OTM: call buffer ${Math.round(CALL_BUF)}pts, put buffer ${Math.round(PUT_BUF)}pts (put still the closer side). Theta +$${GREEKS.theta.replace("+","")}/day decaying in your favor. Key now: SPX is sitting right ON the GEX flip (${fmt(GEX.flipPoint)}) — a hold above flips dealers toward stabilizing (helpful), a drop back below resumes amplified negative-gamma moves. CPI is behind us (hot 4.2% but core soft); next event is FOMC 6/17. With ${CD_DTE} days left and IV Pct ${GEX.ivPct} still elevated, the put side (${fmt(STRIKES.putShort)}, ${Math.round(PUT_BUF)}pts) remains what to watch if the rebound fails. Gamma not taken this print (shown n/a).`;
+const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} — a steady gain to close the week near the high (O ${CANDLE.open} · H ${CANDLE.high} · L ${CANDLE.low}). The big driver: Trump canceled planned Iran strikes and signaled a peace deal could be signed Sunday in Switzerland, easing the tail risk that's whipsawed markets all week. VIX fell -9% to ${MACRO.vix} and oil dropped (WTI ${MACRO.wti}). Crucially, SPX is now ${Math.round(SPX-GEX.flipPoint)}pts ABOVE the GEX flip (${fmt(GEX.flipPoint)}) — back in positive-gamma territory where dealers dampen moves. Position is green ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. Call side ${fmt(STRIKES.callShort)} is ${Math.round(CALL_BUF)}pts away; put side ${fmt(STRIKES.putShort)} is ${Math.round(PUT_BUF)}pts away.`;
+const REC = `Position is ${UNREALIZED_PL>=0?"green":"red"} at ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} across ${CONTRACTS} lots) — best level since the roll, recovered from -$5,520 on 6/9 as the Iran tail risk eased and VIX collapsed to ${MACRO.vix}. SPX back above the flip (${fmt(GEX.flipPoint)}) = positive gamma, a constructive backdrop. Both wings comfortably OTM: call ${Math.round(CALL_BUF)}pts, put ${Math.round(PUT_BUF)}pts. Theta ${usd(parseFloat(GREEKS.theta), true)}/day now accruing as profit. The one weekend watch item: if an Iran peace deal signs Sunday, a risk-on gap up Monday could push toward the call side ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away) — but that's well outside the expected-move upper (${fmt(GEX.expectedMoveUp)}), so not an immediate threat. FOMC 6/17 is the next scheduled event. With ${CD_DTE} days left and IV easing (Pct ${GEX.ivPct}), this is the most comfortable the position has been.`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -282,7 +290,7 @@ const KEY_LEVELS = [
 ].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
-  { label:"🟢 STABILIZE / BOUNCE", desc:`Semi selloff exhausts, SPX holds or rebounds above flip ${fmt(GEX.flipPoint)}. IV mean-reverts from ${MACRO.vix}, vega works in your favor, mark recovers. Theta harvests $${GREEKS.theta.replace("+","")}/day across ${CONTRACTS} lots. Best case from here.`, color:"#34d399", impact:"RECOVERY ✓" },
+  { label:"🟢 STABILIZE / BOUNCE", desc:`Semi selloff exhausts, SPX holds or rebounds above flip ${fmt(GEX.flipPoint)}. IV mean-reverts from ${MACRO.vix}, vega works in your favor, mark recovers. Theta harvests ${usd(parseFloat(GREEKS.theta))}/day across ${CONTRACTS} lots. Best case from here.`, color:"#34d399", impact:"RECOVERY ✓" },
   { label:"🔴 CONTINUED SELLOFF",  desc:`Negative-gamma regime amplifies a further drop. SPX slides toward EM lower ${fmt(GEX.expectedMoveDown)}, then toward short put ${fmt(STRIKES.putShort)} (${Math.round(PUT_BUF)}pts away). If SPX approaches the put wing, defend or roll the put side. CPI 6/10 is the near-term trigger.`, color:"#f87171", impact:"WATCH PUTS \u26a0\ufe0f" },
   { label:"🟡 SHARP SNAPBACK",     desc:`Oversold bounce rips higher on dip-buying or soft CPI. Call side rolled down to ${fmt(STRIKES.callShort)} is now closer (${Math.round(CALL_BUF)}pts) than it was — a violent recovery would put the call side back in focus, but that's a large move in ${CD_DTE} days.`, color:"#fbbf24", impact:"MONITOR CALLS" },
 ];
@@ -426,7 +434,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V from Schwab chain (source of truth) · γ n/a this print (TOS gamma not taken)</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V from Schwab chain (source of truth) · γ from TOS (-0.68)</div>
       </div>
       <div class="card ${UNREALIZED_PL>=0?'safe':'warn'}" style="padding:14px;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
@@ -440,7 +448,7 @@ window.addEventListener("DOMContentLoaded",()=>{
             <div class="pbar-track" style="flex:1;"><div class="pbar-fill" style="width:${((t-r)/t*100).toFixed(0)}%;background:${c};"></div></div>
             <span style="font-size:11px;color:${c};font-weight:600;min-width:36px;">${r}${l}</span>
           </div></div>`).join("")}
-        <div class="tiny">θ $${GREEKS.theta.replace("+","")}/day (${CONTRACTS}-lot) · mark $${MARK.toFixed(2)} vs $${INITIAL_CREDIT.toFixed(2)} credit</div>
+        <div class="tiny">θ ${usd(parseFloat(GREEKS.theta))}/day (${CONTRACTS}-lot) · mark ${usd(MARK)} vs ${usd(INITIAL_CREDIT)} credit</div>
       </div>
     </div>
     <div class="card glow span3" style="padding:18px;">
@@ -537,11 +545,11 @@ window.addEventListener("DOMContentLoaded",()=>{
       <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">P&L SUMMARY</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
         ${[
-          ["Entry Credit",    `$${INITIAL_CREDIT.toFixed(2)}`,                           "#34d399", `Opened ${CONDOR_OPEN_DATE} · ${CONTRACTS} contracts`],
-          ["Roll Credits",    `+$${TOTAL_CREDITS.toFixed(2)}`,                           "#34d399", `${ROLL_LOG.filter(r=>r.side!=="OPEN"&&r.credit!=="$0.00").length} rolls so far`],
-          ["Total Collected", `$${TOTAL_COLLECTED.toFixed(2)}`,                          "#34d399", `$${(TOTAL_COLLECTED*100).toFixed(0)}/contract`],
+          ["Entry Credit",    usd(INITIAL_CREDIT),                           "#34d399", `Opened ${CONDOR_OPEN_DATE} · ${CONTRACTS} contracts`],
+          ["Roll Credits",    usd(TOTAL_CREDITS, true),                           "#34d399", `${ROLL_LOG.filter(r=>r.side!=="OPEN"&&r.credit!=="$0.00").length} rolls so far`],
+          ["Total Collected", usd(TOTAL_COLLECTED),                          "#34d399", `${usd(TOTAL_COLLECTED*100)}/contract`],
           ["Current Mark",    `$${MARK.toFixed(2)}`,                                     "#94a3b8", `Schwab net MV ÷ ${CONTRACTS} ÷ 100`],
-          ["Unrealized P&L",  `${UNREALIZED_PL>=0?"+":""}$${UNREALIZED_PL.toFixed(2)}`, PL_COLOR,  `${UNREALIZED_PL>=0?"+":""}${PL_PCT}% · $${(UNREALIZED_PL*100*CONTRACTS).toFixed(0)} total`],
+          ["Unrealized P&L",  usd(UNREALIZED_PL, true), PL_COLOR,  `${UNREALIZED_PL>=0?"+":""}${PL_PCT}% · ${usd(UNREALIZED_PL*100*CONTRACTS, true)} total`],
         ].map(([l,v,c,sub])=>`
           <div style="background:var(--bg2);border-radius:4px;padding:12px;border:1px solid ${c==="#34d399"?"rgba(52,211,153,.2)":c===PL_COLOR&&UNREALIZED_PL<0?"rgba(248,113,113,.2)":"var(--border)"};">
             <div style="font-size:9px;color:var(--dim);margin-bottom:4px;">${l}</div>
@@ -550,14 +558,14 @@ window.addEventListener("DOMContentLoaded",()=>{
           </div>`).join("")}
       </div>
       <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:4px;border:1px solid var(--border);">
-        <div style="font-size:10px;color:var(--muted);line-height:1.6;">Max profit if SPX expires between ${fmt(STRIKES.putShort)}–${fmt(STRIKES.callShort)} = keep full $${TOTAL_COLLECTED.toFixed(2)} credit ($${(TOTAL_COLLECTED*100*CONTRACTS).toFixed(0)} across ${CONTRACTS} lots). Max risk per side = $${((50-TOTAL_COLLECTED)*100).toFixed(0)}/contract (50-wide spreads).</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.6;">Max profit if SPX expires between ${fmt(STRIKES.putShort)}–${fmt(STRIKES.callShort)} = keep full ${usd(TOTAL_COLLECTED)} credit (${usd(TOTAL_COLLECTED*100*CONTRACTS)} across ${CONTRACTS} lots). Max risk per side = ${usd((50-TOTAL_COLLECTED)*100)}/contract (50-wide spreads).</div>
       </div>
       ${UNREALIZED_PL < 0 ? `
       <div style="margin-top:10px;padding:10px;background:rgba(56,189,248,.05);border-radius:4px;border:1px solid rgba(56,189,248,.2);">
-        <div style="font-size:10px;color:#38bdf8;line-height:1.6;">⏳ <strong>Theta to break-even:</strong> at the current theta of $${GREEKS.theta.replace("+","")}/day, the $${Math.abs(UNREALIZED_PL*100*CONTRACTS).toFixed(0)} unrealized loss is recovered in <strong>~${THETA_TO_BE} trading day${THETA_TO_BE===1?"":"s"}</strong> if SPX holds and IV is steady (${TD_DTE} trading days remain to expiry). Assumes no further move against the position — a directional move or IV spike changes this.</div>
+        <div style="font-size:10px;color:#38bdf8;line-height:1.6;">⏳ <strong>Theta to break-even:</strong> at the current theta of ${usd(parseFloat(GREEKS.theta))}/day, the ${usd(Math.abs(UNREALIZED_PL*100*CONTRACTS))} unrealized loss is recovered in <strong>~${THETA_TO_BE} trading day${THETA_TO_BE===1?"":"s"}</strong> if SPX holds and IV is steady (${TD_DTE} trading days remain to expiry). Assumes no further move against the position — a directional move or IV spike changes this.</div>
       </div>` : `
       <div style="margin-top:10px;padding:10px;background:rgba(52,211,153,.05);border-radius:4px;border:1px solid rgba(52,211,153,.2);">
-        <div style="font-size:10px;color:var(--green);line-height:1.6;">✓ Position is at or above break-even — theta of $${GREEKS.theta.replace("+","")}/day is now accruing profit (${TD_DTE} trading days to expiry).</div>
+        <div style="font-size:10px;color:var(--green);line-height:1.6;">✓ Position is at or above break-even — theta of ${usd(parseFloat(GREEKS.theta))}/day is now accruing profit (${TD_DTE} trading days to expiry).</div>
       </div>`}
     </div>
     <div class="card glow" style="padding:20px;">
@@ -618,13 +626,13 @@ window.addEventListener("DOMContentLoaded",()=>{
       </div>
       <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:4px;border:1px solid var(--border);display:flex;gap:24px;flex-wrap:wrap;">
         <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">TOTAL COLLECTED</div>
-          <div style="font-size:14px;color:var(--green);font-weight:700;">$${TOTAL_COLLECTED.toFixed(2)} <span style="font-size:10px;color:var(--muted);">($${(TOTAL_COLLECTED*100).toFixed(0)}/ct)</span></div></div>
+          <div style="font-size:14px;color:var(--green);font-weight:700;">${usd(TOTAL_COLLECTED)} <span style="font-size:10px;color:var(--muted);">(${usd(TOTAL_COLLECTED*100)}/ct)</span></div></div>
         <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">CONTRACTS</div>
           <div style="font-size:14px;color:var(--blue);font-weight:700;">${CONTRACTS}</div></div>
         <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">CURRENT STRIKES</div>
           <div style="font-size:12px;color:#e2e8f0;font-weight:600;">${STRIKES.putLong}/${STRIKES.putShort} · ${STRIKES.callShort}/${STRIKES.callLong}</div></div>
         <div><div style="font-size:9px;color:var(--dim);margin-bottom:2px;">UNREALIZED P&L</div>
-          <div style="font-size:14px;color:${PL_COLOR};font-weight:700;">${UNREALIZED_PL>=0?"+":""}$${UNREALIZED_PL.toFixed(2)} <span style="font-size:10px;color:var(--muted);">(${PL_PCT}%)</span></div></div>
+          <div style="font-size:14px;color:${PL_COLOR};font-weight:700;">${usd(UNREALIZED_PL, true)} <span style="font-size:10px;color:var(--muted);">(${PL_PCT}%)</span></div></div>
       </div>
     </div>
   </div>`;
