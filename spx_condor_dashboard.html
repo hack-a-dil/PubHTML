@@ -87,23 +87,23 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 //                GEX/IV/EM = Barchart screenshot
 //                Greeks = TOS (exact, manual paste)
 // ════════════════════════════════════════════════════════════
-const SPX            = 7431.46;   // Schwab = Barchart authority
-const SPX_AH         = 0;
+const SPX            = 7519.60;   // FUTURES-IMPLIED (Sun overnight /ES) — NOT cash SPX (Fri close was 7431.46; cash reopens Mon). Used so buffers/flip align with the indicative mark.
+const SPX_AH         = 7431.46;   // Friday cash close (for reference)
 const SPY            = 0;
-const SPX_CHANGE_PTS = 37.16;
-const SPX_CHANGE_PCT = 0.50;
-const TIMESTAMP      = "Jun 12, 2026  4:00 PM ET";
+const SPX_CHANGE_PTS = 88.14;     // futures-implied gap vs Fri cash close
+const SPX_CHANGE_PCT = 1.19;      // futures-implied
+const TIMESTAMP      = "Jun 14, 2026  (Sun — futures-implied, off overnight /ES)";
 const SESSION        = "bullish";
-const SESSION_NOTE   = "Week ends green: Iran peace deal may sign Sunday · oil & VIX falling (VIX 17.7) · SPX back ABOVE GEX flip = positive gamma · position +$3,360";
+const SESSION_NOTE   = "Weekend: Iran PEACE DEAL reached Sun. SPX futures +88pts to ~7,520 on risk-on; ToS indicative mark $5.30 → P&L +$6,240. FUTURES-IMPLIED, not cash/settled — real prints Mon open. Note: gap pushes CALL side closer now.";
 
 const CANDLE = { open:7410.85, high:7456.40, low:7363.01, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:17.68, brent:86.71, wti:84.29 };
+const MACRO  = { vix:17.68, brent:83.31, wti:80.62 };
 
-// Greeks — Δ/Θ/V from Schwab chain (source of truth); GAMMA from TOS. 6/12: Δ+38.4 Θ+830.4 V-4608 (Schwab), Γ-0.68 (TOS).
-const GREEKS = { delta:"+38.4", theta:"+830.4", gamma:"-0.68", vega:"-4608.0" };
+// Greeks — Δ/Θ/V from Schwab chain (Fri values, carried; market closed weekend); GAMMA from TOS. Δ+38.4 Θ+825.6 V-4608, Γ-0.68.
+const GREEKS = { delta:"+38.4", theta:"+825.6", gamma:"-0.68", vega:"-4608.0" };
 
 const INITIAL_CREDIT   = 5.85;   // entry credit on open 6/4; roll credits ($0.75) added via TOTAL_CREDITS
-const MARK             = 5.90;   // Schwab net MV (-$28,320 / 48 / 100) = cost to close. Confirmed vs Schwab.
+const MARK             = 5.30;   // ToS INDICATIVE off overnight futures (Sun) — NOT a settled traded mark; options closed since Fri. Fri settled mark was $5.90.
 
 const CONDOR_OPEN_DATE = "Jun 4";
 
@@ -112,7 +112,7 @@ const CONDOR_OPEN_DATE = "Jun 4";
 // ════════════════════════════════════════════════════════════
 const TODAY        = new Date();
 const EXPIRY_DATE  = new Date(2026, 6, 17);   // Jul 17, 2026
-const HOLIDAYS     = ["2026-06-19","2026-07-03"];
+const HOLIDAYS     = ["2026-06-19","2026-07-03","2026-09-07","2026-11-26","2026-12-25"];  // mirror of script HOLIDAYS — keep in sync; extend as you trade into new periods
 const localDateStr = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const CD_DTE       = Math.ceil((EXPIRY_DATE - new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate())) / (1000*60*60*24));
 const TD_DTE       = (()=>{
@@ -162,7 +162,8 @@ const HISTORY_LOG = [
   { date:"Jun 9", spx:7386.65, callBuf:Math.round(7950-7386.65), putBuf:Math.round(7386.65-7000), gexFlip:7465.96, session:"bearish", note:"Volatile swing: -2.3% intraday to low 7,237, recovered to -0.26% close. VIX spiked to 23.34 intraday. Mark $7.75, P&L -$5,520." },
   { date:"Jun 10",spx:7266.99, callBuf:Math.round(7950-7266.99), putBuf:Math.round(7266.99-7000), gexFlip:null, session:"bearish", note:"CPI day: May CPI hot at 4.2% YoY (3-yr high), though core softer (0.2% m/m). Markets sold off — SPX -1.62% to 7,266.99, near put side (267pts). Nasdaq -1.98%." },
   { date:"Jun 11",spx:7394.30, callBuf:Math.round(7950-7394.30), putBuf:Math.round(7394.30-7000), gexFlip:7393.28, session:"bullish", note:"Rebound +1.75% to 7,394.30 off CPI low. VIX -12.5% to 19.44. Mark recovered to $7.55 close ($7.25 AH). SPX right ON the flip. Iran de-escalation hopes building." },
-  { date:"Jun 12",spx:SPX, callBuf:Math.round(7950-SPX), putBuf:Math.round(SPX-7000), gexFlip:GEX.flipPoint, session:"bullish", note:"Week ends GREEN +$3,360. SPX +0.50% to 7,431.46, now ABOVE flip 7,382 = positive gamma. VIX -9% to 17.68, oil falling. Trump canceled Iran strikes, peace deal may sign Sunday in Switzerland. SpaceX IPO'd +22%. Mark $5.90, best since the roll." },
+  { date:"Jun 12",spx:7431.46, callBuf:Math.round(7950-7431.46), putBuf:Math.round(7431.46-7000), gexFlip:7382.11, session:"bullish", note:"Week ends GREEN +$3,360. SPX +0.50% to 7,431.46, above flip 7,382 = positive gamma. VIX -9% to 17.68, oil falling. Trump canceled Iran strikes, peace deal near. SpaceX IPO'd +22%. Mark $5.90." },
+  { date:"Jun 14",spx:SPX, callBuf:Math.round(7950-SPX), putBuf:Math.round(SPX-7000), gexFlip:GEX.flipPoint, session:"bullish", note:"SUN: Iran PEACE DEAL reached — permanent end to military ops incl. Lebanon; Trump reopening Strait of Hormuz. Oil -4% (WTI 80.6, Brent 83.3). Sign ceremony Fri 6/19 Geneva. ToS indicative mark $5.30 off overnight futures → P&L +$6,240 (vs Fri settled +$3,360) — NOT a traded mark; real print Mon open." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -182,12 +183,12 @@ const ROLL_LOG = [
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 12",  text:"🕊️ IRAN PEACE DEAL NEAR: Trump canceled planned strikes overnight and said a deal to end the war and reopen the Strait of Hormuz could be 'finalized' — a signing is possible Sunday in Switzerland, coinciding with the G7 (Jun 15-17). This removes the biggest tail risk that's whipsawed markets all week. Oil fell hard (WTI 84.29, Brent 86.71).", impact:"bullish", hot:true },
-  { time:"Jun 12",  text:"🟢 Position closed the week GREEN +$3,360 (best since the roll). SPX +0.50% to 7,431.46, now ABOVE the GEX flip (7,382) = positive gamma. VIX -9% to 17.68 — vol fully unwound from the 6/5 spike to 21.5. Mark down to $5.90.", impact:"bullish", hot:true },
-  { time:"Jun 12",  text:"🚀 SpaceX (SPCX) IPO'd on the Nasdaq — opened $150 (~11% over the $135 IPO price), traded up ~22% to ~$162, valuing it above $2 trillion. Drove some tech-stock rotation; Nasdaq lagged the Dow on the day even as the broad market rose.", impact:"neutral", hot:false },
-  { time:"Jun 12",  text:"Market structure improved: SPX above flip, walls re-separated to put 7,400 / call 7,500, IV Pct down to 66 (from 80). The whole GEX picture has normalized from the negative-gamma, high-IV regime of the past week.", impact:"bullish", hot:false },
-  { time:"Jun 10-11",text:"CPI week recap: May headline CPI hot at 4.2% (3-yr high) but core soft (0.2% m/m). Sold off -1.62% on the 10th to 7,266, then rebounded +1.75% on the 11th as Iran de-escalation hopes built.", impact:"neutral", hot:false },
-  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET — the next scheduled catalyst, ~5 weeks before your 7/17 expiry. With IV easing and Iran resolving, focus shifts to the rate path. Verified: Fed.gov ✓", impact:"neutral", hot:false },
+  { time:"Jun 14",  text:"🕊️ IRAN PEACE DEAL REACHED (Sun): The US and Iran declared an immediate, permanent end to military operations on all fronts including Lebanon, per Pakistan's PM (mediator). Trump called it 'complete' and authorized reopening the Strait of Hormuz, ending the US naval blockade. Structured as an MOU launching 60 days of talks. Formal signing Fri June 19 in Geneva.", impact:"bullish", hot:true },
+  { time:"Jun 14",  text:"🛢️ Oil dropped ~4% on the news — WTI to 80.62, Brent to 83.31 (Brent's lowest since March 5) as the Strait reopening removes the war-supply premium. Falling oil eases the inflation pressure that's been weighing on rates and tech. Broadly tail-risk-off for markets.", impact:"bullish", hot:true },
+  { time:"Jun 14",  text:"⚠️ Data note: equity & options markets were closed this weekend, so SPX (7,431.46), the mark ($5.90), P&L (+$3,360) and Greeks are Friday's carried values — not a new session. Only oil (futures) updated. Live reaction to the deal arrives at Monday's open.", impact:"neutral", hot:false },
+  { time:"Jun 12",  text:"Friday recap: SPX +0.50% to 7,431.46, VIX -9% to 17.68, position closed the week green +$3,360 and above the GEX flip (positive gamma). SpaceX IPO'd +22%.", impact:"neutral", hot:false },
+  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET — next scheduled catalyst, before your 7/17 expiry. With Iran resolving and oil falling, the inflation/rate calculus shifts. Verified: Fed.gov ✓", impact:"neutral", hot:false },
+  { time:"FRI 6/19",text:"🖊️ Iran deal signing ceremony, Geneva. VP Vance plans to attend, possibly Trump. Watch for any last-minute snags (Israel-Lebanon strikes nearly derailed it Sunday). Verified: multiple wires ✓", impact:"neutral", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -210,6 +211,7 @@ const PUT_BUF_PCT   = ((PUT_BUF  / STRIKES.putShort) * 100).toFixed(1); // ÷ st
 const FLIP_BUF      = SPX - GEX.flipPoint;
 const CALL_WALL_BUF = GEX.callWall - SPX;
 const EM_CALL_BUF   = GEX.expectedMoveUp - STRIKES.callShort;
+const SPREAD_WIDTH  = STRIKES.putShort - STRIKES.putLong;  // wing width (50 currently); used for max-risk. Assumes put & call wings equal width.
 const SESSION_COLOR = SESSION==="bullish"?"#34d399":SESSION==="bearish"?"#f87171":"#94a3b8";
 const ATH_SPX       = Math.max(...HISTORY_LOG.map(p=>p.spx));
 const ATH_DATE      = HISTORY_LOG.find(p=>p.spx===ATH_SPX)?.date||"";
@@ -242,8 +244,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} — a steady gain to close the week near the high (O ${CANDLE.open} · H ${CANDLE.high} · L ${CANDLE.low}). The big driver: Trump canceled planned Iran strikes and signaled a peace deal could be signed Sunday in Switzerland, easing the tail risk that's whipsawed markets all week. VIX fell -9% to ${MACRO.vix} and oil dropped (WTI ${MACRO.wti}). Crucially, SPX is now ${Math.round(SPX-GEX.flipPoint)}pts ABOVE the GEX flip (${fmt(GEX.flipPoint)}) — back in positive-gamma territory where dealers dampen moves. Position is green ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. Call side ${fmt(STRIKES.callShort)} is ${Math.round(CALL_BUF)}pts away; put side ${fmt(STRIKES.putShort)} is ${Math.round(PUT_BUF)}pts away.`;
-const REC = `Position is ${UNREALIZED_PL>=0?"green":"red"} at ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} across ${CONTRACTS} lots) — best level since the roll, recovered from -$5,520 on 6/9 as the Iran tail risk eased and VIX collapsed to ${MACRO.vix}. SPX back above the flip (${fmt(GEX.flipPoint)}) = positive gamma, a constructive backdrop. Both wings comfortably OTM: call ${Math.round(CALL_BUF)}pts, put ${Math.round(PUT_BUF)}pts. Theta ${usd(parseFloat(GREEKS.theta), true)}/day now accruing as profit. The one weekend watch item: if an Iran peace deal signs Sunday, a risk-on gap up Monday could push toward the call side ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away) — but that's well outside the expected-move upper (${fmt(GEX.expectedMoveUp)}), so not an immediate threat. FOMC 6/17 is the next scheduled event. With ${CD_DTE} days left and IV easing (Pct ${GEX.ivPct}), this is the most comfortable the position has been.`;
+const SESSION_SUMMARY = `Weekend update (Sun 6/14). The big event: the US and Iran reached a peace deal, declaring a permanent end to military operations, with Trump reopening the Strait of Hormuz. Oil fell ~4% (WTI ${MACRO.wti}, Brent ${MACRO.brent}). SPX futures jumped ~88pts to ${fmt(SPX)} on the risk-on, and ToS shows an indicative mark of $${MARK.toFixed(2)} → P&L ${usd(UNREALIZED_PL*100*CONTRACTS, true)} (vs Friday's settled +$3,360). ⚠️ Everything here is FUTURES-IMPLIED — the cash index and options haven't traded since Friday (cash close 7,431.46); real values print Monday's open. At this implied level the CALL side becomes the closer wing (${Math.round(CALL_BUF)}pts) vs the put (${Math.round(PUT_BUF)}pts) — the risk-on gap reverses the week's put-side focus, though ${fmt(SPX)} is still below the EM upper (${fmt(GEX.expectedMoveUp)}) and well under the call strike.`;
+const REC = `Position shows ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} across ${CONTRACTS} lots) on a ToS indicative mark of $${MARK.toFixed(2)}, with SPX futures implying ~${fmt(SPX)} (+${SPX_CHANGE_PTS}pts vs Fri cash) on the Iran-deal risk-on. ⚠️ All futures-implied — not booked; cash and options reopen Monday, and the real mark/level could differ. The deal (reached Sun, signing Fri 6/19) reopens the Strait of Hormuz and dropped oil ~4%, unwinding the geopolitical tail risk that's whipsawed VIX all month. Notable shift: at this implied level the CALL side is now the closer wing (${Math.round(CALL_BUF)}pts) vs the put (${Math.round(PUT_BUF)}pts) — if Monday opens near here, the calls (${fmt(STRIKES.callShort)}) become the side to watch, a reversal from the week's put-side risk. Still, ${fmt(SPX)} sits below the EM upper (${fmt(GEX.expectedMoveUp)}) with ${Math.round(CALL_BUF)}pts of call room. FOMC 6/17 next. Gamma carried -0.68; Δ/Θ/V Friday's.`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -434,7 +436,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V from Schwab chain (source of truth) · γ from TOS (-0.68)</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (Fri values, carried — mkt closed) · γ TOS (-0.68)</div>
       </div>
       <div class="card ${UNREALIZED_PL>=0?'safe':'warn'}" style="padding:14px;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
@@ -558,7 +560,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           </div>`).join("")}
       </div>
       <div style="margin-top:12px;padding:10px;background:var(--bg2);border-radius:4px;border:1px solid var(--border);">
-        <div style="font-size:10px;color:var(--muted);line-height:1.6;">Max profit if SPX expires between ${fmt(STRIKES.putShort)}–${fmt(STRIKES.callShort)} = keep full ${usd(TOTAL_COLLECTED)} credit (${usd(TOTAL_COLLECTED*100*CONTRACTS)} across ${CONTRACTS} lots). Max risk per side = ${usd((50-TOTAL_COLLECTED)*100)}/contract (50-wide spreads).</div>
+        <div style="font-size:10px;color:var(--muted);line-height:1.6;">Max profit if SPX expires between ${fmt(STRIKES.putShort)}–${fmt(STRIKES.callShort)} = keep full ${usd(TOTAL_COLLECTED)} credit (${usd(TOTAL_COLLECTED*100*CONTRACTS)} across ${CONTRACTS} lots). Max risk per side = ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100)}/contract (${SPREAD_WIDTH}-wide spreads).</div>
       </div>
       ${UNREALIZED_PL < 0 ? `
       <div style="margin-top:10px;padding:10px;background:rgba(56,189,248,.05);border-radius:4px;border:1px solid rgba(56,189,248,.2);">
