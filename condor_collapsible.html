@@ -345,6 +345,10 @@
   }
   .account-stat-value.pos { color: var(--green); }
   .account-stat-value.neg { color: var(--red-dim); }
+  .account-stat-value .pos { color: var(--green); }
+  .account-stat-value .neg { color: var(--red-dim); }
+  .account-stat-value .neutral { color: var(--text-dim); }
+  .account-stat-value .days-accent { color: var(--blue); }
 
   /* days held */
   .days-val { color: var(--text-dim); font-family: var(--mono); }
@@ -357,6 +361,7 @@
     <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ira-gross"></div></div>
     <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ira-fees"></div></div>
     <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="ira-net"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Avg Net P&L (Days Held)</div><div class="account-stat-value" id="ira-avgpnl"></div></div>
   </div>
 </div>
 <div class="condor-card" data-account="IRA_XXX941" style="margin-top:16px;">
@@ -790,9 +795,9 @@
         <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$883.20</div></div>
         <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$5,441.52</div></div>
         <div class="stat" style="margin-top:-42px">
-          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
-          <div class="badge-exp" style="margin-bottom:4px">None</div>
-          <div class="stat-label">Days Held</div>
+          <div class="badge badge-active" style="margin-bottom:2px">Active</div>
+          <div class="badge-exp" style="margin-bottom:4px">2 legs open</div>
+          <div class="stat-label">Days Open</div>
           <div class="stat-value neutral" id="days-c8"></div>
         </div>
       </div>
@@ -807,24 +812,13 @@
         <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
           <tr class="row-open">
             <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900 <span class="open-tag">Open</span></div></td>
-            <td>06/15</td><td>—</td><td>1</td>
-            <td class="days-open-val" style="text-align:center" data-open="2026-06-15"></td>
-            <td>$2.99</td>
-            <td>—</td>
-            <td class="pnl-open">—</td>
-            <td class="pnl-open">—</td>
-            <td class="fee-val">–$3.68</td>
-            <td class="pnl-open">—</td>
-          </tr>
-          <tr class="row-open">
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900 <span class="open-tag">Open</span></div></td>
-            <td>06/15</td><td>—</td><td>59</td>
+            <td>06/15</td><td>—</td><td>60</td>
             <td class="days-open-val" style="text-align:center" data-open="2026-06-15"></td>
             <td>$3.08</td>
             <td>—</td>
             <td class="pnl-open">—</td>
             <td class="pnl-open">—</td>
-            <td class="fee-val">–$217.12</td>
+            <td class="fee-val">–$220.80</td>
             <td class="pnl-open">—</td>
           </tr>
         <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
@@ -878,6 +872,7 @@
     <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ind1-gross"></div></div>
     <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ind1-fees"></div></div>
     <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="ind1-net"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Avg Net P&L (Days Held)</div><div class="account-stat-value" id="ind1-avgpnl"></div></div>
   </div>
 </div>
 <div class="condor-card" data-account="IND_XXX735" style="margin-top:16px;">
@@ -1497,9 +1492,9 @@
         <div class="stat"><div class="stat-label">Fees</div><div class="stat-value negative">–$721.28</div></div>
         <div class="stat"><div class="stat-label">Net P&L</div><div class="stat-value positive">+$4,697.84</div></div>
         <div class="stat" style="margin-top:-42px">
-          <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
-          <div class="badge-exp" style="margin-bottom:4px">None</div>
-          <div class="stat-label">Days Held</div>
+          <div class="badge badge-active" style="margin-bottom:2px">Active</div>
+          <div class="badge-exp" style="margin-bottom:4px">2 legs open</div>
+          <div class="stat-label">Days Open</div>
           <div class="stat-value neutral" id="days-c9"></div>
         </div>
       </div>
@@ -1591,7 +1586,29 @@
   function fv(n){if(n===null)return{text:'—',cls:'neutral'};const a=Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});return n<0?{text:'–$'+a,cls:'neg'}:n>0?{text:'+$'+a,cls:'pos'}:{text:'$0.00',cls:'neutral'};}
   function sg(g,col){let t=0,h=false;document.querySelectorAll(`td.${col}[data-account-group="${g}"]`).forEach(td=>{const v=parseFloat(td.dataset.value);if(!isNaN(v)){t+=v;h=true;}});return h?t:null;}
   function sh(gi,fi,ni,ids){let g=0,f=0,n=0,hg=false,hf=false,hn=false;ids.forEach(id=>{const gv=sg(id,'total-gross'),fv=sg(id,'total-fees'),nv=sg(id,'total-net');if(gv!==null){g+=gv;hg=true;}if(fv!==null){f+=fv;hf=true;}if(nv!==null){n+=nv;hn=true;}});[[gi,hg?g:null],[fi,hf?f:null],[ni,hn?n:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});return{gross:hg?g:null,fees:hf?f:null,net:hn?n:null};}
+  function avgPnlDays(list){
+    if(!list.length)return null;
+    const avgPnl=list.reduce((sum,c)=>sum+c.pnl,0)/list.length;
+    const avgDays=list.reduce((sum,c)=>sum+db(c.open,c.close),0)/list.length;
+    return {avgPnl, avgDays};
+  }
+  function fmtAvgPnlDays(r){
+    if(r===null) return {text:'—', cls:'neutral'};
+    const pnlAbs=Math.abs(r.avgPnl).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const sign = r.avgPnl<0 ? '–$' : '+$';
+    const cls = r.avgPnl<0 ? 'neg' : (r.avgPnl>0 ? 'pos' : 'neutral');
+    const daysStr = (Math.round(r.avgDays*10)/10) + 'd';
+    return {html: `<span class="${cls}">${sign}${pnlAbs}</span> <span class="days-accent">(${daysStr})</span>`, cls};
+  }
+  function updateAvgPnlDays(){
+    const iraList=[{open:'2026-05-06',close:'2026-06-01',pnl:-18222.84},{open:'2026-06-01',close:'2026-06-04',pnl:5666.56},{open:'2026-06-04',close:'2026-06-15',pnl:5664.24},{open:'2026-06-15',close:null,pnl:5441.52}];
+    const indList=[{open:'2026-05-06',close:'2026-06-01',pnl:-11659.04},{open:'2026-05-14',close:'2026-06-03',pnl:3158.4},{open:'2026-06-01',close:'2026-06-04',pnl:4361.64},{open:'2026-06-04',close:'2026-06-15',pnl:4719.16},{open:'2026-06-15',close:null,pnl:4697.84}];
+    const iraEl=document.getElementById('ira-avgpnl');
+    const indEl=document.getElementById('ind1-avgpnl');
+    if(iraEl){const r=fmtAvgPnlDays(avgPnlDays(iraList));iraEl.innerHTML=r.html;iraEl.className='account-stat-value';}
+    if(indEl){const r=fmtAvgPnlDays(avgPnlDays(indList));indEl.innerHTML=r.html;indEl.className='account-stat-value';}
+  }
   function uh(){const a=sh('ira-gross','ira-fees','ira-net',["c1", "c4", "c6", "c8"]),b=sh('ind1-gross','ind1-fees','ind1-net',["c2", "c3", "c5", "c7", "c9"]);let ag=0,af=0,an=0,hg=false,hf=false,hn=false;[a,b].forEach(x=>{if(x.gross!==null){ag+=x.gross;hg=true;}if(x.fees!==null){af+=x.fees;hf=true;}if(x.net!==null){an+=x.net;hn=true;}});[['all-gross',hg?ag:null],['all-fees',hf?af:null],['all-net',hn?an:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});}
-  ud();uh();const now=new Date();setTimeout(()=>{ud();setInterval(ud,86400000);},new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
+  ud();uh();updateAvgPnlDays();const now=new Date();setTimeout(()=>{ud();updateAvgPnlDays();setInterval(()=>{ud();updateAvgPnlDays();},86400000);},new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
 </script>
 </body></html>
