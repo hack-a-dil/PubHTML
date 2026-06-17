@@ -349,6 +349,7 @@
   .account-stat-value .neg { color: var(--red-dim); }
   .account-stat-value .neutral { color: var(--text-dim); }
   .account-stat-value .days-accent { color: var(--blue); }
+  .account-stat-value.days-accent { color: var(--blue); }
   .profit-progress { padding: 14px 24px 4px; border-top: 1px solid var(--border); margin-top: 4px; }
   .profit-progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
   .profit-progress-pct { font-family: var(--mono); color: var(--text); font-weight: 600; }
@@ -367,7 +368,8 @@
     <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ira-gross"></div></div>
     <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ira-fees"></div></div>
     <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="ira-net"></div></div>
-    <div class="account-stat"><div class="account-stat-label">Avg Net P&L (Days Held)</div><div class="account-stat-value" id="ira-avgpnl"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Avg Days Held</div><div class="account-stat-value" id="ira-avgdays"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Avg Net P&L</div><div class="account-stat-value" id="ira-avgpnl"></div></div>
   </div>
 </div>
 <div class="condor-card" data-account="IRA_XXX941" style="margin-top:16px;">
@@ -918,7 +920,8 @@
     <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ind1-gross"></div></div>
     <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ind1-fees"></div></div>
     <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="ind1-net"></div></div>
-    <div class="account-stat"><div class="account-stat-label">Avg Net P&L (Days Held)</div><div class="account-stat-value" id="ind1-avgpnl"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Avg Days Held</div><div class="account-stat-value" id="ind1-avgdays"></div></div>
+    <div class="account-stat"><div class="account-stat-label">Avg Net P&L</div><div class="account-stat-value" id="ind1-avgpnl"></div></div>
   </div>
 </div>
 <div class="condor-card" data-account="IND_XXX735" style="margin-top:16px;">
@@ -1688,21 +1691,36 @@
     const avgDays=list.reduce((sum,c)=>sum+db(c.open,c.close),0)/list.length;
     return {avgPnl, avgDays};
   }
-  function fmtAvgPnlDays(r){
-    if(r===null) return {text:'—', cls:'neutral'};
-    const pnlAbs=Math.abs(r.avgPnl).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-    const sign = r.avgPnl<0 ? '–$' : '+$';
-    const cls = r.avgPnl<0 ? 'neg' : (r.avgPnl>0 ? 'pos' : 'neutral');
-    const daysStr = (Math.round(r.avgDays*10)/10) + 'd';
-    return {html: `<span class="${cls}">${sign}${pnlAbs}</span> <span class="days-accent">(${daysStr})</span>`, cls};
+  function fmtAvgPnl(avgPnl){
+    const pnlAbs=Math.abs(avgPnl).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+    const sign = avgPnl<0 ? '–$' : '+$';
+    const cls = avgPnl<0 ? 'neg' : (avgPnl>0 ? 'pos' : 'neutral');
+    return {text: sign+pnlAbs, cls};
   }
   function updateAvgPnlDays(){
     const iraList=[{open:'2026-05-06',close:'2026-06-01',pnl:-18222.84},{open:'2026-06-01',close:'2026-06-04',pnl:5666.56},{open:'2026-06-04',close:'2026-06-15',pnl:5664.24},{open:'2026-06-15',close:null,pnl:5441.52}];
     const indList=[{open:'2026-05-06',close:'2026-06-01',pnl:-11659.04},{open:'2026-05-14',close:'2026-06-03',pnl:3158.4},{open:'2026-06-01',close:'2026-06-04',pnl:4361.64},{open:'2026-06-04',close:'2026-06-15',pnl:4719.16},{open:'2026-06-15',close:null,pnl:4697.84}];
-    const iraEl=document.getElementById('ira-avgpnl');
-    const indEl=document.getElementById('ind1-avgpnl');
-    if(iraEl){const r=fmtAvgPnlDays(avgPnlDays(iraList));iraEl.innerHTML=r.html;iraEl.className='account-stat-value';}
-    if(indEl){const r=fmtAvgPnlDays(avgPnlDays(indList));indEl.innerHTML=r.html;indEl.className='account-stat-value';}
+    const iraR=avgPnlDays(iraList), indR=avgPnlDays(indList);
+    const iraPnlEl=document.getElementById('ira-avgpnl');
+    const iraDaysEl=document.getElementById('ira-avgdays');
+    const indPnlEl=document.getElementById('ind1-avgpnl');
+    const indDaysEl=document.getElementById('ind1-avgdays');
+    if(iraR){
+      const r=fmtAvgPnl(iraR.avgPnl);
+      if(iraPnlEl){iraPnlEl.textContent=r.text;iraPnlEl.className='account-stat-value '+r.cls;}
+      if(iraDaysEl){iraDaysEl.textContent=(Math.round(iraR.avgDays*10)/10)+'d';iraDaysEl.className='account-stat-value days-accent';}
+    } else {
+      if(iraPnlEl){iraPnlEl.textContent='—';iraPnlEl.className='account-stat-value neutral';}
+      if(iraDaysEl) iraDaysEl.textContent='—';
+    }
+    if(indR){
+      const r=fmtAvgPnl(indR.avgPnl);
+      if(indPnlEl){indPnlEl.textContent=r.text;indPnlEl.className='account-stat-value '+r.cls;}
+      if(indDaysEl){indDaysEl.textContent=(Math.round(indR.avgDays*10)/10)+'d';indDaysEl.className='account-stat-value days-accent';}
+    } else {
+      if(indPnlEl){indPnlEl.textContent='—';indPnlEl.className='account-stat-value neutral';}
+      if(indDaysEl) indDaysEl.textContent='—';
+    }
   }
   function uh(){const a=sh('ira-gross','ira-fees','ira-net',["c1", "c4", "c6", "c8"]),b=sh('ind1-gross','ind1-fees','ind1-net',["c2", "c3", "c5", "c7", "c9"]);let ag=0,af=0,an=0,hg=false,hf=false,hn=false;[a,b].forEach(x=>{if(x.gross!==null){ag+=x.gross;hg=true;}if(x.fees!==null){af+=x.fees;hf=true;}if(x.net!==null){an+=x.net;hn=true;}});[['all-gross',hg?ag:null],['all-fees',hf?af:null],['all-net',hn?an:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});}
   ud();uh();updateAvgPnlDays();const now=new Date();setTimeout(()=>{ud();updateAvgPnlDays();setInterval(()=>{ud();updateAvgPnlDays();},86400000);},new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
