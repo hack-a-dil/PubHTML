@@ -87,23 +87,23 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 //                GEX/IV/EM = Barchart screenshot
 //                Greeks = TOS (exact, manual paste)
 // ════════════════════════════════════════════════════════════
-const SPX            = 7554.29;   // Schwab = Barchart authority (Mon 6/15 close)
+const SPX            = 7511.35;   // Schwab = Barchart authority (Tue 6/16 close)
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = 122.83;
-const SPX_CHANGE_PCT = 1.65;
-const TIMESTAMP      = "Jun 15, 2026  4:00 PM ET";
-const SESSION        = "bullish";
-const SESSION_NOTE   = "NEW condor opened (7/31). Iran deal confirmed → SPX +1.65% to 7,554, oil -5%, VIX 16.2, IV crushed. Closed 7/17 condor +$6,000 realized; re-centered higher/wider to get ahead of the rally.";
+const SPX_CHANGE_PTS = -42.94;
+const SPX_CHANGE_PCT = -0.57;
+const TIMESTAMP      = "Jun 16, 2026  4:00 PM ET";
+const SESSION        = "neutral";
+const SESSION_NOTE   = "FOMC eve. Rotational pullback: Dow record high, Nasdaq -2% (chip selloff), SPX -0.57% to 7,511. Oil <$80 (WTI 76.6). Rolled calls down twice (8075→8040, +$0.60). Mark $5.95 → +$3,479. Fed decision tomorrow 2PM.";
 
-const CANDLE = { open:7516.75, high:7577.92, low:7516.75, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:16.20, brent:83.51, wti:81.16 };
+const CANDLE = { open:7548.78, high:7564.96, low:7508.68, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:16.41, brent:79.46, wti:76.60 };
 
 // Greeks — Δ/Θ/V from Schwab chain (6/15 close, stale-flagged); GAMMA from TOS. Δ-24.5 Θ+739.9 V-5341, Γ-0.59. Note: delta now NEGATIVE (re-centered higher, call side closer).
-const GREEKS = { delta:"-24.5", theta:"+739.9", gamma:"-0.59", vega:"-5341.0" };
+const GREEKS = { delta:"-14.7", theta:"+769.3", gamma:"-0.62", vega:"-5463.5" };
 
-const INITIAL_CREDIT   = 6.06;   // entry credit on new 7/31 condor (put 3.04 + call 3.02), opened 6/15
-const MARK             = 5.75;   // Schwab net MV (-$28,175 / 49 / 100) = cost to close. Confirmed vs Schwab.
+const INITIAL_CREDIT   = 6.06;   // entry credit on 7/31 condor (opened 6/15); call rolls (+0.60) via TOTAL_CREDITS
+const MARK             = 5.95;   // Schwab net MV (-$29,155 / 49 / 100) = cost to close. Confirmed vs Schwab.
 
 const CONDOR_OPEN_DATE = "Jun 15";
 
@@ -129,15 +129,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 5)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        7299.32,
-  putWall:          7600.00,
-  callWall:         7600.00,
-  iv:               13.23,
-  hv:               14.46,
-  ivRank:           16.43,
-  ivPct:            35,
-  expectedMoveUp:   7806.06,
-  expectedMoveDown: 7302.52,
+  flipPoint:        7385.10,
+  putWall:          7500.00,
+  callWall:         7500.00,
+  iv:               13.61,
+  hv:               14.52,
+  ivRank:           18.83,
+  ivPct:            44,
+  expectedMoveUp:   7783.78,
+  expectedMoveDown: 7238.92,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -165,7 +165,8 @@ const HISTORY_LOG = [
   { date:"Jun 11",spx:7394.30, callBuf:Math.round(7950-7394.30), putBuf:Math.round(7394.30-7000), gexFlip:7393.28, session:"bullish", note:"Rebound +1.75% to 7,394.30 off CPI low. VIX -12.5% to 19.44. Mark recovered to $7.55 close ($7.25 AH). SPX right ON the flip. Iran de-escalation hopes building." },
   { date:"Jun 12",spx:7431.46, callBuf:Math.round(7950-7431.46), putBuf:Math.round(7431.46-7000), gexFlip:7382.11, session:"bullish", note:"Week ends GREEN +$3,360. SPX +0.50% to 7,431.46, above flip 7,382 = positive gamma. VIX -9% to 17.68, oil falling. Trump canceled Iran strikes, peace deal near. SpaceX IPO'd +22%. Mark $5.90." },
   { date:"Jun 14",spx:7519.60, callBuf:Math.round(7950-7519.60), putBuf:Math.round(7519.60-7000), gexFlip:7382.11, session:"bullish", note:"SUN: Iran PEACE DEAL reached — permanent end to military ops; Trump reopening Strait of Hormuz. Oil -4%. Futures-implied SPX ~7,520; ToS indicative mark $5.30 → +$6,240 (7/17 condor, before it was closed Mon)." },
-  { date:"Jun 15",spx:SPX, callBuf:521, putBuf:604, gexFlip:GEX.flipPoint, session:"bullish", note:"Iran deal confirmed: SPX +1.65% to 7,554, Nasdaq +2.38%, oil -5%, VIX 16.2, IV crushed (Pct 35). CLOSED 7/17 condor at $5.35 = +$6,000 realized. Opened NEW 7/31 condor 6900/6950·8075/8125 x49 for $6.06 — re-centered higher/wider. Mark $5.75 → +$1,519. Delta now negative (-24.5)." },
+  { date:"Jun 15",spx:7554.29, callBuf:521, putBuf:604, gexFlip:7299.32, session:"bullish", note:"Iran deal confirmed: SPX +1.65% to 7,554, Nasdaq +2.38%, oil -5%, VIX 16.2, IV crushed. CLOSED 7/17 condor at $5.35 = +$6,000 realized. Opened NEW 7/31 condor 6900/6950·8075/8125 x49 for $6.06 — re-centered higher/wider. Mark $5.75 → +$1,519." },
+  { date:"Jun 16",spx:7511.35, callBuf:529, putBuf:561, gexFlip:7385.10, session:"neutral", note:"FOMC eve. Rotational pullback — Dow record high, Nasdaq -2% on chip selloff, SPX -0.57% to 7,511. Oil <$80 (WTI 76.6). Iran MOU formally signed. Rolled calls DOWN twice (8075→8050→8040, +$0.60) harvesting premium. Mark $5.95 → +$3,479. Credit now $6.66." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -173,24 +174,26 @@ const HISTORY_LOG = [
 // ════════════════════════════════════════════════════════════
 const ROLL_LOG = [
   { date:"Jun 15", side:"OPEN", from:"—", to:"6900/6950 · 8075/8125", dir:"—", credit:"$6.06", note:"New condor opened. EXP 7/31/26. 49 contracts (put 3.04 + call 3.02). Replaced 6950/7000·7950/8000 x48 7/17 condor (closed $5.35 = +$6,000 realized). Re-centered higher & wider to get ahead of the Iran-deal rally." },
+  { date:"Jun 16", side:"CALL", from:"8075/8125", to:"8050/8100", dir:"↓ -25pts", credit:"$0.45", note:"Rolled calls down as SPX pulled back from 7,554 — harvesting premium on the untested call side." },
+  { date:"Jun 16", side:"CALL", from:"8050/8100", to:"8040/8090", dir:"↓ -10pts", credit:"$0.15", note:"Second call roll down. Call side now 8040/8090. Total credit $6.66." },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 15",  text:"🔄 NEW POSITION: Closed the 7/17 condor (6950/7000·7950/8000 ×48) at $5.35 for +$6,000 realized, and opened a fresh 7/31 condor — 6900/6950 · 8075/8125 ×49 for $6.06. Re-centered ~575pts higher and wider to get ahead of the call-side risk as the Iran rally extended. New mark $5.75 → already +$1,519.", impact:"bullish", hot:true },
-  { time:"Jun 15",  text:"🕊️ IRAN DEAL CONFIRMED: US and Iran announced an interim agreement halting the war and reopening the Strait of Hormuz — 60-day ceasefire, formal signing later this week. S&P +1.49%, Dow +1.20%, Nasdaq +2.38%. SPX closed 7,554.29 (+1.65%).", impact:"bullish", hot:true },
-  { time:"Jun 15",  text:"🛢️ Oil fell over 5% to ~$80.45 (three-month lows) as the Strait reopening removes the war-supply premium. The vol crush is dramatic — IV down to 13.23%, IV Pct to 35 (from 66 Fri). Lower vol means the new condor collected less ($6.06) but faces a calmer regime.", impact:"neutral", hot:false },
-  { time:"Jun 15",  text:"New condor positioning: SPX 7,554 sits deep above the GEX flip (7,299) = positive gamma. The EM upper (7,806) is well below your call short (8,075), and both wings are wide — call 521pts, put 604pts. Delta is now slightly negative (-24.5) since the call side is closer than the put.", impact:"neutral", hot:false },
-  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET — first catalyst for the new position, before your 7/31 expiry. With Iran resolved and oil/IV collapsing, the rate path is the focus. Verified: Fed.gov ✓", impact:"neutral", hot:false },
-  { time:"FRI 6/19",text:"🖊️ Iran deal formal signing, Geneva. Watch for headline risk around the ceremony. Verified: multiple wires ✓", impact:"neutral", hot:false },
+  { time:"Jun 16",  text:"⚡ FOMC EVE: The two-day Fed meeting began — decision tomorrow 2PM ET, the first under new chair Kevin Warsh, widely expected to hold rates. Markets paused: SPX -0.57% to 7,511, in a rotation — Dow hit a fresh record high while the Nasdaq fell ~2% on a chip selloff (the mirror of Monday's tech-led rally).", impact:"neutral", hot:true },
+  { time:"Jun 16",  text:"🔧 Rolled the call side DOWN twice as SPX pulled back from 7,554: 8075→8050 (+$0.45), then 8050→8040 (+$0.15). Total $0.60 harvested, credit now $6.66/ct ($32,634). Mark $5.95 → P&L +$3,479. Call buffer 529pts, put 561pts (call still the closer wing).", impact:"bullish", hot:true },
+  { time:"Jun 16",  text:"🛢️ Oil kept falling — crude below $80 (WTI 76.60, -5%) on expectations of supply revival as the Strait of Hormuz reopens. The US-Iran MOU was formally signed today, locking in the ceasefire framework and 60 days of talks. Falling oil continues to ease inflation pressure into the Fed decision.", impact:"bullish", hot:false },
+  { time:"Jun 16",  text:"Housing starts unexpectedly fell 15.4% in May to the lowest since May 2020 — a soft data point that, with oil down, supports the case for the Fed holding/easing. Position structure healthy: SPX above flip (7,385) = positive gamma, both wings outside the EM (7,239–7,784).", impact:"neutral", hot:false },
+  { time:"Jun 15",  text:"Iran-deal rally: SPX +1.65% to 7,554, Nasdaq +3.07%. Opened the new 7/31 condor and closed the 7/17 for +$6,000 realized.", impact:"neutral", hot:false },
+  { time:"WED 6/17",text:"⚡ FOMC decision 2PM ET TOMORROW — first real test for the position. Hold widely expected; watch the Warsh presser tone and dot plot. Verified: Fed.gov ✓", impact:"neutral", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  STATIC CONFIG (declared before SESSION_SUMMARY/REC which use it)
 // ════════════════════════════════════════════════════════════
-const STRIKES  = { putLong:6900, putShort:6950, callShort:8075, callLong:8125 };
+const STRIKES  = { putLong:6900, putShort:6950, callShort:8040, callLong:8090 };
 const CONTRACTS = 49;
 const EXPIRY   = "July 31, 2026";
 const TOTAL_CD = 43;
@@ -240,8 +243,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} as the Iran deal was confirmed (interim agreement, Strait of Hormuz reopening, signing this week). Nasdaq +2.38%, oil -5%, and IV collapsed (Pct ${GEX.ivPct}, IV ${GEX.iv}%). Today you CLOSED the 7/17 condor at $5.35 for +$6,000 realized and opened a fresh 7/31 condor: PUT ${fmt(STRIKES.putLong)}/${fmt(STRIKES.putShort)} · CALL ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} ×${CONTRACTS} for $${INITIAL_CREDIT.toFixed(2)} — re-centered higher and wider to get ahead of the call-side risk as the rally extended. New mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. SPX sits deep above the GEX flip (${fmt(GEX.flipPoint)}) = positive gamma; both wings wide (call ${Math.round(CALL_BUF)}pts, put ${Math.round(PUT_BUF)}pts), and the EM upper (${fmt(GEX.expectedMoveUp)}) is below the call short.`;
-const REC = `Fresh 7/31 condor, opened today at $${INITIAL_CREDIT.toFixed(2)} after closing the 7/17 for +$6,000 realized. Currently ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} across ${CONTRACTS} lots), mark $${MARK.toFixed(2)}. The reposition did its job: both wings are now wide — call ${Math.round(CALL_BUF)}pts (${CALL_BUF_PCT}%), put ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%) — vs the old position whose call would be only ~396pts away at today's level. Delta is now slightly negative (${GREEKS.delta}) since the call side sits closer than the put; theta ${usd(parseFloat(GREEKS.theta), true)}/day with ${TD_DTE} trading days to run. Context: IV has collapsed (Pct ${GEX.ivPct}) on the Iran resolution, so premium is thinner but the regime is calmer, and SPX is deep in positive-gamma territory (flip ${fmt(GEX.flipPoint)}). Watch items: FOMC 6/17 (first test), the 6/19 signing, and the call side if the melt-up continues — but ${fmt(STRIKES.callShort)} is above the EM upper (${fmt(GEX.expectedMoveUp)}), so it's not near-term threatened. Comfortable starting position.`;
+const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} on FOMC eve — a rotational pullback, not broad risk-off: the Dow hit a fresh record high while the Nasdaq fell ~2% on a chip selloff (the mirror of Monday's tech-led rally). Oil kept sliding below $80 (WTI ${MACRO.wti}) as the Iran MOU was formally signed. You rolled the call side DOWN twice today (8075→8050→8040) for $0.60 as SPX eased off 7,554, lifting total credit to $${TOTAL_COLLECTED.toFixed(2)}. Mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. SPX sits above the GEX flip (${fmt(GEX.flipPoint)}) = positive gamma; both wings outside the EM band (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}), call ${Math.round(CALL_BUF)}pts, put ${Math.round(PUT_BUF)}pts. The Fed decision lands tomorrow 2PM.`;
+const REC = `7/31 condor, ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} across ${CONTRACTS} lots), mark $${MARK.toFixed(2)}. You rolled the call side down twice today (8075→8050→8040, +$0.60) as SPX eased — harvesting premium on the untested side and lifting credit to $${TOTAL_COLLECTED.toFixed(2)}. Both wings sit outside the expected-move band: call ${Math.round(CALL_BUF)}pts (${CALL_BUF_PCT}%), put ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%), with the call still marginally closer. Delta is near-flat (${GREEKS.delta}), theta ${usd(parseFloat(GREEKS.theta), true)}/day, ${TD_DTE} trading days to run. SPX is above the GEX flip (${fmt(GEX.flipPoint)}) = positive gamma, a calmer backdrop, and IV remains low (Pct ${GEX.ivPct}). The one near-term variable is tomorrow's FOMC (2PM ET, first under Warsh): a hold is expected, but a hawkish surprise or a hawkish presser could jolt vol — vega ${GREEKS.vega} means an IV pop would pressure the mark even with SPX in range. Comfortable into the decision; the calls are the side to keep half an eye on if any post-Fed rally resumes.`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -251,7 +254,8 @@ const CALENDAR = [
   { day:"FRI 6/12", event:"🚀 SpaceX IPO (SPCX) +22%",   done:true, impact:"medium", verified:"✓ Nasdaq"  },
   { day:"SUN 6/14", event:"🕊️ Iran peace deal reached",   done:true, impact:"high",   verified:"✓ wires"  },
   { day:"MON 6/15", event:"🔄 Rolled to new 7/31 condor",   done:true, impact:"high",   verified:"✓"  },
-  { day:"WED 6/17", event:"⚡ FOMC decision 2PM",   done:false, impact:"high",   verified:"✓ Fed.gov" },
+  { day:"TUE 6/16", event:"🔧 Rolled calls down (8075→8040)",   done:true, impact:"medium",   verified:"✓"  },
+  { day:"WED 6/17", event:"⚡ FOMC decision 2PM (tomorrow)",   done:false, impact:"high",   verified:"✓ Fed.gov" },
   { day:"FRI 6/19", event:"🖊️ Iran deal signing (Geneva)",   done:false, impact:"medium", verified:"✓ wires" },
   { day:"FRI 7/31", event:"🎯 YOUR EXPIRATION",     done:false, impact:"high",   verified:"✓"         },
 ];
@@ -438,7 +442,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/15 close) · γ TOS (-0.59) · Δ now negative (re-centered higher)</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/16 close) · γ TOS (-0.62) · Δ near-flat (-14.7)</div>
       </div>
       <div class="card ${UNREALIZED_PL>=0?'safe':'warn'}" style="padding:14px;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
