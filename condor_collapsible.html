@@ -349,6 +349,12 @@
   .account-stat-value .neg { color: var(--red-dim); }
   .account-stat-value .neutral { color: var(--text-dim); }
   .account-stat-value .days-accent { color: var(--blue); }
+  .profit-progress { padding: 14px 24px 4px; border-top: 1px solid var(--border); margin-top: 4px; }
+  .profit-progress-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-dim); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .profit-progress-pct { font-family: var(--mono); color: var(--text); font-weight: 600; }
+  .profit-progress-track { height: 8px; background: rgba(100,116,139,0.15); border-radius: 4px; overflow: hidden; }
+  .profit-progress-fill { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
+  .profit-progress-sub { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-family: var(--mono); }
 
   /* days held */
   .days-val { color: var(--text-dim); font-family: var(--mono); }
@@ -385,6 +391,16 @@
           <div class="stat-label">Days Held</div>
           <div class="stat-value neutral" id="days-c1"></div>
         </div>
+      </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">-38.6%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:0%;background:var(--red-dim)"></div>
+        </div>
+        <div class="profit-progress-sub">–$18,222.84 captured of +$47,250.00 max credit ($7.50/ct × 63)</div>
       </div>
     </summary>
     <div class="detail-panel"><table>
@@ -561,6 +577,16 @@
           <div class="stat-value neutral" id="days-c4"></div>
         </div>
       </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">20.2%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:20.2%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$5,666.56 captured of +$28,000.00 max credit ($5.00/ct × 56)</div>
+      </div>
     </summary>
     <div class="detail-panel"><table>
       <thead><tr>
@@ -647,6 +673,16 @@
           <div class="stat-label">Days Held</div>
           <div class="stat-value neutral" id="days-c6"></div>
         </div>
+      </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">16.7%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:16.7%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$5,664.24 captured of +$33,930.00 max credit ($5.85/ct × 58)</div>
       </div>
     </summary>
     <div class="detail-panel"><table>
@@ -801,6 +837,16 @@
           <div class="stat-value neutral" id="days-c8"></div>
         </div>
       </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">14.9%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:14.9%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$5,441.52 captured of +$36,600.00 max credit ($6.10/ct × 60)</div>
+      </div>
     </summary>
     <div class="detail-panel"><table>
       <thead><tr>
@@ -896,6 +942,16 @@
           <div class="stat-label">Days Held</div>
           <div class="stat-value neutral" id="days-c2"></div>
         </div>
+      </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">-42.3%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:0%;background:var(--red-dim)"></div>
+        </div>
+        <div class="profit-progress-sub">–$11,659.04 captured of +$27,550.00 max credit ($7.25/ct × 38)</div>
       </div>
     </summary>
     <div class="detail-panel"><table>
@@ -1083,6 +1139,16 @@
           <div class="stat-value neutral" id="days-c3"></div>
         </div>
       </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">60.2%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:60.2%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$3,158.40 captured of +$5,247.00 max credit ($4.77/ct × 11)</div>
+      </div>
     </summary>
     <div class="detail-panel"><table>
       <thead><tr>
@@ -1236,6 +1302,16 @@
           <div class="stat-value neutral" id="days-c5"></div>
         </div>
       </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">25.7%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:25.7%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$4,361.64 captured of +$17,000.00 max credit ($5.00/ct × 34)</div>
+      </div>
     </summary>
     <div class="detail-panel"><table>
       <thead><tr>
@@ -1344,6 +1420,16 @@
           <div class="stat-label">Days Held</div>
           <div class="stat-value neutral" id="days-c7"></div>
         </div>
+      </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">17.2%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:17.2%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$4,719.16 captured of +$27,495.00 max credit ($5.85/ct × 47)</div>
       </div>
     </summary>
     <div class="detail-panel"><table>
@@ -1497,6 +1583,16 @@
           <div class="stat-label">Days Open</div>
           <div class="stat-value neutral" id="days-c9"></div>
         </div>
+      </div>
+      <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;">
+        <div class="profit-progress-label">
+          <span>% of Max Profit Captured</span>
+          <span class="profit-progress-pct">15.8%</span>
+        </div>
+        <div class="profit-progress-track">
+          <div class="profit-progress-fill" style="width:15.8%;background:var(--green)"></div>
+        </div>
+        <div class="profit-progress-sub">+$4,697.84 captured of +$29,694.00 max credit ($6.06/ct × 49)</div>
       </div>
     </summary>
     <div class="detail-panel"><table>
