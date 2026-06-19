@@ -92,23 +92,23 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 const STRIKES  = { putLong:6900, putShort:6950, callShort:8000, callLong:8050 };
 const CONTRACTS = 61;
 const EXPIRY   = "July 31, 2026";
-const SPX            = 7420.10;   // Schwab = Barchart authority (Wed 6/17 FOMC close)
+const SPX            = 7500.58;   // Schwab = Barchart authority (Thu 6/18 close)
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = -91.25;
-const SPX_CHANGE_PCT = -1.21;
-const TIMESTAMP      = "Jun 17, 2026  4:00 PM ET";
-const SESSION        = "bearish";
-const SESSION_NOTE   = `FOMC day: hawkish dot plot (9/18 see a 2026 hike, median 3.8%) → sell-the-news. SPX -1.21% to 7,420, VIX +12% to 18.4. SPX now BELOW flip = NEGATIVE gamma. Position scaled to ${CONTRACTS} lots (+12), calls rolled to 8000/8050. Mark $6.60 → +$3,111.`;
+const SPX_CHANGE_PTS = 80.48;
+const SPX_CHANGE_PCT = 1.08;
+const TIMESTAMP      = "Jun 18, 2026  4:00 PM ET";
+const SESSION        = "bullish";
+const SESSION_NOTE   = `Rebound day: SPX +1.08% to 7,500, recovering most of the FOMC drop. Russell +2.0% / Nasdaq +1.9% led as yields eased; VIX -11% to 16.4. Back ABOVE flip = POSITIVE gamma again. No position change (${CONTRACTS} lots, 8000/8050). Mark $6.10 → +$6,161.`;
 
-const CANDLE = { open:7524.50, high:7532.17, low:7402.61, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:18.44, brent:78.21, wti:74.54 };
+const CANDLE = { open:7487.36, high:7511.07, low:7468.32, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:16.40, brent:79.44, wti:75.52 };
 
 // Greeks — Δ/Θ/V from Schwab chain (6/15 close, stale-flagged); GAMMA from TOS. Δ-24.5 Θ+739.9 V-5341, Γ-0.59. Note: delta now NEGATIVE (re-centered higher, call side closer).
-const GREEKS = { delta:"+12.2", theta:"+915.0", gamma:"-0.76", vega:"-6423.3" };
+const GREEKS = { delta:"-30.5", theta:"+1024.8", gamma:"-0.83", vega:"-6972.3" };
 
 const INITIAL_CREDIT   = 7.11;   // blended credit/ct on the scaled position (49 orig + 12 added + all call rolls), passed via --credit
-const MARK             = 6.60;   // Schwab net MV (-$40,260 / 61 / 100) = cost to close. Confirmed vs Schwab.
+const MARK             = 6.10;   // Schwab net MV (-$37,210 / 61 / 100) = cost to close. Confirmed vs Schwab.
 
 const CONDOR_OPEN_DATE = "Jun 15";
 
@@ -134,15 +134,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 5)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        7466.65,
-  putWall:          7400.00,
-  callWall:         7400.00,
-  iv:               15.36,
-  hv:               14.89,
-  ivRank:           29.97,
-  ivPct:            72,
-  expectedMoveUp:   7697.58,
-  expectedMoveDown: 7142.62,
+  flipPoint:        7468.75,
+  putWall:          7500.00,
+  callWall:         7600.00,
+  iv:               13.61,
+  hv:               14.64,
+  ivRank:           18.83,
+  ivPct:            44,
+  expectedMoveUp:   7745.02,
+  expectedMoveDown: 7256.14,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -172,7 +172,7 @@ const HISTORY_LOG = [
   { date:"Jun 14",spx:7519.60, callBuf:Math.round(7950-7519.60), putBuf:Math.round(7519.60-7000), gexFlip:7382.11, session:"bullish", note:"SUN: Iran PEACE DEAL reached — permanent end to military ops; Trump reopening Strait of Hormuz. Oil -4%. Futures-implied SPX ~7,520; ToS indicative mark $5.30 → +$6,240 (7/17 condor, before it was closed Mon)." },
   { date:"Jun 15",spx:7554.29, callBuf:521, putBuf:604, gexFlip:7299.32, session:"bullish", note:"Iran deal confirmed: SPX +1.65% to 7,554, Nasdaq +2.38%, oil -5%, VIX 16.2, IV crushed. CLOSED 7/17 condor at $5.35 = +$6,000 realized. Opened NEW 7/31 condor 6900/6950·8075/8125 x49 for $6.06 — re-centered higher/wider. Mark $5.75 → +$1,519." },
   { date:"Jun 16",spx:7511.35, callBuf:529, putBuf:561, gexFlip:7385.10, session:"neutral", note:"FOMC eve. Rotational pullback — Dow record high, Nasdaq -2% on chip selloff, SPX -0.57% to 7,511. Oil <$80 (WTI 76.6). Iran MOU formally signed. Rolled calls DOWN twice (8075→8050→8040, +$0.60) harvesting premium. Mark $5.95 → +$3,479. Credit now $6.66." },
-  { date:"Jun 17",spx:7420.10, callBuf:580, putBuf:470, gexFlip:7466.65, session:"bearish", note:"FOMC: held 3.50-3.75% but HAWKISH dot plot (9/18 see a 2026 hike, median 3.8% vs 3.4% Mar). Sell-the-news: SPX -1.21% to 7,420 (Dow hit 3rd straight record intraday then reversed -0.98%), VIX +12% to 18.4, 2Y +16bp. SPX now BELOW flip 7,467 = NEGATIVE gamma. Scaled position by +12 contracts & rolled calls to 8000/8050; blended credit $7.11. Mark $6.60 → +$3,111. Put side closer (470pts)." },
+  { date:"Jun 18",spx:7500.58, callBuf:499, putBuf:551, gexFlip:7468.75, session:"bullish", note:"Rebound: SPX +1.08% to 7,500, recovering most of the FOMC drop. Russell +2.0% / Nasdaq +1.9% led as Treasury yields eased; VIX -11% to 16.4. Back ABOVE flip 7,469 = POSITIVE gamma again. No position change. Mark $6.10 → +$6,161 (best yet on this condor). Call side closer (499pts) after the bounce." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -180,20 +180,23 @@ const HISTORY_LOG = [
 // ════════════════════════════════════════════════════════════
 const ROLL_LOG = [
   { date:"Jun 15", side:"OPEN", from:"—", to:"6900/6950 · 8075/8125", dir:"—", credit:"$6.06", note:"New condor opened. EXP 7/31/26. 49 contracts. Replaced 7/17 condor (closed +$6,000 realized)." },
-  { date:"Jun 16", side:"CALL", from:"8075/8125", to:"8040/8090", dir:"↓ -35pts", credit:"$0.00", note:"Rolled calls down twice (8075→8050→8040, +$0.60 collected) as SPX pulled back from 7,554." },
-  { date:"Jun 17", side:"CALL+SIZE", from:"8040/8090 ×49", to:"8000/8050 ×61", dir:"↓ + scale", credit:"$0.00", note:"FOMC day: rolled call side down to 8000/8050 AND added 12 contracts (49→61). Blended all-in credit now $7.11/ct ($43,371). Roll/add credits are folded into the $7.11 blended figure (passed via --credit)." },
+  { date:"Jun 16", side:"CALL", from:"8075/8125", to:"8050/8100", dir:"↓ -25pts", credit:"$0.45", note:"Rolled calls down as SPX pulled back from 7,554 — harvesting premium on the untested call side." },
+  { date:"Jun 16", side:"CALL", from:"8050/8100", to:"8040/8090", dir:"↓ -10pts", credit:"$0.15", note:"Second call roll down. Call side now 8040/8090." },
+  { date:"Jun 17", side:"CALL", from:"8040/8090", to:"8030/8080", dir:"↓ -10pts", credit:"$0.15", note:"FOMC day: rolled calls down, added 11 contracts (49→60)." },
+  { date:"Jun 17", side:"CALL", from:"8030/8080", to:"8020/8070", dir:"↓ -10pts", credit:"$0.10", note:"Continued rolling down, added 1 contract (60→61)." },
+  { date:"Jun 17", side:"CALL", from:"8020/8070", to:"8000/8050", dir:"↓ -20pts", credit:"$0.20", note:"Final call roll to 8000/8050. Position now 61 lots. Blended all-in credit $7.11/ct ($43,371)." },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 17",  text:"⚡ FOMC — HAWKISH HOLD: Fed left rates at 3.50–3.75% (first meeting under Chair Warsh) but the dot plot turned hawkish — 9 of 18 officials now see at least one 2026 hike, lifting the year-end median to 3.8% (from 3.4% in March). Warsh abstained from a dot and said the Fed dropped forward guidance. Sell-the-news: SPX -1.21% to 7,420 after the Dow hit a 3rd straight intraday record. 2Y yield +16bp to 4.216%. CME FedWatch now ~61% for an Oct hike.", impact:"bearish", hot:true },
-  { time:"Jun 17",  text:"🔧 Position adjusted into the move: rolled the call side down to 8000/8050 AND scaled up from 49 to 61 contracts (+12). Blended all-in credit now $7.11/ct ($43,371). Mark $6.60 → +$3,111. The selloff brought the put side back to being the closer wing (470pts vs call 580pts).", impact:"neutral", hot:true },
-  { time:"Jun 17",  text:`⚠️ REGIME SHIFT: SPX (7,420) closed BELOW the GEX flip (7,467) — back in NEGATIVE gamma, where dealer hedging amplifies moves rather than dampening them. Combined with the bigger ${CONTRACTS}-lot and VIX +12% to 18.4, the position is more sensitive to a continued drop. IV Pct jumped to 72. Put side 6,950 is 470pts away; the EM lower is 7,143.`, impact:"bearish", hot:false },
-  { time:"Jun 17",  text:"🛢️ Oil kept falling — WTI 74.54, Brent 78.21 (Aug contract) — as the Strait reopening supply returns. Lower oil is a disinflation tailwind, but the Fed's hawkish projection overwhelmed it today. Megacap tech (MSFT, META, GOOGL, AMZN) led the selloff.", impact:"neutral", hot:false },
-  { time:"Jun 16",  text:"Yesterday: rotational pullback into FOMC, SPX -0.57%, Dow record. Rolled calls down twice (+$0.60).", impact:"neutral", hot:false },
-  { time:"FRI 6/19",text:"🖊️ Iran deal signing ceremony, Geneva. Headline risk around the event. Verified: wires ✓", impact:"neutral", hot:false },
+  { time:"Jun 18",  text:"📈 REBOUND: SPX +1.08% to 7,500.58, recovering most of Thursday's FOMC drop. The Russell 2000 led (+2.02%) and Nasdaq +1.91% as Treasury yields eased and markets reconsidered the rate-hike risk; chip producers extended their rally. The Dow lagged (+0.14%). VIX unwound -11% to 16.4.", impact:"bullish", hot:true },
+  { time:"Jun 18",  text:"🟢 Position back in a calmer regime: SPX (7,500) closed above the GEX flip (7,468.75) = POSITIVE gamma again (reversing yesterday's negative-gamma FOMC reading). Mark fell to $6.10 → P&L +$6,161 (+$1.01/ct), the best on this condor. VIX -11% helps the short vega. No position change today.", impact:"bullish", hot:true },
+  { time:"Jun 18",  text:"Structure check: walls re-separated to put 7,500 / call 7,600. EM band 7,256–7,745; the call short 8,000 sits above the EM upper. Call side 499pts (the closer wing after the bounce), put 551pts. Delta -30.5 reflects the call side being nearer.", impact:"neutral", hot:false },
+  { time:"Jun 18",  text:"🛢️ Energy stocks fell as crude stayed soft (WTI 75.52, Brent 79.44). Continued disinflation tailwind. The hawkish-Fed repricing from Thursday faded as yields slipped — the market is leaning back toward the rate path staying on hold.", impact:"neutral", hot:false },
+  { time:"Jun 17",  text:"Thursday FOMC: hawkish dot plot (9/18 see a 2026 hike) drove a -1.21% sell-the-news. Today reversed most of it.", impact:"neutral", hot:false },
+  { time:"FRI 6/19",text:"🖊️ Iran deal signing ceremony, Geneva (tomorrow). Headline risk around the event. Verified: wires ✓", impact:"neutral", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -219,8 +222,16 @@ const ATH_SPX       = Math.max(...HISTORY_LOG.map(p=>p.spx));
 const ATH_DATE      = HISTORY_LOG.find(p=>p.spx===ATH_SPX)?.date||"";
 const OPEN_SPX      = HISTORY_LOG.find(p=>p.date===CONDOR_OPEN_DATE)?.spx||HISTORY_LOG[0].spx;
 const IMPLIED_OPEN  = SPX_AH > 0 ? SPX_AH : SPX;
-const TOTAL_CREDITS = ROLL_LOG.filter(r=>r.side!=="OPEN"&&r.credit!=="$0.00").reduce((s,r)=>s+parseFloat(r.credit.replace("$","")),0);
-const TOTAL_COLLECTED = INITIAL_CREDIT + TOTAL_CREDITS;
+// CREDIT MODEL: TOTAL_COLLECTED is the authoritative blended all-in credit/ct
+// (the --credit value from the script: 49-lot history + 12 adds + all rolls).
+// We do NOT sum ROLL_LOG credits to derive it — that would be wrong once the
+// contract count changes mid-life (early rolls were collected on 49 lots, later
+// ones on 60-61), and would also double-count. ROLL_LOG is DISPLAY-ONLY history.
+// TOTAL_CREDITS is shown in the roll log for reference (sum of per-roll credits
+// as collected), but the P&L math uses TOTAL_COLLECTED directly.
+const TOTAL_COLLECTED = INITIAL_CREDIT;   // = 7.11, authoritative blended (via --credit)
+const TOTAL_CREDITS   = ROLL_LOG.filter(r=>r.side!=="OPEN").reduce((s,r)=>s+parseFloat(r.credit.replace("$","")),0); // display: roll credits collected ($1.05)
+const OPEN_CREDIT     = parseFloat(ROLL_LOG.find(r=>r.side==="OPEN").credit.replace("$",""));  // display: original open (6.06)
 const UNREALIZED_PL   = TOTAL_COLLECTED - MARK;
 const PL_PCT          = ((UNREALIZED_PL / TOTAL_COLLECTED) * 100).toFixed(1);
 const THETA_PER_DAY_1LOT = parseFloat(GREEKS.theta) / CONTRACTS;
@@ -246,8 +257,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} on a hawkish-FOMC sell-the-news. The Fed held at 3.50–3.75% (Warsh's first meeting) but the dot plot turned hawkish — 9 of 18 officials now see a 2026 hike, year-end median up to 3.8%. The Dow hit a third straight intraday record before reversing to close -0.98%; the 2Y yield jumped 16bp. Into the move you rolled the call side down to ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} and scaled the position from 49 to ${CONTRACTS} contracts (+12), blended all-in credit now $${TOTAL_COLLECTED.toFixed(2)}/ct ($${(TOTAL_COLLECTED*100*CONTRACTS).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,",")}). Mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. Two things changed the risk picture: VIX jumped +12% to ${MACRO.vix}, and SPX closed BELOW the GEX flip (${fmt(GEX.flipPoint)}) — back in negative-gamma territory. The selloff makes the put side the closer wing now (${Math.round(PUT_BUF)}pts vs call ${Math.round(CALL_BUF)}pts).`;
-const REC = `Scaled 7/31 condor — now ${CONTRACTS} contracts (up from 49), blended credit $${TOTAL_COLLECTED.toFixed(2)}/ct, mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} total), green. Two risk changes worth holding in view after today's FOMC: (1) SPX closed BELOW the GEX flip (${fmt(GEX.flipPoint)}), so you're in negative gamma — dealer hedging now amplifies moves rather than damping them; and (2) the position is ~24% larger, so max risk per side has risen to ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)} across the ${CONTRACTS} lots (vs the ~49-lot level). The put side is the closer wing again at ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%); call ${Math.round(CALL_BUF)}pts. With VIX up to ${MACRO.vix} and IV Pct ${GEX.ivPct}, vega ${GREEKS.vega} means further vol expansion would pressure the mark. Theta is ${usd(parseFloat(GREEKS.theta), true)}/day with ${TD_DTE} trading days left. Watch: a continued drop toward the EM lower (${fmt(GEX.expectedMoveDown)}) and the put side, amplified by negative gamma — if SPX approaches ${fmt(STRIKES.putShort)}, that's the side to defend. The hawkish repricing (Oct hike odds ~61%) is the new macro backdrop.`;
+const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)}, recovering most of Thursday's FOMC-driven drop. The rebound was led by small caps (Russell +2.0%) and tech (Nasdaq +1.9%) as Treasury yields eased and the market reconsidered the rate-hike risk; the Dow lagged. VIX unwound -11% to ${MACRO.vix}. No position change today — the ${CONTRACTS}-lot stayed at ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} on the calls — and the mark fell to $${MARK.toFixed(2)}, lifting P&L to ${usd(UNREALIZED_PL*100*CONTRACTS, true)} (+$${UNREALIZED_PL.toFixed(2)}/ct), the best on this condor. The regime improved: SPX closed back ABOVE the GEX flip (${fmt(GEX.flipPoint)}) = positive gamma, reversing yesterday's negative-gamma reading. The call side is the closer wing now (${Math.round(CALL_BUF)}pts vs put ${Math.round(PUT_BUF)}pts) after the bounce, but the call short sits above the EM upper (${fmt(GEX.expectedMoveUp)}).`;
+const REC = `61-lot 7/31 condor, mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} total) — the best level on this position, helped by today's rebound and the VIX collapse to ${MACRO.vix}. You're back in positive gamma (SPX above flip ${fmt(GEX.flipPoint)}), a calmer dealer-hedging backdrop than yesterday's FOMC negative-gamma reading. No adjustment today. Both wings are reasonable: call ${Math.round(CALL_BUF)}pts (${CALL_BUF_PCT}%) — the closer wing after the bounce — and put ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%); the call short sits above the EM upper (${fmt(GEX.expectedMoveUp)}). Delta -30.5 reflects the call side being nearer spot; theta is up to ${usd(parseFloat(GREEKS.theta), true)}/day on the ${CONTRACTS} lots with ${TD_DTE} trading days left. Max risk per side remains ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)} across the scaled position. With the hawkish-Fed scare fading and vol back down, this is a comfortable spot — the main thing to watch is a continued grind toward the call side if the tech-led rally extends. Tomorrow: Iran deal signing (headline risk).`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -259,7 +270,8 @@ const CALENDAR = [
   { day:"MON 6/15", event:"🔄 Rolled to new 7/31 condor",   done:true, impact:"high",   verified:"✓"  },
   { day:"TUE 6/16", event:"🔧 Rolled calls down (8075→8040)",   done:true, impact:"medium",   verified:"✓"  },
   { day:"WED 6/17", event:"⚡ FOMC: hawkish hold, +scaled to 61",   done:true, impact:"high",   verified:"✓ Fed.gov" },
-  { day:"FRI 6/19", event:"🖊️ Iran deal signing (Geneva)",   done:false, impact:"medium", verified:"✓ wires" },
+  { day:"THU 6/18", event:"📈 Rebound +1.08%, back > flip",   done:true, impact:"medium",   verified:"✓" },
+  { day:"FRI 6/19", event:"🖊️ Iran deal signing (Geneva, tmrw)",   done:false, impact:"medium", verified:"✓ wires" },
   { day:"FRI 7/31", event:"🎯 YOUR EXPIRATION",     done:false, impact:"high",   verified:"✓"         },
 ];
 
@@ -297,9 +309,9 @@ const KEY_LEVELS = [
 ].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
-  { label:"🟢 STABILIZE / BOUNCE", desc:`Selloff exhausts, SPX holds above the EM lower (${fmt(GEX.expectedMoveDown)}) and reclaims the flip ${fmt(GEX.flipPoint)} — back to positive gamma. VIX mean-reverts from ${MACRO.vix}, vega ${GREEKS.vega} works for you, mark recovers and theta (${usd(parseFloat(GREEKS.theta))}/day on ${CONTRACTS} lots) accrues. Best case for the scaled position.`, color:"#34d399", impact:"RECOVERY ✓" },
-  { label:"🔴 CONTINUED DROP",  desc:`Hawkish repricing extends the selloff. NEGATIVE gamma amplifies the move down toward the EM lower ${fmt(GEX.expectedMoveDown)}, then the put short ${fmt(STRIKES.putShort)} (${Math.round(PUT_BUF)}pts away). With ${CONTRACTS} lots, the put side is the one to defend/roll — and max risk is now ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}. This is the primary risk now.`, color:"#f87171", impact:"WATCH PUTS ⚠️" },
-  { label:"🟡 VOL STAYS BID",     desc:`Even if SPX chops sideways, a sustained VIX bid (IV Pct already ${GEX.ivPct}) keeps the mark elevated via vega ${GREEKS.vega}, slowing the green. Negative gamma means intraday swings stay sharp. Time decay still works — ${TD_DTE} trading days — but the path is choppier than the pre-FOMC calm.`, color:"#fbbf24", impact:"CHOPPY" },
+  { label:"🟢 RANGEBOUND DRIFT",   desc:`Positive gamma + low vol holds — SPX chops between the EM bounds (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}), dealers dampen moves, and theta harvests ${usd(parseFloat(GREEKS.theta))}/day across ${CONTRACTS} lots. Both wings stay OTM and the mark decays toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. Ideal for the scaled position.`, color:"#34d399", impact:"IDEAL ✓" },
+  { label:"🟡 RALLY EXTENDS",  desc:`Tech-led bounce continues — SPX grinds toward the EM upper ${fmt(GEX.expectedMoveUp)} and the call short ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away, the closer wing). Delta -30.5 means upside works against you. If SPX approaches the EM upper, the calls are the side to watch/roll. The call wall ${fmt(GEX.callWall)} may act as resistance first.`, color:"#fbbf24", impact:"MONITOR CALLS" },
+  { label:"🔴 FED SCARE RETURNS", desc:`Hawkish-Fed worry resurfaces (or the 6/19 signing disappoints) and SPX drops back below the flip ${fmt(GEX.flipPoint)} into negative gamma, VIX re-spikes from ${MACRO.vix}. Vega ${GREEKS.vega} pressures the mark on an IV pop. Put side ${fmt(STRIKES.putShort)} is ${Math.round(PUT_BUF)}pts away — comfortable for now, so this is more a mark risk than a strike risk near-term.`, color:"#f87171", impact:"WATCH VOL ⚠️" },
 ];
 
 function gaugeArc(pct){
@@ -445,7 +457,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/17 close) · γ TOS (-0.76) · Δ back positive (+12.2) on the selloff</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/18 close) · γ TOS (-0.83) · Δ-30.5 (call side closer)</div>
       </div>
       <div class="card ${UNREALIZED_PL>=0?'safe':'warn'}" style="padding:14px;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
@@ -556,9 +568,9 @@ window.addEventListener("DOMContentLoaded",()=>{
       <div class="micro" style="margin-bottom:16px;letter-spacing:.15em;">P&L SUMMARY</div>
       <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;">
         ${[
-          ["Entry Credit",    usd(INITIAL_CREDIT),                           "#34d399", `Opened ${CONDOR_OPEN_DATE} · ${CONTRACTS} contracts`],
-          ["Roll Credits",    usd(TOTAL_CREDITS, true),                           "#34d399", `${ROLL_LOG.filter(r=>r.side!=="OPEN"&&r.credit!=="$0.00").length} rolls so far`],
-          ["Total Collected", usd(TOTAL_COLLECTED),                          "#34d399", `${usd(TOTAL_COLLECTED*100)}/contract`],
+          ["Entry Credit",    usd(OPEN_CREDIT),                           "#34d399", `Opened ${CONDOR_OPEN_DATE} at 49 lots`],
+          ["Roll Credits",    usd(TOTAL_CREDITS, true),                           "#34d399", `${ROLL_LOG.filter(r=>r.side!=="OPEN").length} call rolls`],
+          ["Total Collected", usd(TOTAL_COLLECTED),                          "#34d399", `Schwab blended/ct · ${CONTRACTS} lots`],
           ["Current Mark",    `$${MARK.toFixed(2)}`,                                     "#94a3b8", `Schwab net MV ÷ ${CONTRACTS} ÷ 100`],
           ["Unrealized P&L",  usd(UNREALIZED_PL, true), PL_COLOR,  `${UNREALIZED_PL>=0?"+":""}${PL_PCT}% · ${usd(UNREALIZED_PL*100*CONTRACTS, true)} total`],
         ].map(([l,v,c,sub])=>`
