@@ -360,8 +360,34 @@
   /* days held */
   .days-val { color: var(--text-dim); font-family: var(--mono); }
   .days-open-val { color: var(--amber); font-family: var(--mono); font-weight: 600; }
-</style></head><body>
+</style>
+<style>
+  .acct-tabs {
+    display: flex; gap: 8px; padding: 20px 20px 0; background: var(--bg);
+  }
+  .acct-tab {
+    padding: 8px 20px; border-radius: 6px 6px 0 0; cursor: pointer;
+    font-family: var(--sans); font-size: 13px; font-weight: 500;
+    background: var(--surface); color: var(--text-dim);
+    border: 1px solid var(--border); border-bottom: none;
+    transition: background 0.15s, color 0.15s;
+  }
+  .acct-tab:hover { background: var(--surface2); color: var(--text); }
+  .acct-tab.active { background: var(--surface2); color: var(--text); border-bottom: 2px solid var(--surface2); margin-bottom: -1px; }
+  .acct-panel { display: none; }
+  .acct-panel.visible { display: block; }
+  #all-total-row { display: none; }
+  .show-all #all-total-row { display: block; }
+</style>
+</head><body>
 <div class="page-title">SPX Options — Position History</div>
+<div class="acct-tabs">
+  <div class="acct-tab active" id="tab-ira" onclick="switchAcct('ira')">IRA Account · XXX941</div>
+  <div class="acct-tab" id="tab-ind" onclick="switchAcct('ind')">Ind. Account · XXX735</div>
+  <div class="acct-tab" id="tab-all" onclick="switchAcct('all')">All Accounts</div>
+</div>
+
+<div class="acct-panel visible" id="panel-ira">
 <div class="account-header" style="" id="ira-header">
   <h2><span>▸</span>IRA Account · XXX941</h2>
   <div class="account-stats">
@@ -566,7 +592,7 @@
           <span class="side-put">6925P/6975P</span>
           <span class="side-call">8050C/8100C</span>
         </div>
-        <div class="summary-meta">Iron Condor<br>56→57 contracts<br>Exp 07/10/2026<br>Opened 06/01/2026</div>
+        <div class="summary-meta">Iron Condor<br>57 contracts<br>Exp 07/10/2026<br>Opened 06/01/2026</div>
       </div>
       <div class="summary-stats">
         <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$6,500.00</div></div>
@@ -660,10 +686,10 @@
       <div class="toggle-icon" id="tog6">+</div>
       <div class="summary-strikes">
         <div class="summary-label">
-          <span class="side-put">6950P/7000P</span>
-          <span class="side-call">7950C/8000C</span>
+          <span class="side-put">6925P/6975P</span>
+          <span class="side-call">8030C/8080C</span>
         </div>
-        <div class="summary-meta">Iron Condor<br>58→59 contracts<br>Exp 07/17/2026<br>Opened 06/04/2026</div>
+        <div class="summary-meta">Iron Condor<br>58 contracts<br>Exp 07/17/2026<br>Opened 06/04/2026</div>
       </div>
       <div class="summary-stats">
         <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$7,390.00</div></div>
@@ -824,7 +850,7 @@
       <div class="summary-strikes">
         <div class="summary-label">
           <span class="side-put">6900P/6950P</span>
-          <span class="side-call">8000C/8050C</span>
+          <span class="side-call">8075C/8125C</span>
         </div>
         <div class="summary-meta">Iron Condor<br>60→61 contracts<br>Exp 07/31/2026<br>Opened 06/15/2026</div>
       </div>
@@ -991,8 +1017,11 @@
     </table></div>
   </details>
 </div>
+</div>
+
+<div class="acct-panel" id="panel-ind">
 <div class="account-header" style="margin-top:40px;" id="ind1-header">
-  <h2><span>▸</span>Individual Account · XXX735</h2>
+  <h2><span>▸</span>Ind. Account · XXX735</h2>
   <div class="account-stats">
     <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="ind1-gross"></div></div>
     <div class="account-stat"><div class="account-stat-label">Fees</div><div class="account-stat-value" id="ind1-fees"></div></div>
@@ -1203,7 +1232,7 @@
       <div class="toggle-icon" id="tog3">+</div>
       <div class="summary-strikes">
         <div class="summary-label">
-          <span class="side-put">6750P/6800P</span>
+          <span class="side-put">6775P/6825P</span>
           <span class="side-call">8050C/8100C</span>
         </div>
         <div class="summary-meta">Iron Condor<br>11 contracts<br>Exp 06/26/2026<br>Opened 05/14/2026</div>
@@ -1369,7 +1398,7 @@
           <span class="side-put">6925P/6975P</span>
           <span class="side-call">8050C/8100C</span>
         </div>
-        <div class="summary-meta">Iron Condor<br>34→46 contracts<br>Exp 07/10/2026<br>Opened 06/01/2026</div>
+        <div class="summary-meta">Iron Condor<br>46 contracts<br>Exp 07/10/2026<br>Opened 06/01/2026</div>
       </div>
       <div class="summary-stats">
         <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$4,960.00</div></div>
@@ -1485,10 +1514,10 @@
       <div class="toggle-icon" id="tog7">+</div>
       <div class="summary-strikes">
         <div class="summary-label">
-          <span class="side-put">6950P/7000P</span>
-          <span class="side-call">7950C/8000C</span>
+          <span class="side-put">6925P/6975P</span>
+          <span class="side-call">8030C/8080C</span>
         </div>
-        <div class="summary-meta">Iron Condor<br>47→48 contracts<br>Exp 07/17/2026<br>Opened 06/04/2026</div>
+        <div class="summary-meta">Iron Condor<br>47 contracts<br>Exp 07/17/2026<br>Opened 06/04/2026</div>
       </div>
       <div class="summary-stats">
         <div class="stat"><div class="stat-label">Gross P&L</div><div class="stat-value positive">+$5,975.00</div></div>
@@ -1649,7 +1678,7 @@
       <div class="summary-strikes">
         <div class="summary-label">
           <span class="side-put">6900P/6950P</span>
-          <span class="side-call">8000C/8050C</span>
+          <span class="side-call">8075C/8125C</span>
         </div>
         <div class="summary-meta">Iron Condor<br>49→61 contracts<br>Exp 07/31/2026<br>Opened 06/15/2026</div>
       </div>
@@ -1816,7 +1845,9 @@
     </table></div>
   </details>
 </div>
-<div class="account-header" style="margin-top:24px;border-top:1px solid var(--border2);padding-top:16px;">
+</div>
+
+<div id="all-total-row" class="account-header" style="margin-top:24px;border-top:1px solid var(--border2);padding-top:16px;">
   <h2><span>▸</span>All Accounts · Total</h2>
   <div class="account-stats">
     <div class="account-stat"><div class="account-stat-label">Gross P&L</div><div class="account-stat-value" id="all-gross"></div></div>
@@ -1824,6 +1855,7 @@
     <div class="account-stat"><div class="account-stat-label">Net P&L</div><div class="account-stat-value" id="all-net"></div></div>
   </div>
 </div>
+
 <script>
   [['#det1','tog1'], ['#det4','tog4'], ['#det6','tog6'], ['#det8','tog8'], ['#det2','tog2'], ['#det3','tog3'], ['#det5','tog5'], ['#det7','tog7'], ['#det9','tog9']].forEach(([s,t])=>{const d=document.querySelector(s),e=document.getElementById(t);if(d&&e)d.addEventListener('toggle',()=>e.textContent=d.open?'−':'+');});
   function db(s,e){const f=new Date(s),t=e?new Date(e):new Date();t.setHours(0,0,0,0);f.setHours(0,0,0,0);return Math.floor((t-f)/86400000);}
@@ -1878,5 +1910,21 @@
   }
   function uh(){const a=sh('ira-gross','ira-fees','ira-net',["c1", "c4", "c6", "c8"]),b=sh('ind1-gross','ind1-fees','ind1-net',["c2", "c3", "c5", "c7", "c9"]);let ag=0,af=0,an=0,hg=false,hf=false,hn=false;[a,b].forEach(x=>{if(x.gross!==null){ag+=x.gross;hg=true;}if(x.fees!==null){af+=x.fees;hf=true;}if(x.net!==null){an+=x.net;hn=true;}});[['all-gross',hg?ag:null],['all-fees',hf?af:null],['all-net',hn?an:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});}
   ud();uh();updateAvgPnlDays();const now=new Date();setTimeout(()=>{ud();updateAvgPnlDays();setInterval(()=>{ud();updateAvgPnlDays();},86400000);},new Date(now.getFullYear(),now.getMonth(),now.getDate()+1)-now);
+</script>
+<script>
+  function switchAcct(id) {
+    document.querySelectorAll('.acct-panel').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.acct-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    document.body.classList.remove('show-all');
+    if (id === 'all') {
+      document.getElementById('panel-ira').classList.add('visible');
+      document.getElementById('panel-ind').classList.add('visible');
+      document.body.classList.add('show-all');
+    } else {
+      document.getElementById('panel-' + id).classList.add('visible');
+    }
+    ud(); uh(); updateAvgPnlDays();
+  }
 </script>
 </body></html>
