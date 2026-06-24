@@ -89,26 +89,26 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 // ════════════════════════════════════════════════════════════
 // ════════════════════════════════════════════════════════════
 // POSITION STRUCTURE (declared early — narrative/news reference CONTRACTS/STRIKES)
-const STRIKES  = { putLong:6900, putShort:6950, callShort:8000, callLong:8050 };
-const CONTRACTS = 61;
+const STRIKES  = { putLong:6900, putShort:6950, callShort:7975, callLong:8025 };
+const CONTRACTS = 67;
 const EXPIRY   = "July 31, 2026";
-const SPX            = 7472.79;   // Schwab = Barchart authority (Mon 6/22 close)
+const SPX            = 7365.46;   // Schwab = Barchart authority (Tue 6/23 close)
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = -27.79;
-const SPX_CHANGE_PCT = -0.37;
-const TIMESTAMP      = "Jun 22, 2026  4:00 PM ET";
-const SESSION        = "neutral";
-const SESSION_NOTE   = `Tech selloff: Alphabet -5% (AI talent fears), SpaceX -16%; Dow held up on Caterpillar +4%. SPX -0.37% to 7,473, VIX 17.3. Closed ~4pts BELOW flip = marginally negative gamma (boundary). No position change. Mark dropped to $5.40 → +$10,431 (best yet). PCE Thursday.`;
+const SPX_CHANGE_PTS = -107.33;
+const SPX_CHANGE_PCT = -1.44;
+const TIMESTAMP      = "Jun 23, 2026  4:00 PM ET";
+const SESSION        = "bearish";
+const SESSION_NOTE   = `Global tech selloff: Kospi -10% (circuit breaker), Micron -10%, semis slammed; BofA flagged up to 3 hikes. SPX -1.44% to 7,365, VIX +13% to 19.5. Now 140pts BELOW flip = NEGATIVE gamma. Rolled calls to 7975/8025 (+0.20) AND added 6 ct (61->67) @ 6.50; blended credit 7.24. Mark $6.50 → +$4,958 (gave back over half). Put side closer (415pts). PCE Thursday.`;
 
-const CANDLE = { open:7500.44, high:7530.01, low:7460.01, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:17.28, brent:78.00, wti:74.08 };
+const CANDLE = { open:7366.51, high:7424.17, low:7347.60, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:19.49, brent:76.88, wti:73.05 };
 
 // Greeks — Δ/Θ/V from Schwab chain (6/15 close, stale-flagged); GAMMA from TOS. Δ-24.5 Θ+739.9 V-5341, Γ-0.59. Note: delta now NEGATIVE (re-centered higher, call side closer).
-const GREEKS = { delta:"+12.2", theta:"+976.0", gamma:"-0.78", vega:"-5978.0" };
+const GREEKS = { delta:"+73.7", theta:"+951.4", gamma:"-0.75", vega:"-5815.6" };
 
-const INITIAL_CREDIT   = 7.11;   // blended credit/ct on the scaled position (49 orig + 12 added + all call rolls), passed via --credit
-const MARK             = 5.40;   // Schwab net MV (-$32,940 / 61 / 100) = cost to close. Confirmed vs Schwab.
+const INITIAL_CREDIT   = 7.24;   // blended credit/ct across all contracts (61 @ 7.31 incl rolls + 6 new @ 6.50), passed via --credit
+const MARK             = 6.50;   // Schwab net MV (-$43,550 / 67 / 100) = cost to close. Confirmed vs Schwab.
 
 const CONDOR_OPEN_DATE = "Jun 15";
 
@@ -134,15 +134,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 5)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        7477.04,
-  putWall:          7500.00,
-  callWall:         7600.00,
-  iv:               14.52,
-  hv:               14.46,
-  ivRank:           24.64,
-  ivPct:            60,
-  expectedMoveUp:   7725.24,
-  expectedMoveDown: 7220.34,
+  flipPoint:        7505.34,
+  putWall:          7400.00,
+  callWall:         7500.00,
+  iv:               16.37,
+  hv:               15.05,
+  ivRank:           36.38,
+  ivPct:            82,
+  expectedMoveUp:   7628.31,
+  expectedMoveDown: 7102.61,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -172,7 +172,7 @@ const HISTORY_LOG = [
   { date:"Jun 14",spx:7519.60, callBuf:Math.round(7950-7519.60), putBuf:Math.round(7519.60-7000), gexFlip:7382.11, session:"bullish", note:"SUN: Iran PEACE DEAL reached — permanent end to military ops; Trump reopening Strait of Hormuz. Oil -4%. Futures-implied SPX ~7,520; ToS indicative mark $5.30 → +$6,240 (7/17 condor, before it was closed Mon)." },
   { date:"Jun 15",spx:7554.29, callBuf:521, putBuf:604, gexFlip:7299.32, session:"bullish", note:"Iran deal confirmed: SPX +1.65% to 7,554, Nasdaq +2.38%, oil -5%, VIX 16.2, IV crushed. CLOSED 7/17 condor at $5.35 = +$6,000 realized. Opened NEW 7/31 condor 6900/6950·8075/8125 x49 for $6.06 — re-centered higher/wider. Mark $5.75 → +$1,519." },
   { date:"Jun 16",spx:7511.35, callBuf:529, putBuf:561, gexFlip:7385.10, session:"neutral", note:"FOMC eve. Rotational pullback — Dow record high, Nasdaq -2% on chip selloff, SPX -0.57% to 7,511. Oil <$80 (WTI 76.6). Iran MOU formally signed. Rolled calls DOWN twice (8075→8050→8040, +$0.60) harvesting premium. Mark $5.95 → +$3,479. Credit now $6.66." },
-  { date:"Jun 22",spx:7472.79, callBuf:527, putBuf:523, gexFlip:7477.04, session:"neutral", note:"Tech selloff: Alphabet -5% on AI-talent fears, SpaceX -16% (3rd straight drop), Amazon -4.8%, MSFT -3%; Dow held up on Caterpillar +4%. SPX -0.37% to 7,473, VIX 17.3. Closed ~4pts BELOW flip 7,477 = marginally negative gamma (boundary). US authorized Iranian oil sales (60-day license); PCE Thursday. No position change. Mark dropped to $5.40 → +$10,431 — best yet. Wings nearly symmetric (call 527 / put 523)." },
+  { date:"Jun 23",spx:7365.46, callBuf:610, putBuf:415, gexFlip:7505.34, session:"bearish", note:"Global tech selloff: Kospi -10% (circuit breaker, SK Hynix -11%/Samsung -8%), Micron -10%, Marvell -8%; BofA note flagged up to 3 hikes. SPX -1.44% to 7,365, VIX +13% to 19.5. Now 140pts BELOW flip 7,505 = NEGATIVE gamma. Iran walked back IAEA inspections. Rolled calls to 7975/8025 (+0.20) AND added 6 ct (61->67) @ 6.50; blended credit 7.24. Mark $6.50 → +$4,958 (gave back >half of yesterday). Put side closer (415pts, 5.6%). PCE Thursday." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -185,18 +185,19 @@ const ROLL_LOG = [
   { date:"Jun 17", side:"CALL", from:"8040/8090", to:"8030/8080", dir:"↓ -10pts", credit:"$0.15", note:"FOMC day: rolled calls down, added 11 contracts (49→60)." },
   { date:"Jun 17", side:"CALL", from:"8030/8080", to:"8020/8070", dir:"↓ -10pts", credit:"$0.10", note:"Continued rolling down, added 1 contract (60→61)." },
   { date:"Jun 17", side:"CALL", from:"8020/8070", to:"8000/8050", dir:"↓ -20pts", credit:"$0.20", note:"Final call roll to 8000/8050. Position now 61 lots. Blended all-in credit $7.11/ct ($43,371)." },
+  { date:"Jun 23", side:"CALL", from:"8000/8050", to:"7975/8025", dir:"↓ -25pts", credit:"$0.20", note:"Rolled call side down on the 61 as SPX sold off, AND opened 6 new contracts at the same strikes for $6.50/ct (scaled 61→67). Blended all-in credit now $7.24/ct ($48,508)." },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 22",  text:"📉 TECH SELLOFF: SPX -0.37% to 7,472.79, dragged by megacap tech — Alphabet -5% on AI-talent-departure concerns, Amazon -4.8%, Microsoft -3%, SpaceX -16% (3rd straight decline). The Dow rose though, led by Caterpillar +4% — a sharp tech-vs-rest split. Nasdaq -1.3%.", impact:"bearish", hot:true },
-  { time:"Jun 22",  text:"🟢 Position jumped to +$10,431 (+$1.71/ct) — best yet on this condor. Mark dropped to $5.40 as time decay plus the modest SPX pullback compressed the short options. Wings are nearly symmetric now: call 527pts, put 523pts (put a hair closer). VIX ticked up to 17.3. No position change.", impact:"bullish", hot:true },
-  { time:"Jun 22",  text:"⚖️ Gamma boundary: SPX (7,473) closed ~4pts BELOW the flip (7,477) — technically just into negative gamma, but essentially neutral/on the line (was above it Friday). Not a strong regime signal either way at this distance. EM band 7,220–7,725; both wings sit outside it.", impact:"neutral", hot:false },
-  { time:"Jun 22",  text:"🛢️ Iran/oil: the US authorized Iranian oil sales through August via a temporary 60-day license after weekend talks in Switzerland; Qatar/Pakistan say the sides agreed a roadmap to a final deal in 60 days. Oil slipped again (WTI 74.08). Treasury yields rose to start the week.", impact:"neutral", hot:false },
-  { time:"Jun 18",  text:"Thu rebound: SPX +1.08%, back above flip. No change. (Fri 6/19 Juneteenth holiday — market closed.)", impact:"neutral", hot:false },
-  { time:"THU 6/25",text:"⚡ May PCE inflation (Fed's preferred gauge) — the week's key catalyst. With the Fed's hawkish tilt and an Oct hike in play, a hot print could pressure rates/stocks. Verified: BEA ✓", impact:"neutral", hot:false },
+  { time:"Jun 23",  text:"📉 GLOBAL TECH SELLOFF: SPX -1.44% to 7,365.46 in a risk-off session. The trigger was overseas — South Korea's Kospi fell ~10% intraday (steepest in 3+ months, circuit-breaker halt) with SK Hynix -11% and Samsung -8%, spilling into US semis: Micron -10%, Marvell -8%, Sandisk -11%. VIX +13% to 19.5.", impact:"bearish", hot:true },
+  { time:"Jun 23",  text:"🔧 Adjusted + scaled: rolled the call side down to 7975/8025 on the 61 (+$0.20) AND opened 6 new contracts at the same strikes for $6.50 — total now 67 lots, blended credit $7.24/ct ($48,508). Mark rose to $6.50 as the selloff and vol spike lifted option prices → P&L gave back to +$4,958 (from +$10,431 Monday). Put side now the closer wing at 415pts.", impact:"neutral", hot:true },
+  { time:"Jun 23",  text:"⚠️ NEGATIVE GAMMA: SPX (7,365) closed 140pts BELOW the flip (7,505) — solidly negative-gamma now (was a boundary yesterday), where dealer hedging amplifies moves. IV Pct jumped to 82. EM band 7,103–7,628: the put short 6,950 sits ~153pts below even the EM floor, still outside it, but the cushion compressed with today's drop. With the larger 67-lot, downside sensitivity is higher.", impact:"bearish", hot:false },
+  { time:"Jun 23",  text:"🏦 Macro: a Bank of America note warned of up to three rate hikes this year, feeding the risk-off. Iran's foreign ministry said there were no plans for IAEA inspections, contradicting VP Vance — a wobble in the deal narrative. Oil slipped (WTI 73.05). 10Y yields rose.", impact:"bearish", hot:false },
+  { time:"Jun 22",  text:"Mon: tech-led -0.37%, position hit +$10,431 high before today's reversal.", impact:"neutral", hot:false },
+  { time:"THU 6/25",text:"⚡ May PCE inflation (Fed's preferred gauge) — lands into a fragile, negative-gamma tape with rate-hike fear rising. A hot print could extend the downmove toward the put side. The key event this week. Verified: BEA ✓", impact:"bearish", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -257,8 +258,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} on a megacap-tech selloff — Alphabet -5% on AI-talent-departure fears, SpaceX -16%, Amazon and Microsoft also lower — while the Dow actually rose on Caterpillar +4%, a sharp tech-vs-rest split. No position change today; the modest drop plus time decay pulled the mark down to $${MARK.toFixed(2)}, lifting P&L to ${usd(UNREALIZED_PL*100*CONTRACTS, true)} (+$${UNREALIZED_PL.toFixed(2)}/ct) — the best level on this condor. The wings are now nearly symmetric: call ${Math.round(CALL_BUF)}pts, put ${Math.round(PUT_BUF)}pts, both well outside the EM band (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}). SPX closed ~${Math.abs(Math.round(SPX-GEX.flipPoint))}pts below the flip (${fmt(GEX.flipPoint)}), nudging marginally into negative gamma — but at this distance it's effectively neutral. VIX ticked up to ${MACRO.vix}. PCE inflation Thursday is the week's catalyst.`;
-const REC = `61-lot 7/31 condor, mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} total) — the best level on this position. Time decay plus today's modest tech-led pullback compressed the mark nicely; no adjustment today. The position is well-balanced now — call ${Math.round(CALL_BUF)}pts (${CALL_BUF_PCT}%) and put ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%), almost symmetric, both outside the EM band (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}) — which is about as comfortable as a condor gets. Delta +12.2 is near-flat. SPX closed marginally below the flip (${fmt(GEX.flipPoint)}), so technically a hair into negative gamma, but ~${Math.abs(Math.round(SPX-GEX.flipPoint))}pts off the line is effectively neutral — not a meaningful regime signal here. Theta ${usd(parseFloat(GREEKS.theta), true)}/day on the ${CONTRACTS} lots, ${TD_DTE} trading days left; max risk per side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}. Watch items: PCE inflation Thursday (the week's catalyst, with an Oct hike in play), and whether the megacap-tech weakness spreads or stays contained. With 28 sessions left and the mark down to $5.40, you're past two-thirds of max profit captured — worth thinking about a profit-taking level on the horizon.`;
+const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} in a global risk-off session — South Korea's Kospi fell ~10% (circuit-breaker halt), dragging US semis (Micron -10%, Marvell -8%), and a Bank of America note warning of up to three rate hikes added fuel. VIX spiked +13% to ${MACRO.vix}. Today you adjusted and scaled: rolled the call side down to ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} on the 61 (+$0.20) and opened 6 new contracts at $6.50, taking the position to ${CONTRACTS} lots at a blended $${TOTAL_COLLECTED.toFixed(2)}/ct credit. The selloff and vol spike lifted the mark to $${MARK.toFixed(2)}, so P&L gave back to ${usd(UNREALIZED_PL*100*CONTRACTS, true)} (from Monday's +$10,431). The risk picture has shifted to the downside: the put side is now the closer wing at ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%), SPX dropped 140pts below the flip (${fmt(GEX.flipPoint)}) into negative gamma, and IV Pct jumped to ${GEX.ivPct}. The put short still sits below the EM floor (${fmt(GEX.expectedMoveDown)}), but the cushion compressed. PCE inflation Thursday lands into this fragile tape.`;
+const REC = `${CONTRACTS}-contract 7/31 condor (rolled to ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} + 6 added today), mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} total), still green but off Monday's high after today's selloff lifted the mark. The risk has tilted to the downside and is worth watching closely: (1) the put side is now the closer wing at ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%) and SPX moved 107pts toward it today; (2) SPX is 140pts below the flip (${fmt(GEX.flipPoint)}) — NEGATIVE gamma, so dealer hedging amplifies a further downmove; (3) the position is now ${CONTRACTS} lots, so max risk per side has grown to ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)} — meaningfully larger downside if the put side were breached. The put short ${fmt(STRIKES.putShort)} still sits below the EM floor (${fmt(GEX.expectedMoveDown)}), so it's not immediately threatened, but the cushion compressed. Captured ${Math.round(UNREALIZED_PL/TOTAL_COLLECTED*100)}% of max so far. Delta +73.7 is now meaningfully long (short puts gaining sensitivity), vega ${GREEKS.vega} on a VIX that just spiked to ${MACRO.vix}. Key watch: PCE Thursday into a fragile, negative-gamma tape — a hot print could extend the move toward the puts. If SPX heads toward the EM floor (${fmt(GEX.expectedMoveDown)}), the put side is the one to defend or roll. This is the least comfortable the position has been; worth deciding in advance where you'd act on the put side.`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -271,8 +272,9 @@ const CALENDAR = [
   { day:"TUE 6/16", event:"🔧 Rolled calls down (8075→8040)",   done:true, impact:"medium",   verified:"✓"  },
   { day:"WED 6/17", event:"⚡ FOMC: hawkish hold, +scaled to 61",   done:true, impact:"high",   verified:"✓ Fed.gov" },
   { day:"THU 6/18", event:"📈 Rebound +1.08%, back > flip",   done:true, impact:"medium",   verified:"✓" },
-  { day:"MON 6/22", event:"📉 Tech selloff -0.37%, +$10,431",   done:true, impact:"medium", verified:"✓" },
-  { day:"THU 6/25", event:"⚡ May PCE inflation (key)",   done:false, impact:"high", verified:"✓ BEA" },
+  { day:"MON 6/22", event:"📉 Tech selloff -0.37%, +$10,431 peak",   done:true, impact:"medium", verified:"✓" },
+  { day:"TUE 6/23", event:"📉 Global risk-off -1.44%, rolled+scaled to 67",   done:true, impact:"high", verified:"✓" },
+  { day:"THU 6/25", event:"⚡ May PCE inflation (key, fragile tape)",   done:false, impact:"high", verified:"✓ BEA" },
   { day:"FRI 7/31", event:"🎯 YOUR EXPIRATION",     done:false, impact:"high",   verified:"✓"         },
 ];
 
@@ -310,9 +312,9 @@ const KEY_LEVELS = [
 ].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
-  { label:"🟢 RANGEBOUND DRIFT",   desc:`SPX chops near the flip between the EM bounds (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}). With wings nearly symmetric and far OTM, theta harvests ${usd(parseFloat(GREEKS.theta))}/day across ${CONTRACTS} lots and the mark decays toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. Already past two-thirds captured — this is the ideal path into a profit-taking decision.`, color:"#34d399", impact:"IDEAL ✓" },
-  { label:"🟡 TECH WEAKNESS SPREADS", desc:`Today's megacap-tech selloff broadens and drags SPX down toward the EM lower ${fmt(GEX.expectedMoveDown)} and the put short ${fmt(STRIKES.putShort)} (${Math.round(PUT_BUF)}pts away). Being just below the flip, dealer hedging slightly amplifies a downmove. Put side becomes the one to watch; PCE Thursday could be the trigger if it runs hot.`, color:"#fbbf24", impact:"WATCH PUTS" },
-  { label:"🔴 VOL SPIKE", desc:`A hot PCE print Thursday (or an Iran-talks stumble) spikes IV from ${MACRO.vix} — vega ${GREEKS.vega} pressures the mark on an IV pop even if SPX stays in range. Both wings are ~${Math.round(Math.min(CALL_BUF,PUT_BUF))}+pts away though, so near-term this is a mark risk, not a strike risk. A profit-take here would sidestep the event.`, color:"#f87171", impact:"WATCH VOL ⚠️" },
+  { label:"🔴 SELLOFF EXTENDS",  desc:`Tech weakness + rate-hike fear keep dragging SPX toward the EM floor ${fmt(GEX.expectedMoveDown)} and the put short ${fmt(STRIKES.putShort)} (${Math.round(PUT_BUF)}pts away, the closer wing). NEGATIVE gamma amplifies the downmove. A hot PCE Thursday is the trigger to watch. With ${CONTRACTS} lots, max risk per side is ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)} — this is the primary risk now; have a put-side defend/roll level set.`, color:"#f87171", impact:"PRIMARY RISK ⚠️" },
+  { label:"🟢 STABILIZE / BOUNCE", desc:`Selloff exhausts, SPX holds above the EM floor ${fmt(GEX.expectedMoveDown)} and reclaims the flip ${fmt(GEX.flipPoint)} — back to positive gamma. VIX mean-reverts from ${MACRO.vix}, vega ${GREEKS.vega} works for you, mark falls back and theta (${usd(parseFloat(GREEKS.theta))}/day on ${CONTRACTS} lots) resumes. The green rebuilds toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max.`, color:"#34d399", impact:"RECOVERY ✓" },
+  { label:"🟡 VOL STAYS BID",     desc:`Even sideways, a sustained VIX bid (IV Pct already ${GEX.ivPct}) keeps the mark elevated via vega ${GREEKS.vega}, capping the green. Negative gamma keeps intraday swings sharp. Theta still works — ${TD_DTE} trading days — but the path is choppier and more two-sided than the calm of last week.`, color:"#fbbf24", impact:"CHOPPY" },
 ];
 
 function gaugeArc(pct){
@@ -458,7 +460,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/22 close) · γ TOS (-0.78) · Δ+12.2 (near-balanced wings)</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/23 close) · γ TOS (-0.75) · Δ+73.7 (put side closer after selloff)</div>
       </div>
       <div class="card ${UNREALIZED_PL>=0?'safe':'warn'}" style="padding:14px;">
         <div class="micro" style="margin-bottom:8px;letter-spacing:.15em;">RECOMMENDATION</div>
