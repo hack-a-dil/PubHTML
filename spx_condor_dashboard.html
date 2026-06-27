@@ -89,26 +89,26 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 // ════════════════════════════════════════════════════════════
 // ════════════════════════════════════════════════════════════
 // POSITION STRUCTURE (declared early — narrative/news reference CONTRACTS/STRIKES)
-const STRIKES  = { putLong:6900, putShort:6950, callShort:7950, callLong:8000 };
+const STRIKES  = { putLong:6900, putShort:6950, callShort:7925, callLong:7975 };
 const CONTRACTS = 67;
 const EXPIRY   = "July 31, 2026";
-const SPX            = 7357.49;   // Schwab = Barchart authority (Thu 6/25 PCE close)
+const SPX            = 7354.02;   // Schwab = Barchart authority (Fri 6/26 close, built Sat)
 const SPX_AH         = 0;
 const SPY            = 0;
-const SPX_CHANGE_PTS = -0.73;
-const SPX_CHANGE_PCT = -0.01;
-const TIMESTAMP      = "Jun 25, 2026  4:00 PM ET";
+const SPX_CHANGE_PTS = -3.47;
+const SPX_CHANGE_PCT = -0.05;
+const TIMESTAMP      = "Jun 26, 2026  4:00 PM ET (Fri close)";
 const SESSION        = "neutral";
-const SESSION_NOTE   = `PCE day, flat close (-0.01% to 7,357). Hot headline (4.1%, highest since Apr-23) but in-line core 3.3% → no hawkish shock; futures held, Sept hike odds trimmed. Intraday range spanned ~96pts (high to low) before settling flat. No position change. Mark $6.475 → +$6,466. SPX 97pts below flip = neg gamma (less deep). Put side held at 407pts.`;
+const SESSION_NOTE   = `Fri close (built Sat): SPX -0.05% to 7,354. Opened with a gap down on a renewed tech selloff (Apple -6%, AI-cost fears, Nasdaq 4th down day), tested an intraday low ~60pts under the close, then recovered to roughly flat. VIX spiked to 20.7 intraday, faded to 18.4. Rolled calls to 7925/7975 (+0.15); blended 7.59. SPX 106pts below flip = neg gamma. Mark $6.55 → +$6,968. Put side held (404pts) through the test.`;
 
-const CANDLE = { open:7404.91, high:7419.08, low:7323.50, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:18.89, brent:74.71, wti:71.47 };
+const CANDLE = { open:7312.74, high:7392.95, low:7294.18, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:18.41, brent:73.57, wti:70.24 };
 
 // Greeks — Δ/Θ/V from Schwab chain (6/15 close, stale-flagged); GAMMA from TOS. Δ-24.5 Θ+739.9 V-5341, Γ-0.59. Note: delta now NEGATIVE (re-centered higher, call side closer).
-const GREEKS = { delta:"+73.7", theta:"+1058.6", gamma:"-0.81", vega:"-5996.5" };
+const GREEKS = { delta:"+93.8", theta:"+1092.1", gamma:"-0.81", vega:"-5741.9" };
 
-const INITIAL_CREDIT   = 7.44;   // blended credit/ct across the full position (7.24 prior + 0.20 call roll 6/24), passed via --credit
-const MARK             = 6.475;  // Schwab net MV (-$43,382.5 / 67 / 100) = cost to close. Confirmed vs Schwab.
+const INITIAL_CREDIT   = 7.59;   // blended credit/ct across the full position (7.44 prior + 0.15 call roll 6/26), passed via --credit
+const MARK             = 6.55;   // Schwab net MV (-$43,885 / 67 / 100) = cost to close. Confirmed vs Schwab.
 
 const CONDOR_OPEN_DATE = "Jun 15";
 
@@ -134,15 +134,15 @@ const TD_DTE       = (()=>{
 //  GEX DATA — Barchart (Jun 5)
 // ════════════════════════════════════════════════════════════
 const GEX = {
-  flipPoint:        7454.83,
-  putWall:          7400.00,
+  flipPoint:        7460.36,
+  putWall:          7300.00,
   callWall:         7500.00,
-  iv:               16.12,
-  hv:               14.94,
-  ivRank:           34.77,
-  ivPct:            78,
-  expectedMoveUp:   7615.79,
-  expectedMoveDown: 7099.19,
+  iv:               15.66,
+  hv:               14.75,
+  ivRank:           31.90,
+  ivPct:            74,
+  expectedMoveUp:   7612.25,
+  expectedMoveDown: 7095.79,
 };
 
 // ════════════════════════════════════════════════════════════
@@ -173,6 +173,7 @@ const HISTORY_LOG = [
   { date:"Jun 15",spx:7554.29, callBuf:521, putBuf:604, gexFlip:7299.32, session:"bullish", note:"Iran deal confirmed: SPX +1.65% to 7,554, Nasdaq +2.38%, oil -5%, VIX 16.2, IV crushed. CLOSED 7/17 condor at $5.35 = +$6,000 realized. Opened NEW 7/31 condor 6900/6950·8075/8125 x49 for $6.06 — re-centered higher/wider. Mark $5.75 → +$1,519." },
   { date:"Jun 16",spx:7511.35, callBuf:529, putBuf:561, gexFlip:7385.10, session:"neutral", note:"FOMC eve. Rotational pullback — Dow record high, Nasdaq -2% on chip selloff, SPX -0.57% to 7,511. Oil <$80 (WTI 76.6). Iran MOU formally signed. Rolled calls DOWN twice (8075→8050→8040, +$0.60) harvesting premium. Mark $5.95 → +$3,479. Credit now $6.66." },
   { date:"Jun 25",spx:7357.49, callBuf:593, putBuf:407, gexFlip:7454.83, session:"neutral", note:"PCE day, flat close (-0.01% to 7,357). Headline PCE hot at 4.1% y/y (highest since Apr-23) but monthly 0.4% (0.1pp below est) and core held 3.3% → no hawkish shock. Futures held positive, yields slipped, Sept hike odds trimmed slightly. Intraday swung 7,419 high to 7,323 low then recovered to flat — put side never tested (low 373pts above 6,950). No position change. Mark $6.48 → +$6,466. SPX 97pts below flip 7,455 = neg gamma (less deep than yesterday). Oil bounced (WTI 71.5). Put buffer held 407pts." },
+  { date:"Jun 26",spx:7354.02, callBuf:571, putBuf:404, gexFlip:7460.36, session:"neutral", note:"Fri (built Sat): SPX -0.05% to 7,354. Gapped down to 7,313 open on renewed tech selloff (Apple -6%, AI-infrastructure-cost fears, OpenAI IPO-delay report; Nasdaq's 4th straight down day, Kospi -5%), tested a 7,294 low intraday — put buffer compressed to ~360pts at the low — then recovered to flat. VIX spiked to 20.7, faded to 18.4. Rolled calls down to 7925/7975 (+0.15); blended 7.59. Put wall dropped to 7,300. SPX 106pts below flip = neg gamma. Δ rose to +93.8 (most long yet). Mark $6.55 → +$6,968. Put side held (404pts) through the test." },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -187,18 +188,19 @@ const ROLL_LOG = [
   { date:"Jun 17", side:"CALL", from:"8020/8070", to:"8000/8050", dir:"↓ -20pts", credit:"$0.20", note:"Final call roll to 8000/8050. Position now 61 lots. Blended all-in credit $7.11/ct ($43,371)." },
   { date:"Jun 23", side:"CALL", from:"8000/8050", to:"7975/8025", dir:"↓ -25pts", credit:"$0.20", note:"Rolled call side down on the 61 as SPX sold off, AND opened 6 new contracts at the same strikes for $6.50/ct (scaled 61→67). Blended all-in credit now $7.24/ct ($48,508)." },
   { date:"Jun 24", side:"CALL", from:"7975/8025", to:"7950/8000", dir:"↓ -25pts", credit:"$0.20", note:"Rolled call side down again on all 67 (no size change) as SPX stayed soft. Blended all-in credit now $7.44/ct ($49,848)." },
+  { date:"Jun 26", side:"CALL", from:"7950/8000", to:"7925/7975", dir:"↓ -25pts", credit:"$0.15", note:"Rolled call side down again on all 67 (Fri) into a gap-down tech-selloff open. Blended all-in credit now $7.59/ct ($50,853)." },
 ];
 
 // ════════════════════════════════════════════════════════════
 //  NEWS
 // ════════════════════════════════════════════════════════════
 const NEWS = [
-  { time:"Jun 25",  text:"📊 PCE DAY — NO SHOCK: May headline PCE ran hot at 4.1% y/y (highest since Apr 2023), but the monthly pace (0.4%) came in 0.1pp BELOW the 0.5% estimate, and core held at 3.3% y/y rather than re-accelerating. Energy (the Iran-war spike) is the main driver, which the Fed tends to look through. Markets read it as not the hawkish upside surprise feared.", impact:"neutral", hot:true },
-  { time:"Jun 25",  text:"〰️ Flat close: SPX -0.01% to 7,357.49. Stock futures held positive after the print, Treasury yields slipped, and Sept-hike odds were trimmed slightly. Jobless claims also came in better (215k vs 223k est). Intraday swung from a 7,419 high to a 7,323 low, then recovered to flat — the put side was never tested (low was 373pts above the 6,950 short).", impact:"bullish", hot:true },
-  { time:"Jun 25",  text:"🟢 Position rode it cleanly: no change today, mark $6.48 → P&L +$6,466. The PCE event passed without widening the expected-move band against you — the EM floor (7,099) still sits 149pts above the put short 6,950. SPX is 97pts below the flip (7,455), still negative gamma but less deep than yesterday's 191pts. Put buffer held at 407pts.", impact:"bullish", hot:false },
-  { time:"Jun 25",  text:"🛢️ Oil bounced modestly (WTI 71.47, Brent 74.71) after this week's breakdown. VIX little changed at 18.9. With the week's big catalyst (PCE) now passed and benign, the immediate event risk clears — next up is the June jobs report (NFP) Thursday July 2.", impact:"neutral", hot:false },
-  { time:"Jun 24",  text:"Wed: flat -0.10%, rolled calls to 7950/8000. Micron's +15% AH beat set up a firm open.", impact:"neutral", hot:false },
-  { time:"THU 7/2", text:"📋 June jobs report (NFP) — lands a day early ahead of July 4. Next major macro catalyst now that PCE is past. Verified: BLS ✓", impact:"neutral", hot:false },
+  { time:"Jun 26",  text:"📉 GAP DOWN, RECOVERED: SPX opened sharply lower (7,313) on a renewed global tech selloff — Apple -6% the prior day dragged the Nasdaq to a 4th straight down session, Kospi -5% overnight, and AI-infrastructure-cost worries (plus a report OpenAI may delay its IPO) hit sentiment. SPX tested a 7,294 low intraday, then bought back to close ~flat at 7,354 (-0.05%). VIX spiked to 20.7 before fading to 18.4.", impact:"neutral", hot:true },
+  { time:"Jun 26",  text:"🔧 Rolled the call side down again to 7925/7975 on all 67 (+$0.15) into the gap-down — blended credit now $7.59/ct ($50,853). Mark $6.55 → P&L +$6,968. The put side was tested at the 7,294 low (buffer compressed to ~360pts intraday) but the recovery brought it back to 404pts at the close. Call buffer 571pts.", impact:"neutral", hot:true },
+  { time:"Jun 26",  text:"⚠️ The put side held its line: despite the gap-down, the EM floor (7,096) still sits 146pts above the 6,950 put short, essentially unchanged. The put WALL dropped to 7,300 (from 7,400) — dealers' support concentration moved down with the market, and SPX found its intraday floor (7,294) right at that wall. SPX 106pts below flip = negative gamma; Δ rose to +93.8, the most directionally long this position has been.", impact:"bearish", hot:false },
+  { time:"Jun 26",  text:"🛢️ Oil little changed (WTI 70.24, Brent 73.57). The week's macro events (FOMC, PCE) are past and were navigated; the tech selloff is now the dominant market driver, not rates or oil. Watch whether AI-cost concerns keep pressuring growth names into next week.", impact:"neutral", hot:false },
+  { time:"Jun 25",  text:"Thu: PCE day, hot headline but in-line core, flat close. No position change.", impact:"neutral", hot:false },
+  { time:"THU 7/2", text:"📋 June jobs report (NFP) — lands a day early ahead of July 4. Next major macro catalyst. Verified: BLS ✓", impact:"neutral", hot:false },
 ];
 
 // ════════════════════════════════════════════════════════════
@@ -259,8 +261,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} — essentially flat on PCE day, the week's main event, which passed without a hawkish shock. May headline PCE was hot (4.1% y/y, highest since April 2023), but the monthly pace came in below estimate and core held at 3.3% rather than re-accelerating; with energy the main driver (which the Fed looks through), markets read it benignly — futures held positive, yields slipped, Sept-hike odds trimmed. SPX swung intraday from a 7,419 high to a 7,323 low before recovering to flat; the put side was never tested (the low was 373pts above the ${fmt(STRIKES.putShort)} short). No position change. Mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. The risk read eased slightly: SPX is now ${Math.abs(Math.round(SPX-GEX.flipPoint))}pts below the flip (${fmt(GEX.flipPoint)}) — still negative gamma but less deep than yesterday's 191pts — and the EM floor (${fmt(GEX.expectedMoveDown)}) held 149pts above the put short. The put side stays the closer wing at ${Math.round(PUT_BUF)}pts. With PCE behind you and benign, the immediate event risk clears until the July 2 jobs report.`;
-const REC = `${CONTRACTS}-contract 7/31 condor, mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} total). The position navigated PCE cleanly — no adjustment needed, and the event you'd been watching for came and went without threatening either wing. The risk read improved at the margin: SPX is ${Math.abs(Math.round(SPX-GEX.flipPoint))}pts below the flip (${fmt(GEX.flipPoint)}), still negative gamma (γ ${GREEKS.gamma}) but shallower than yesterday, and the EM floor (${fmt(GEX.expectedMoveDown)}) sits ${Math.round(GEX.expectedMoveDown-STRIKES.putShort)}pts above the put short ${fmt(STRIKES.putShort)}. The put side remains the closer wing at ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%), call ${Math.round(CALL_BUF)}pts — so the downside is still the side to watch, but it held firm through the inflation print. Captured ${Math.round(UNREALIZED_PL/TOTAL_COLLECTED*100)}% of max, ${TD_DTE} trading days left; theta ${usd(parseFloat(GREEKS.theta), true)}/day on the ${CONTRACTS} lots; max risk per side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}. With PCE passed and benign, the near-term catalyst calendar is light until the July 2 jobs report — a window where theta can work without a major event in the way. If you've been waiting for an event to clear before deciding on profit-taking vs. continuing to hold the larger position, this is that clearing.`;
+const SESSION_SUMMARY = `SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} (Friday's close, built Saturday) — a gap-down-and-recover session that tested the put side and held. SPX opened sharply lower at 7,313 on a renewed global tech selloff (Apple -6% dragging the Nasdaq to a 4th straight down day, Kospi -5% overnight, AI-infrastructure-cost worries and an OpenAI IPO-delay report), fell to a 7,294 intraday low, then bought back to close roughly flat. VIX spiked to 20.7 before fading to ${MACRO.vix}. Into that open you rolled the call side down again to ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} (+$0.15), lifting the blended credit to $${TOTAL_COLLECTED.toFixed(2)}/ct. Mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. The headline today is that the put side — the wing we've been watching — got tested and held: the 7,294 low pulled the put buffer to ~360pts intraday before the recovery restored it to ${Math.round(PUT_BUF)}pts. SPX sits ${Math.abs(Math.round(SPX-GEX.flipPoint))}pts below the flip (${fmt(GEX.flipPoint)}) in negative gamma, and delta rose to +93.8 — the most directionally long this position has been, the negative-gamma signature as spot has drifted toward the puts. The EM floor (${fmt(GEX.expectedMoveDown)}) still sits 146pts above the put short, and the put wall dropped to ${fmt(GEX.putWall)} where SPX found its intraday floor. Next catalyst: July 2 jobs.`;
+const REC = `${CONTRACTS}-contract 7/31 condor (calls rolled to ${fmt(STRIKES.callShort)}/${fmt(STRIKES.callLong)} Friday), mark $${MARK.toFixed(2)} → ${usd(UNREALIZED_PL, true)}/ct (${usd(UNREALIZED_PL*100*CONTRACTS, true)} total). Friday was the test we'd been flagging — a gap-down open straight at the put side — and the position came through it: the 7,294 low compressed the put buffer to ~360pts intraday, but the recovery restored it to ${Math.round(PUT_BUF)}pts (${PUT_BUF_PCT}%) by the close. That's reassuring, but the underlying risk picture is unchanged and worth respecting: the put side is still the closer wing, SPX is ${Math.abs(Math.round(SPX-GEX.flipPoint))}pts below the flip (${fmt(GEX.flipPoint)}) in negative gamma (γ ${GREEKS.gamma}), and delta has climbed to +93.8 — the most long this position has carried, meaning a further downmove now moves the mark against you faster than before. The EM floor (${fmt(GEX.expectedMoveDown)}) sits ${Math.round(GEX.expectedMoveDown-STRIKES.putShort)}pts above the put short ${fmt(STRIKES.putShort)}, and the put wall at ${fmt(GEX.putWall)} provided real intraday support. Captured ${Math.round(UNREALIZED_PL/TOTAL_COLLECTED*100)}% of max, ${TD_DTE} trading days left; max risk per side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}. The honest read: you keep adding credit via call rolls ($7.44 → $7.59), which lowers breakeven, but the rolls are on the untested wing — the put side is where the risk lives and it's been grinding in (523→415→${Math.round(PUT_BUF)}). If the tech selloff resumes next week, the puts are the side to have a defend/roll plan for. Watching whether AI-cost concerns persist; next catalyst is July 2 jobs.`;
 
 // ════════════════════════════════════════════════════════════
 //  CALENDAR
@@ -277,6 +279,7 @@ const CALENDAR = [
   { day:"TUE 6/23", event:"📉 Global risk-off -1.44%, rolled+scaled to 67",   done:true, impact:"high", verified:"✓" },
   { day:"WED 6/24", event:"〰️ Flat -0.10%, rolled calls to 7950/8000",   done:true, impact:"medium", verified:"✓" },
   { day:"THU 6/25", event:"📊 PCE 4.1% hot but core in-line, flat close",   done:true, impact:"high", verified:"✓ BEA" },
+  { day:"FRI 6/26", event:"📉 Gap-down to 7,294, recovered; rolled to 7925/7975",   done:true, impact:"medium", verified:"✓" },
   { day:"THU 7/2", event:"📋 June jobs report (NFP, early)",   done:false, impact:"high", verified:"✓ BLS" },
   { day:"FRI 7/31", event:"🎯 YOUR EXPIRATION",     done:false, impact:"high",   verified:"✓"         },
 ];
@@ -315,9 +318,9 @@ const KEY_LEVELS = [
 ].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
-  { label:"🟢 THETA WINDOW",   desc:`With PCE passed and benign, the catalyst calendar is light until July 2 NFP. If SPX stays rangebound between the EM bounds (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}), theta harvests ${usd(parseFloat(GREEKS.theta))}/day across ${CONTRACTS} lots and the mark decays toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. The clean window to let the position work — currently ${Math.round(UNREALIZED_PL/TOTAL_COLLECTED*100)}% of max captured.`, color:"#34d399", impact:"IDEAL ✓" },
-  { label:"🔴 RENEWED SELLOFF",  desc:`Tech weakness resumes or a new catalyst drags SPX toward the EM floor ${fmt(GEX.expectedMoveDown)} and the put short ${fmt(STRIKES.putShort)} (${Math.round(PUT_BUF)}pts away, the closer wing). Negative gamma (γ ${GREEKS.gamma}, ${Math.abs(Math.round(SPX-GEX.flipPoint))}pts below flip) still amplifies a downmove — delta would grow toward +160 on a 100pt drop. Max risk per side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}. The standing risk; keep a put-side defend/roll level.`, color:"#f87171", impact:"WATCH PUTS ⚠️" },
-  { label:"🟡 GRIND HIGHER",     desc:`Micron/chip strength and a benign-inflation relief bid lift SPX back toward the flip ${fmt(GEX.flipPoint)} and call wall ${fmt(GEX.callWall)}. Widens the put buffer and eases the negative-gamma read, but the call short ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away) becomes the wing to monitor if a rally extends. Call wall may act as resistance first.`, color:"#fbbf24", impact:"MONITOR CALLS" },
+  { label:"🔴 SELLOFF RESUMES",  desc:`The tech/AI-cost selloff that drove Friday's gap-down picks back up and SPX breaks the 7,300 put wall toward the EM floor ${fmt(GEX.expectedMoveDown)} and the put short ${fmt(STRIKES.putShort)} (${Math.round(PUT_BUF)}pts away). Negative gamma (γ ${GREEKS.gamma}, Δ now +93.8) amplifies it — the mark moves against you faster the closer it gets. Max risk per side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}. The primary risk — have a put-side defend/roll level set for next week.`, color:"#f87171", impact:"PRIMARY RISK ⚠️" },
+  { label:"🟢 BOUNCE / STABILIZE", desc:`Friday's recovery off 7,294 follows through, the AI-cost scare cools, and SPX lifts back toward the flip ${fmt(GEX.flipPoint)} — easing the negative-gamma read and widening the put buffer. VIX falls from ${MACRO.vix}, vega ${GREEKS.vega} works for you, and theta (${usd(parseFloat(GREEKS.theta))}/day on ${CONTRACTS} lots) rebuilds the green toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. The 7,300 wall holding as support is the constructive sign.`, color:"#34d399", impact:"RELIEF ✓" },
+  { label:"🟡 CHOPPY / RANGE",     desc:`SPX chops between the 7,300 put wall and the 7,500 call wall as the tech selloff and dip-buying offset. IV Pct ${GEX.ivPct} keeps the mark sticky via vega ${GREEKS.vega}. Negative gamma keeps swings sharp. Theta grinds (${TD_DTE} days), but expect more two-sided volatility than a clean decay — manage the put side on dips toward 7,300.`, color:"#fbbf24", impact:"CHOPPY" },
 ];
 
 function gaugeArc(pct){
@@ -463,7 +466,7 @@ window.addEventListener("DOMContentLoaded",()=>{
           ${[["DELTA",GREEKS.delta,"#94a3b8"],["THETA/DAY","$"+GREEKS.theta.replace("+",""),"var(--green)"],["VEGA","$"+GREEKS.vega,"var(--red)"],["GAMMA",GREEKS.gamma,"#94a3b8"]].map(([l,v,c])=>`
             <div class="cell"><div class="cell-label">${l}</div><div class="cell-val" style="font-size:14px;color:${c};">${v}</div></div>`).join("")}
         </div>
-        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/25 close) · γ TOS (-0.81) · Δ+73.7 · put side closer (407pts)</div>
+        <div class="tiny" style="margin-top:6px;color:var(--dim);">Δ/Θ/V Schwab chain (6/26 Fri close) · γ TOS (-0.81) · Δ+93.8 (most long yet, put side closer)</div>
         ${(()=>{
           const d=parseFloat(GREEKS.delta), g=parseFloat(GREEKS.gamma);
           if(!isFinite(d)||!isFinite(g)) return "";
