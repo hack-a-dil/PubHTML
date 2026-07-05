@@ -241,8 +241,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `Jobs day closed flat (SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)}) but ran a 113pt range under the surface — a soft 57K payrolls print (vs ~113K est) drove a rotation, not broad selling: Dow to a record, Nasdaq down on another semis slide. Into the intraday spike you rolled both wings for credit (blended to $${TOTAL_COLLECTED.toFixed(2)}, P&L ${usd(UNREALIZED_PL*100*CONTRACTS, true)}), notably rolling the calls down to ${fmt(STRIKES.callShort)}.`;
-const REC = `Green and comfortable today (${usd(UNREALIZED_PL*100*CONTRACTS, true)}, ${Math.round(SPX-GEX.flipPoint)}pts above the flip in positive gamma), but the call side is the clear pressure point: rolling down to ${fmt(STRIKES.callShort)} banked premium at the cost of room — it's the tightest wing of the campaign at ${Math.round(CALL_BUF)}pts, with gamma ${GREEKS.gamma} the most negative yet. The vol crush cushions it (call short still 192pts above the EM ceiling), but a rally back toward today's high is the scenario to have a call-side defend/roll level for. Put side is a non-issue at ${Math.round(PUT_BUF)}pts.`;
+const SESSION_SUMMARY = `Jobs day closed flat (SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)}) but ran a 113pt range on a soft 57K payrolls print. Rolled both wings into the intraday spike — calls down to ${fmt(STRIKES.callShort)} — banking credit to ${usd(UNREALIZED_PL*100*CONTRACTS, true)}.`;
+const REC = `Green and ${Math.round(SPX-GEX.flipPoint)}pts above the flip (positive gamma), but the calls are the pressure point: ${fmt(STRIKES.callShort)} is the tightest wing of the campaign at ${Math.round(CALL_BUF)}pts (still 192 above the EM ceiling), gamma ${GREEKS.gamma}. Set a call-side defend/roll level if SPX rallies toward today's high. Put side a non-issue at ${Math.round(PUT_BUF)}pts.`;
 
 const CALENDAR = [
   { day:"WED 6/10", event:"🔥 May CPI 4.2% (hot, core soft)",   done:true, impact:"high",   verified:"✓ BLS"     },
