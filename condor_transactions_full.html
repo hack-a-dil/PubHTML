@@ -421,9 +421,12 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/01/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ira_941_061826"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ira_941_061826"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
-          <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+4.42%</div>
+          <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+2.92%</div>
         </div>
       </div>
       <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;"
@@ -447,117 +450,117 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6750 / Long Put 6700</div></td>
+            <td><div class="leg-main side-put">6750 / 6700</div></td>
             <td>05/06</td><td>05/07</td><td>63</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.38</td>
             <td>$3.05</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,259</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.39)</span></td>
             <td class="spx-val">7,365</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.46%</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.38%</td>
             <td class="pnl-pos">+$2,079.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$1,846.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6765 / Long Put 6715</div></td>
+            <td><div class="leg-main side-put">6765 / 6715</div></td>
             <td>05/07</td><td>05/11</td><td>63</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$3.15</td>
             <td>$2.62</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,365</td>
-            <td class="spx-val">7,413</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.65%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.08)</span></td>
+            <td class="spx-val">7,337</td>
+            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.03%</td>
             <td class="pnl-pos">+$3,339.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$3,106.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6780 / Long Put 6730</div></td>
+            <td><div class="leg-main side-put">6780 / 6730</div></td>
             <td>05/11</td><td>05/13</td><td>63</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.67</td>
             <td>$2.30</td>
             <td class="credit-val">+$0.05</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.38)</span></td>
             <td class="spx-val">7,413</td>
-            <td class="spx-val">7,401</td>
-            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.16%</td>
+            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.42%</td>
             <td class="pnl-pos">+$2,331.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$2,098.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td><div class="leg-main side-put">6800 / 6750</div></td>
             <td>05/13</td><td>05/14</td><td>63</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.40</td>
             <td>$2.00</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,401</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.87)</span></td>
             <td class="spx-val">7,444</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.58%</td>
+            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.77%</td>
             <td class="pnl-pos">+$2,520.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$2,287.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6820 / Long Put 6770</div></td>
+            <td><div class="leg-main side-put">6820 / 6770</div></td>
             <td>05/14</td><td>05/21</td><td>63</td>
             <td class="days-val" style="text-align:center">7</td>
             <td>$2.10</td>
             <td>$1.80</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,444</td>
-            <td class="spx-val">7,450</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.08%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.26)</span></td>
+            <td class="spx-val">7,501</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.68%</td>
             <td class="pnl-pos">+$1,890.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$1,657.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6840 / Long Put 6790</div></td>
+            <td><div class="leg-main side-put">6840 / 6790</div></td>
             <td>05/21</td><td>05/22</td><td>63</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.90</td>
             <td>$1.55</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.00)</span></td>
             <td class="spx-val">7,450</td>
-            <td class="spx-val">7,496</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.61%</td>
             <td class="pnl-pos">+$2,205.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$1,972.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6870 / Long Put 6820</div></td>
+            <td><div class="leg-main side-put">6870 / 6820</div></td>
             <td>05/22</td><td>05/26</td><td>63</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$1.65</td>
             <td>$1.30</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.75)</span></td>
             <td class="spx-val">7,496</td>
-            <td class="spx-val">7,513</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.22%</td>
             <td class="pnl-pos">+$2,205.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$1,972.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850</div></td>
+            <td><div class="leg-main side-put">6900 / 6850</div></td>
             <td>05/26</td><td>05/27</td><td>63</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.40</td>
             <td>$1.20</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,513</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.86)</span></td>
             <td class="spx-val">7,513</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.00%</td>
             <td class="pnl-pos">+$1,245.00</td>
@@ -565,57 +568,57 @@
             <td class="pnl-pos">+$1,012.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6925 / Long Put 6875</div></td>
+            <td><div class="leg-main side-put">6925 / 6875</div></td>
             <td>05/27</td><td>05/28</td><td>63</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.30</td>
             <td>$0.92</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.98)</span></td>
             <td class="spx-val">7,513</td>
-            <td class="spx-val">7,558</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.60%</td>
             <td class="pnl-pos">+$2,409.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$2,176.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>05/28</td><td>06/01</td><td>63</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$0.97</td>
             <td>$0.81</td>
             <td class="credit-val">+$0.05</td>
-            <td class="spx-val">7,558</td>
-            <td class="spx-val">7,580</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.95)</span></td>
+            <td class="spx-val">7,558 <span style='color:var(--text-dim);font-size:0.68rem'>(7,580)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.30%</td>
             <td class="pnl-pos">+$1,008.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$775.68</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7750 / Long Call 7800</div></td>
+            <td><div class="leg-main side-call">7750 / 7800</div></td>
             <td>05/06</td><td>05/19</td><td>63</td>
             <td class="days-val" style="text-align:center">13</td>
             <td>$4.12</td>
             <td>$3.47</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,259</td>
-            <td class="spx-val">7,348</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.22%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.39)</span></td>
+            <td class="spx-val">7,365</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.24%</td>
             <td class="pnl-pos">+$4,095.00</td>
             <td class="fee-val">–$232.32</td>
             <td class="pnl-pos">+$3,862.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7740 / Long Call 7790</div></td>
+            <td><div class="leg-main side-call">7740 / 7790</div></td>
             <td>05/19</td><td>06/01</td><td>63</td>
             <td class="days-val" style="text-align:center">13</td>
             <td>$3.72</td>
             <td>$10.19</td>
             <td class="credit-val">+$0.25</td>
-            <td class="spx-val">7,348</td>
-            <td class="spx-val">7,580</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.98)</span></td>
+            <td class="spx-val">7,348 <span style='color:var(--text-dim);font-size:0.68rem'>(7,580)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+3.16%</td>
             <td class="pnl-neg">–$40,761.00</td>
             <td class="fee-val">–$232.32</td>
@@ -651,7 +654,10 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/04/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ira_941_071026"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ira_941_071026"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value negative" style="text-align:right;font-size:0.75rem;line-height:1.6">-0.49%</div>
         </div>
@@ -677,63 +683,63 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/01</td><td>06/03</td><td>56</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.44</td>
             <td>$2.48</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.04)</span></td>
             <td class="spx-val">7,583</td>
-            <td class="spx-val">7,578</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.07%</td>
             <td class="pnl-neg">–$224.00</td>
             <td class="fee-val">–$206.52</td>
             <td class="pnl-neg">–$430.52</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/03</td><td>06/04</td><td>57</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.40</td>
             <td>$2.64</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,578</td>
-            <td class="spx-val">7,546</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.08)</span></td>
+            <td class="spx-val">7,578 <span style='color:var(--text-dim);font-size:0.68rem'>(7,546)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.41%</td>
             <td class="pnl-neg">–$1,368.00</td>
             <td class="fee-val">–$210.20</td>
             <td class="pnl-neg">–$1,578.20</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td><div class="leg-main side-call">8050 / 8100</div></td>
             <td>06/01</td><td>06/03</td><td>56</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.56</td>
             <td>$1.97</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.04)</span></td>
             <td class="spx-val">7,583</td>
-            <td class="spx-val">7,578</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.07%</td>
             <td class="pnl-pos">+$3,304.00</td>
             <td class="fee-val">–$206.52</td>
             <td class="pnl-pos">+$3,097.48</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/03</td><td>06/04</td><td>57</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.05</td>
             <td>$2.21</td>
             <td class="credit-val">+$1.08</td>
-            <td class="spx-val">7,578</td>
-            <td class="spx-val">7,546</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.08)</span></td>
+            <td class="spx-val">7,578 <span style='color:var(--text-dim);font-size:0.68rem'>(7,546)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.41%</td>
             <td class="pnl-pos">+$4,788.00</td>
             <td class="fee-val">–$210.20</td>
@@ -769,7 +775,10 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/15/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ira_941_071726"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ira_941_071726"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+0.08%</div>
         </div>
@@ -795,147 +804,147 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/04</td><td>06/04</td><td>58</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$3.16</td>
             <td>$2.65</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.21)</span></td>
             <td class="spx-val">7,536</td>
-            <td class="spx-val">7,584</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.64%</td>
             <td class="pnl-pos">+$2,958.00</td>
             <td class="fee-val">–$213.88</td>
             <td class="pnl-pos">+$2,744.12</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 7000 / Long Put 6950</div></td>
+            <td><div class="leg-main side-put">7000 / 6950</div></td>
             <td>06/04</td><td>06/15</td><td>58</td>
             <td class="days-val" style="text-align:center">11</td>
             <td>$2.80</td>
             <td>$2.41</td>
             <td class="credit-val">+$0.15</td>
-            <td class="spx-val">7,584</td>
-            <td class="spx-val">7,543</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.41)</span></td>
+            <td class="spx-val">7,584 <span style='color:var(--text-dim);font-size:0.68rem'>(7,543)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.55%</td>
             <td class="pnl-pos">+$2,262.00</td>
             <td class="fee-val">–$213.88</td>
             <td class="pnl-pos">+$2,048.12</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 7000 / Long Put 6950</div></td>
+            <td><div class="leg-main side-put">7000 / 6950</div></td>
             <td>06/05</td><td>06/15</td><td>1</td>
             <td class="days-val" style="text-align:center">10</td>
             <td>$4.71</td>
             <td>$2.41</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.15)</span></td>
             <td class="spx-val">7,451</td>
-            <td class="spx-val">7,543</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.22%</td>
             <td class="pnl-pos">+$230.00</td>
             <td class="fee-val">–$3.68</td>
             <td class="pnl-pos">+$226.32</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td><div class="leg-main side-call">8030 / 8080</div></td>
             <td>06/04</td><td>06/05</td><td>58</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.69</td>
             <td>$2.07</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.21)</span></td>
             <td class="spx-val">7,536</td>
-            <td class="spx-val">7,512</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.33%</td>
             <td class="pnl-pos">+$3,596.00</td>
             <td class="fee-val">–$213.88</td>
             <td class="pnl-pos">+$3,382.12</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td><div class="leg-main side-call">8020 / 8070</div></td>
             <td>06/05</td><td>06/05</td><td>58</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.22</td>
             <td>$1.87</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.19)</span></td>
             <td class="spx-val">7,512</td>
-            <td class="spx-val">7,463</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.64%</td>
             <td class="pnl-pos">+$2,030.00</td>
             <td class="fee-val">–$213.88</td>
             <td class="pnl-pos">+$1,816.12</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8010 / Long Call 8060</div></td>
+            <td><div class="leg-main side-call">8010 / 8060</div></td>
             <td>06/05</td><td>06/05</td><td>58</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$1.97</td>
             <td>$1.63</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.99)</span></td>
             <td class="spx-val">7,463</td>
-            <td class="spx-val">7,453</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.14%</td>
             <td class="pnl-pos">+$1,972.00</td>
             <td class="fee-val">–$213.88</td>
             <td class="pnl-pos">+$1,758.12</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/05</td><td>06/05</td><td>58</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$1.73</td>
             <td>$1.36</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.12)</span></td>
             <td class="spx-val">7,453</td>
-            <td class="spx-val">7,384</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.92%</td>
             <td class="pnl-pos">+$2,146.00</td>
             <td class="fee-val">–$213.88</td>
             <td class="pnl-pos">+$1,932.12</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/05</td><td>06/05</td><td>1</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$1.79</td>
             <td>$1.36</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.15)</span></td>
             <td class="spx-val">7,451</td>
-            <td class="spx-val">7,384</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.90%</td>
             <td class="pnl-pos">+$43.00</td>
             <td class="fee-val">–$3.68</td>
             <td class="pnl-pos">+$39.32</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7990 / Long Call 8040</div></td>
+            <td><div class="leg-main side-call">7990 / 8040</div></td>
             <td>06/05</td><td>06/09</td><td>59</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$1.41</td>
             <td>$0.63</td>
             <td class="credit-val">+$0.05</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.44)</span></td>
             <td class="spx-val">7,384</td>
-            <td class="spx-val">7,254</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.77%</td>
             <td class="pnl-pos">+$4,602.00</td>
             <td class="fee-val">–$217.56</td>
             <td class="pnl-pos">+$4,384.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7950 / Long Call 8000</div></td>
+            <td><div class="leg-main side-call">7950 / 8000</div></td>
             <td>06/09</td><td>06/15</td><td>59</td>
             <td class="days-val" style="text-align:center">6</td>
             <td>$0.83</td>
             <td>$2.94</td>
             <td class="credit-val">+$0.20</td>
-            <td class="spx-val">7,254</td>
-            <td class="spx-val">7,543</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(23.08)</span></td>
+            <td class="spx-val">7,254 <span style='color:var(--text-dim);font-size:0.68rem'>(7,543)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+3.98%</td>
             <td class="pnl-neg">–$12,449.00</td>
             <td class="fee-val">–$217.56</td>
@@ -971,7 +980,10 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/29/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ira_941_073126"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ira_941_073126"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value negative" style="text-align:right;font-size:0.75rem;line-height:1.6">-1.97%</div>
         </div>
@@ -997,203 +1009,203 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/15</td><td>06/29</td><td>59</td>
             <td class="days-val" style="text-align:center">14</td>
             <td>$3.08</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,549</td>
-            <td class="spx-val">7,401</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.27)</span></td>
+            <td class="spx-val">7,549 <span style='color:var(--text-dim);font-size:0.68rem'>(7,401)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.97%</td>
             <td class="pnl-neg">–$5,959.00</td>
             <td class="fee-val">–$217.58</td>
             <td class="pnl-neg">–$6,176.58</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/15</td><td>06/29</td><td>1</td>
             <td class="days-val" style="text-align:center">14</td>
             <td>$2.99</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.27)</span></td>
             <td class="spx-val">7,550</td>
-            <td class="spx-val">7,401</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.98%</td>
             <td class="pnl-neg">–$110.00</td>
             <td class="fee-val">–$3.68</td>
             <td class="pnl-neg">–$113.68</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/17</td><td>06/29</td><td>1</td>
             <td class="days-val" style="text-align:center">12</td>
             <td>$3.52</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.88)</span></td>
             <td class="spx-val">7,504</td>
-            <td class="spx-val">7,401</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.38%</td>
             <td class="pnl-neg">–$57.00</td>
             <td class="fee-val">–$3.68</td>
             <td class="pnl-neg">–$60.68</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8075 / Long Call 8125</div></td>
+            <td><div class="leg-main side-call">8075 / 8125</div></td>
             <td>06/15</td><td>06/16</td><td>59</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.02</td>
             <td>$2.52</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.27)</span></td>
             <td class="spx-val">7,549</td>
-            <td class="spx-val">7,546</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.05%</td>
             <td class="pnl-pos">+$2,950.00</td>
             <td class="fee-val">–$217.56</td>
             <td class="pnl-pos">+$2,732.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8075 / Long Call 8125</div></td>
+            <td><div class="leg-main side-call">8075 / 8125</div></td>
             <td>06/15</td><td>06/16</td><td>1</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.06</td>
             <td>$2.52</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.27)</span></td>
             <td class="spx-val">7,550</td>
-            <td class="spx-val">7,546</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.06%</td>
             <td class="pnl-pos">+$54.00</td>
             <td class="fee-val">–$3.68</td>
             <td class="pnl-pos">+$50.32</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td><div class="leg-main side-call">8050 / 8100</div></td>
             <td>06/16</td><td>06/16</td><td>60</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.97</td>
             <td>$2.49</td>
             <td class="credit-val">+$0.45</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.88)</span></td>
             <td class="spx-val">7,546</td>
-            <td class="spx-val">7,520</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.35%</td>
             <td class="pnl-pos">+$2,880.00</td>
             <td class="fee-val">–$221.24</td>
             <td class="pnl-pos">+$2,658.76</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8040 / Long Call 8090</div></td>
+            <td><div class="leg-main side-call">8040 / 8090</div></td>
             <td>06/16</td><td>06/17</td><td>60</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.64</td>
             <td>$2.30</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.15)</span></td>
             <td class="spx-val">7,520</td>
-            <td class="spx-val">7,502</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.23%</td>
             <td class="pnl-pos">+$2,040.00</td>
             <td class="fee-val">–$221.24</td>
             <td class="pnl-pos">+$1,818.76</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td><div class="leg-main side-call">8030 / 8080</div></td>
             <td>06/17</td><td>06/17</td><td>60</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.45</td>
             <td>$2.02</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.89)</span></td>
             <td class="spx-val">7,502</td>
-            <td class="spx-val">7,460</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.56%</td>
             <td class="pnl-pos">+$2,586.89</td>
             <td class="fee-val">–$221.26</td>
             <td class="pnl-pos">+$2,365.63</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td><div class="leg-main side-call">8030 / 8080</div></td>
             <td>06/17</td><td>06/17</td><td>1</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.43</td>
             <td>$2.02</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.88)</span></td>
             <td class="spx-val">7,504</td>
-            <td class="spx-val">7,460</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.59%</td>
             <td class="pnl-pos">+$41.11</td>
             <td class="fee-val">–$3.68</td>
             <td class="pnl-pos">+$37.43</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td><div class="leg-main side-call">8020 / 8070</div></td>
             <td>06/17</td><td>06/17</td><td>61</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.12</td>
             <td>$1.52</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.76)</span></td>
             <td class="spx-val">7,460</td>
-            <td class="spx-val">7,409</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.68%</td>
             <td class="pnl-pos">+$3,653.00</td>
             <td class="fee-val">–$224.96</td>
             <td class="pnl-pos">+$3,428.04</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/17</td><td>06/23</td><td>61</td>
             <td class="days-val" style="text-align:center">6</td>
             <td>$1.72</td>
             <td>$1.02</td>
             <td class="credit-val">+$0.20</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.72)</span></td>
             <td class="spx-val">7,409</td>
-            <td class="spx-val">7,364</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.61%</td>
             <td class="pnl-pos">+$4,270.00</td>
             <td class="fee-val">–$224.96</td>
             <td class="pnl-pos">+$4,045.04</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7975 / Long Call 8025</div></td>
+            <td><div class="leg-main side-call">7975 / 8025</div></td>
             <td>06/23</td><td>06/24</td><td>61</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.22</td>
             <td>$0.84</td>
             <td class="credit-val">+$0.20</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.21)</span></td>
             <td class="spx-val">7,364</td>
-            <td class="spx-val">7,339</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.34%</td>
             <td class="pnl-pos">+$2,318.00</td>
             <td class="fee-val">–$224.96</td>
             <td class="pnl-pos">+$2,093.04</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7950 / Long Call 8000</div></td>
+            <td><div class="leg-main side-call">7950 / 8000</div></td>
             <td>06/24</td><td>06/26</td><td>61</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$1.04</td>
             <td>$0.85</td>
             <td class="credit-val">+$0.20</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.18)</span></td>
             <td class="spx-val">7,339</td>
-            <td class="spx-val">7,313</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.35%</td>
             <td class="pnl-pos">+$1,159.00</td>
             <td class="fee-val">–$224.96</td>
             <td class="pnl-pos">+$934.04</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7925 / Long Call 7975</div></td>
+            <td><div class="leg-main side-call">7925 / 7975</div></td>
             <td>06/26</td><td>06/29</td><td>61</td>
             <td class="days-val" style="text-align:center">3</td>
             <td>$1.00</td>
             <td>$1.26</td>
             <td class="credit-val">+$0.15</td>
-            <td class="spx-val">7,313</td>
-            <td class="spx-val">7,401</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.32)</span></td>
+            <td class="spx-val">7,313 <span style='color:var(--text-dim);font-size:0.68rem'>(7,401)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.20%</td>
             <td class="pnl-neg">–$1,586.00</td>
             <td class="fee-val">–$224.96</td>
@@ -1229,7 +1241,10 @@
           <div class="badge badge-active" style="margin-bottom:2px">Active</div>
           <div class="badge-exp" style="margin-bottom:4px">2 legs open</div>
           <div class="stat-label">Days Open</div>
-          <div class="stat-value neutral" id="days-ira_941_080726"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ira_941_080726"></div>
+            <span style='color:var(--text-muted);font-size:0.68rem'>(33 DTE)</span>
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value neutral" style="text-align:right;font-size:0.75rem;line-height:1.6">rolled: <span style="color:var(--green)">+0.53%</span><br>current: <span style="color:var(--green)">+1.07%</span></div>
         </div>
@@ -1255,105 +1270,105 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td><div class="leg-main side-put">6800 / 6750</div></td>
             <td>06/29</td><td>06/29</td><td>62</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.86</td>
             <td>$2.60</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.21)</span></td>
             <td class="spx-val">7,404</td>
-            <td class="spx-val">7,433</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.39%</td>
             <td class="pnl-pos">+$1,612.00</td>
             <td class="fee-val">–$228.64</td>
             <td class="pnl-pos">+$1,383.36</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6825 / Long Put 6775</div></td>
+            <td><div class="leg-main side-put">6825 / 6775</div></td>
             <td>06/29</td><td>06/30</td><td>62</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.75</td>
             <td>$2.30</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.77)</span></td>
             <td class="spx-val">7,433</td>
-            <td class="spx-val">7,472</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.52%</td>
             <td class="pnl-pos">+$2,790.00</td>
             <td class="fee-val">–$228.64</td>
             <td class="pnl-pos">+$2,561.36</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6850 / Long Put 6800</div></td>
+            <td><div class="leg-main side-put">6850 / 6800</div></td>
             <td>06/30</td><td>06/30</td><td>62</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.45</td>
             <td>$2.22</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.17)</span></td>
             <td class="spx-val">7,472</td>
-            <td class="spx-val">7,491</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.26%</td>
             <td class="pnl-pos">+$1,426.00</td>
             <td class="fee-val">–$228.64</td>
             <td class="pnl-pos">+$1,197.36</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6875 / Long Put 6825</div></td>
+            <td><div class="leg-main side-put">6875 / 6825</div></td>
             <td>06/30</td><td>07/02</td><td>62</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.32</td>
             <td>$2.00</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.64)</span></td>
             <td class="spx-val">7,491</td>
-            <td class="spx-val">7,511</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.27%</td>
             <td class="pnl-pos">+$1,984.00</td>
             <td class="fee-val">–$228.80</td>
             <td class="pnl-pos">+$1,755.20</td>
           </tr>
           <tr class="row-open">
-            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850 <span class="open-tag">Open</span></div></td>
+            <td><div class="leg-main side-put">6900 / 6850 <span class="open-tag">Open</span></div></td>
             <td>07/02</td><td>—</td><td>62</td>
             <td class="days-open-val" style="text-align:center" data-open="2026-07-02"></td>
             <td>$2.10</td>
             <td>—</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">19.8% <span style='color:var(--text-dim);font-size:0.68rem'>(16.15)</span></td>
             <td class="spx-val">7,511</td>
-            <td class="spx-val">—</td>
             <td class="pnl-open" style="font-family:var(--mono);font-size:0.72rem">—</td>
             <td class="pnl-open">—</td>
             <td class="fee-val">–$114.48</td>
             <td class="pnl-open">—</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7900 / Long Call 7950</div></td>
+            <td><div class="leg-main side-call">7900 / 7950</div></td>
             <td>06/29</td><td>07/02</td><td>62</td>
             <td class="days-val" style="text-align:center">3</td>
             <td>$2.69</td>
             <td>$2.29</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.21)</span></td>
             <td class="spx-val">7,404</td>
-            <td class="spx-val">7,443</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.53%</td>
             <td class="pnl-pos">+$2,480.00</td>
             <td class="fee-val">–$228.80</td>
             <td class="pnl-pos">+$2,251.20</td>
           </tr>
           <tr class="row-open">
-            <td><div class="leg-main side-call">Short Call 7875 / Long Call 7925 <span class="open-tag">Open</span></div></td>
+            <td><div class="leg-main side-call">7875 / 7925 <span class="open-tag">Open</span></div></td>
             <td>07/02</td><td>—</td><td>62</td>
             <td class="days-open-val" style="text-align:center" data-open="2026-07-02"></td>
             <td>$2.84</td>
             <td>—</td>
             <td class="credit-val">+$0.55</td>
+            <td class="spx-val">11.5% <span style='color:var(--text-dim);font-size:0.68rem'>(16.75)</span></td>
             <td class="spx-val">7,443</td>
-            <td class="spx-val">—</td>
             <td class="pnl-open" style="font-family:var(--mono);font-size:0.72rem">—</td>
             <td class="pnl-open">—</td>
             <td class="fee-val">–$114.48</td>
@@ -1402,9 +1417,12 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/01/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ind_735_061826"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ind_735_061826"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
-          <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+4.42%</div>
+          <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+2.92%</div>
         </div>
       </div>
       <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;"
@@ -1428,189 +1446,189 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6750 / Long Put 6700</div></td>
+            <td><div class="leg-main side-put">6750 / 6700</div></td>
             <td>05/06</td><td>05/07</td><td>38</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.36</td>
             <td>$3.02</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,259</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.39)</span></td>
             <td class="spx-val">7,365</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.46%</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.38%</td>
             <td class="pnl-pos">+$1,292.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,167.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6765 / Long Put 6715</div></td>
+            <td><div class="leg-main side-put">6765 / 6715</div></td>
             <td>05/07</td><td>05/11</td><td>38</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$3.12</td>
             <td>$2.62</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,365</td>
-            <td class="spx-val">7,413</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.65%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.08)</span></td>
+            <td class="spx-val">7,337</td>
+            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.03%</td>
             <td class="pnl-pos">+$1,900.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,775.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6780 / Long Put 6730</div></td>
+            <td><div class="leg-main side-put">6780 / 6730</div></td>
             <td>05/11</td><td>05/13</td><td>38</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.67</td>
             <td>$2.30</td>
             <td class="credit-val">+$0.05</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.38)</span></td>
             <td class="spx-val">7,413</td>
-            <td class="spx-val">7,401</td>
-            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.16%</td>
+            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.42%</td>
             <td class="pnl-pos">+$1,406.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,281.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td><div class="leg-main side-put">6800 / 6750</div></td>
             <td>05/13</td><td>05/14</td><td>38</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.40</td>
             <td>$2.00</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,401</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.87)</span></td>
             <td class="spx-val">7,444</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.58%</td>
+            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.77%</td>
             <td class="pnl-pos">+$1,520.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,395.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6820 / Long Put 6770</div></td>
+            <td><div class="leg-main side-put">6820 / 6770</div></td>
             <td>05/14</td><td>05/21</td><td>38</td>
             <td class="days-val" style="text-align:center">7</td>
             <td>$2.10</td>
             <td>$1.80</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,444</td>
-            <td class="spx-val">7,450</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.08%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.26)</span></td>
+            <td class="spx-val">7,501</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.68%</td>
             <td class="pnl-pos">+$1,140.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,015.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6840 / Long Put 6790</div></td>
+            <td><div class="leg-main side-put">6840 / 6790</div></td>
             <td>05/21</td><td>05/22</td><td>38</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.90</td>
             <td>$1.55</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.00)</span></td>
             <td class="spx-val">7,450</td>
-            <td class="spx-val">7,490</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.53%</td>
             <td class="pnl-pos">+$1,384.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,259.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6870 / Long Put 6820</div></td>
+            <td><div class="leg-main side-put">6870 / 6820</div></td>
             <td>05/22</td><td>05/26</td><td>20</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$1.70</td>
             <td>$1.30</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.81)</span></td>
             <td class="spx-val">7,490</td>
-            <td class="spx-val">7,513</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.30%</td>
             <td class="pnl-pos">+$800.00</td>
             <td class="fee-val">–$65.76</td>
             <td class="pnl-pos">+$734.24</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6870 / Long Put 6820</div></td>
+            <td><div class="leg-main side-put">6870 / 6820</div></td>
             <td>05/22</td><td>05/26</td><td>18</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$1.62</td>
             <td>$1.30</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.75)</span></td>
             <td class="spx-val">7,496</td>
-            <td class="spx-val">7,513</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.22%</td>
             <td class="pnl-pos">+$576.00</td>
             <td class="fee-val">–$59.16</td>
             <td class="pnl-pos">+$516.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850</div></td>
+            <td><div class="leg-main side-put">6900 / 6850</div></td>
             <td>05/26</td><td>05/27</td><td>38</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.40</td>
             <td>$1.20</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.86)</span></td>
             <td class="spx-val">7,513</td>
-            <td class="spx-val">7,523</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.14%</td>
             <td class="pnl-pos">+$760.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$635.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6925 / Long Put 6875</div></td>
+            <td><div class="leg-main side-put">6925 / 6875</div></td>
             <td>05/27</td><td>05/28</td><td>38</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.30</td>
             <td>$0.92</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.94)</span></td>
             <td class="spx-val">7,523</td>
-            <td class="spx-val">7,558</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.46%</td>
             <td class="pnl-pos">+$1,444.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,319.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>05/28</td><td>06/01</td><td>38</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$0.97</td>
             <td>$0.81</td>
             <td class="credit-val">+$0.05</td>
-            <td class="spx-val">7,558</td>
-            <td class="spx-val">7,580</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.95)</span></td>
+            <td class="spx-val">7,558 <span style='color:var(--text-dim);font-size:0.68rem'>(7,580)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.30%</td>
             <td class="pnl-pos">+$608.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$483.08</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7750 / Long Call 7800</div></td>
+            <td><div class="leg-main side-call">7750 / 7800</div></td>
             <td>05/06</td><td>05/19</td><td>38</td>
             <td class="days-val" style="text-align:center">13</td>
             <td>$3.89</td>
             <td>$3.49</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,259</td>
-            <td class="spx-val">7,348</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.22%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.39)</span></td>
+            <td class="spx-val">7,365</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.24%</td>
             <td class="pnl-pos">+$1,520.00</td>
             <td class="fee-val">–$124.92</td>
             <td class="pnl-pos">+$1,395.08</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7740 / Long Call 7790</div></td>
+            <td><div class="leg-main side-call">7740 / 7790</div></td>
             <td>05/19</td><td>06/01</td><td>38</td>
             <td class="days-val" style="text-align:center">13</td>
             <td>$3.74</td>
             <td>$10.19</td>
             <td class="credit-val">+$0.25</td>
-            <td class="spx-val">7,348</td>
-            <td class="spx-val">7,580</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.98)</span></td>
+            <td class="spx-val">7,348 <span style='color:var(--text-dim);font-size:0.68rem'>(7,580)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+3.16%</td>
             <td class="pnl-neg">–$24,510.00</td>
             <td class="fee-val">–$124.92</td>
@@ -1646,9 +1664,12 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/03/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ind_735_062626"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ind_735_062626"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
-          <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+2.13%</div>
+          <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+1.35%</div>
         </div>
       </div>
       <div class="profit-progress" style="grid-column:1 / -1;grid-row:2;"
@@ -1672,147 +1693,147 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td><div class="leg-main side-put">6800 / 6750</div></td>
             <td>05/14</td><td>05/14</td><td>11</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.70</td>
             <td>$2.32</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,444</td>
-            <td class="spx-val">7,444</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.26)</span></td>
+            <td class="spx-val">7,501</td>
             <td class="pnl-open" style="font-family:var(--mono);font-size:0.72rem">+0.00%</td>
             <td class="pnl-pos">+$418.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$381.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6825 / Long Put 6775</div></td>
+            <td><div class="leg-main side-put">6825 / 6775</div></td>
             <td>05/14</td><td>05/22</td><td>11</td>
             <td class="days-val" style="text-align:center">8</td>
             <td>$2.42</td>
             <td>$1.97</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,444</td>
-            <td class="spx-val">7,495</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.68%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.26)</span></td>
+            <td class="spx-val">7,501</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.08%</td>
             <td class="pnl-pos">+$495.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$458.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6850 / Long Put 6800</div></td>
+            <td><div class="leg-main side-put">6850 / 6800</div></td>
             <td>05/22</td><td>05/26</td><td>11</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$2.07</td>
             <td>$1.67</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.86)</span></td>
             <td class="spx-val">7,495</td>
-            <td class="spx-val">7,517</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.29%</td>
             <td class="pnl-pos">+$440.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$403.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6880 / Long Put 6830</div></td>
+            <td><div class="leg-main side-put">6880 / 6830</div></td>
             <td>05/26</td><td>05/28</td><td>11</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$1.77</td>
             <td>$1.27</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.83)</span></td>
             <td class="spx-val">7,517</td>
-            <td class="spx-val">7,560</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.57%</td>
             <td class="pnl-pos">+$550.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$513.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850</div></td>
+            <td><div class="leg-main side-put">6900 / 6850</div></td>
             <td>05/28</td><td>06/02</td><td>11</td>
             <td class="days-val" style="text-align:center">5</td>
             <td>$1.32</td>
             <td>$0.90</td>
             <td class="credit-val">+$0.05</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.93)</span></td>
             <td class="spx-val">7,560</td>
-            <td class="spx-val">7,616</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.74%</td>
             <td class="pnl-pos">+$462.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$425.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6940 / Long Put 6890</div></td>
+            <td><div class="leg-main side-put">6940 / 6890</div></td>
             <td>06/02</td><td>06/03</td><td>11</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.00</td>
             <td>$1.10</td>
             <td class="credit-val">+$0.10</td>
-            <td class="spx-val">7,616</td>
-            <td class="spx-val">7,603</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.92)</span></td>
+            <td class="spx-val">7,616 <span style='color:var(--text-dim);font-size:0.68rem'>(7,603)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.17%</td>
             <td class="pnl-neg">–$110.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-neg">–$146.16</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td><div class="leg-main side-call">8050 / 8100</div></td>
             <td>05/14</td><td>05/15</td><td>11</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.35</td>
             <td>$1.57</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,444</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.26)</span></td>
             <td class="spx-val">7,501</td>
-            <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.77%</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.24%</td>
             <td class="pnl-pos">+$858.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$821.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7975 / Long Call 8025</div></td>
+            <td><div class="leg-main side-call">7975 / 8025</div></td>
             <td>05/15</td><td>05/18</td><td>11</td>
             <td class="days-val" style="text-align:center">3</td>
             <td>$2.67</td>
             <td>$1.67</td>
             <td class="credit-val">+$1.10</td>
-            <td class="spx-val">7,501</td>
-            <td class="spx-val">7,403</td>
-            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.31%</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.43)</span></td>
+            <td class="spx-val">7,408</td>
+            <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.07%</td>
             <td class="pnl-pos">+$1,100.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$1,063.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7950 / Long Call 8000</div></td>
+            <td><div class="leg-main side-call">7950 / 8000</div></td>
             <td>05/18</td><td>05/19</td><td>11</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.97</td>
             <td>$1.18</td>
             <td class="credit-val">+$0.30</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.82)</span></td>
             <td class="spx-val">7,403</td>
-            <td class="spx-val">7,366</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.49%</td>
             <td class="pnl-pos">+$869.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$832.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7925 / Long Call 7975</div></td>
+            <td><div class="leg-main side-call">7925 / 7975</div></td>
             <td>05/19</td><td>06/03</td><td>11</td>
             <td class="days-val" style="text-align:center">15</td>
             <td>$1.38</td>
             <td>$2.80</td>
             <td class="credit-val">+$0.20</td>
-            <td class="spx-val">7,366</td>
-            <td class="spx-val">7,603</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.06)</span></td>
+            <td class="spx-val">7,366 <span style='color:var(--text-dim);font-size:0.68rem'>(7,603)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+3.21%</td>
             <td class="pnl-neg">–$1,562.00</td>
             <td class="fee-val">–$36.16</td>
@@ -1848,7 +1869,10 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/04/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ind_735_071026"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ind_735_071026"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value negative" style="text-align:right;font-size:0.75rem;line-height:1.6">-0.45%</div>
         </div>
@@ -1874,91 +1898,91 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/01</td><td>06/03</td><td>34</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.39</td>
             <td>$2.47</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.07)</span></td>
             <td class="spx-val">7,581</td>
-            <td class="spx-val">7,578</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.03%</td>
             <td class="pnl-neg">–$272.00</td>
             <td class="fee-val">–$111.78</td>
             <td class="pnl-neg">–$383.78</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/03</td><td>06/03</td><td>11</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.31</td>
             <td>$2.47</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.25)</span></td>
             <td class="spx-val">7,594</td>
-            <td class="spx-val">7,578</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.21%</td>
             <td class="pnl-neg">–$176.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-neg">–$212.16</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/03</td><td>06/04</td><td>46</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.40</td>
             <td>$2.64</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,578</td>
-            <td class="spx-val">7,546</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.08)</span></td>
+            <td class="spx-val">7,578 <span style='color:var(--text-dim);font-size:0.68rem'>(7,546)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.41%</td>
             <td class="pnl-neg">–$1,104.00</td>
             <td class="fee-val">–$151.24</td>
             <td class="pnl-neg">–$1,255.24</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td><div class="leg-main side-call">8050 / 8100</div></td>
             <td>06/01</td><td>06/03</td><td>34</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.61</td>
             <td>$1.98</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.07)</span></td>
             <td class="spx-val">7,581</td>
-            <td class="spx-val">7,578</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.03%</td>
             <td class="pnl-pos">+$2,142.00</td>
             <td class="fee-val">–$111.78</td>
             <td class="pnl-pos">+$2,030.22</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td><div class="leg-main side-call">8050 / 8100</div></td>
             <td>06/03</td><td>06/03</td><td>11</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.44</td>
             <td>$1.98</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.25)</span></td>
             <td class="spx-val">7,594</td>
-            <td class="spx-val">7,578</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.21%</td>
             <td class="pnl-pos">+$506.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$469.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/03</td><td>06/04</td><td>46</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.05</td>
             <td>$2.21</td>
             <td class="credit-val">+$1.07</td>
-            <td class="spx-val">7,578</td>
-            <td class="spx-val">7,546</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.08)</span></td>
+            <td class="spx-val">7,578 <span style='color:var(--text-dim);font-size:0.68rem'>(7,546)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.41%</td>
             <td class="pnl-pos">+$3,864.00</td>
             <td class="fee-val">–$151.24</td>
@@ -1994,7 +2018,10 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/15/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ind_735_071726"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ind_735_071726"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value positive" style="text-align:right;font-size:0.75rem;line-height:1.6">+0.08%</div>
         </div>
@@ -2020,147 +2047,147 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6975 / Long Put 6925</div></td>
+            <td><div class="leg-main side-put">6975 / 6925</div></td>
             <td>06/04</td><td>06/04</td><td>47</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$3.16</td>
             <td>$2.62</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.21)</span></td>
             <td class="spx-val">7,536</td>
-            <td class="spx-val">7,584</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.64%</td>
             <td class="pnl-pos">+$2,538.00</td>
             <td class="fee-val">–$154.52</td>
             <td class="pnl-pos">+$2,383.48</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 7000 / Long Put 6950</div></td>
+            <td><div class="leg-main side-put">7000 / 6950</div></td>
             <td>06/04</td><td>06/15</td><td>47</td>
             <td class="days-val" style="text-align:center">11</td>
             <td>$2.77</td>
             <td>$2.41</td>
             <td class="credit-val">+$0.15</td>
-            <td class="spx-val">7,584</td>
-            <td class="spx-val">7,543</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.41)</span></td>
+            <td class="spx-val">7,584 <span style='color:var(--text-dim);font-size:0.68rem'>(7,543)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.55%</td>
             <td class="pnl-pos">+$1,692.00</td>
             <td class="fee-val">–$154.52</td>
             <td class="pnl-pos">+$1,537.48</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 7000 / Long Put 6950</div></td>
+            <td><div class="leg-main side-put">7000 / 6950</div></td>
             <td>06/05</td><td>06/15</td><td>1</td>
             <td class="days-val" style="text-align:center">10</td>
             <td>$3.80</td>
             <td>$2.41</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.38)</span></td>
             <td class="spx-val">7,502</td>
-            <td class="spx-val">7,543</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.54%</td>
             <td class="pnl-pos">+$139.00</td>
             <td class="fee-val">–$3.28</td>
             <td class="pnl-pos">+$135.72</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td><div class="leg-main side-call">8030 / 8080</div></td>
             <td>06/04</td><td>06/05</td><td>47</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.69</td>
             <td>$2.07</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.21)</span></td>
             <td class="spx-val">7,536</td>
-            <td class="spx-val">7,512</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.33%</td>
             <td class="pnl-pos">+$2,914.00</td>
             <td class="fee-val">–$154.52</td>
             <td class="pnl-pos">+$2,759.48</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td><div class="leg-main side-call">8020 / 8070</div></td>
             <td>06/05</td><td>06/05</td><td>47</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.22</td>
             <td>$1.87</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.19)</span></td>
             <td class="spx-val">7,512</td>
-            <td class="spx-val">7,463</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.64%</td>
             <td class="pnl-pos">+$1,645.00</td>
             <td class="fee-val">–$154.52</td>
             <td class="pnl-pos">+$1,490.48</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td><div class="leg-main side-call">8020 / 8070</div></td>
             <td>06/05</td><td>06/05</td><td>1</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.10</td>
             <td>$1.87</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.38)</span></td>
             <td class="spx-val">7,502</td>
-            <td class="spx-val">7,463</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.52%</td>
             <td class="pnl-pos">+$23.00</td>
             <td class="fee-val">–$3.28</td>
             <td class="pnl-pos">+$19.72</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8010 / Long Call 8060</div></td>
+            <td><div class="leg-main side-call">8010 / 8060</div></td>
             <td>06/05</td><td>06/05</td><td>48</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$1.97</td>
             <td>$1.65</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.99)</span></td>
             <td class="spx-val">7,463</td>
-            <td class="spx-val">7,453</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.14%</td>
             <td class="pnl-pos">+$1,536.00</td>
             <td class="fee-val">–$157.80</td>
             <td class="pnl-pos">+$1,378.20</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/05</td><td>06/05</td><td>48</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$1.75</td>
             <td>$1.37</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.12)</span></td>
             <td class="spx-val">7,453</td>
-            <td class="spx-val">7,384</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.92%</td>
             <td class="pnl-pos">+$1,824.00</td>
             <td class="fee-val">–$157.80</td>
             <td class="pnl-pos">+$1,666.20</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7990 / Long Call 8040</div></td>
+            <td><div class="leg-main side-call">7990 / 8040</div></td>
             <td>06/05</td><td>06/09</td><td>48</td>
             <td class="days-val" style="text-align:center">4</td>
             <td>$1.42</td>
             <td>$0.62</td>
             <td class="credit-val">+$0.05</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.44)</span></td>
             <td class="spx-val">7,384</td>
-            <td class="spx-val">7,254</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.77%</td>
             <td class="pnl-pos">+$3,840.00</td>
             <td class="fee-val">–$157.80</td>
             <td class="pnl-pos">+$3,682.20</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7950 / Long Call 8000</div></td>
+            <td><div class="leg-main side-call">7950 / 8000</div></td>
             <td>06/09</td><td>06/15</td><td>48</td>
             <td class="days-val" style="text-align:center">6</td>
             <td>$0.82</td>
             <td>$2.94</td>
             <td class="credit-val">+$0.20</td>
-            <td class="spx-val">7,254</td>
-            <td class="spx-val">7,543</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(23.08)</span></td>
+            <td class="spx-val">7,254 <span style='color:var(--text-dim);font-size:0.68rem'>(7,543)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+3.98%</td>
             <td class="pnl-neg">–$10,176.00</td>
             <td class="fee-val">–$157.80</td>
@@ -2196,7 +2223,10 @@
           <div class="badge" style="margin-bottom:2px;background:rgba(100,116,139,0.15);color:#94a3b8;border:1px solid rgba(100,116,139,0.3)">Closed</div>
           <div class="badge-exp" style="margin-bottom:4px">06/29/2026</div>
           <div class="stat-label">Days Held</div>
-          <div class="stat-value neutral" id="days-ind_735_073126"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ind_735_073126"></div>
+            
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value negative" style="text-align:right;font-size:0.75rem;line-height:1.6">-1.97%</div>
         </div>
@@ -2222,231 +2252,231 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/15</td><td>06/29</td><td>49</td>
             <td class="days-val" style="text-align:center">14</td>
             <td>$3.04</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
-            <td class="spx-val">7,549</td>
-            <td class="spx-val">7,401</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.27)</span></td>
+            <td class="spx-val">7,549 <span style='color:var(--text-dim);font-size:0.68rem'>(7,401)</span></td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.97%</td>
             <td class="pnl-neg">–$5,161.00</td>
             <td class="fee-val">–$161.10</td>
             <td class="pnl-neg">–$5,322.10</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/17</td><td>06/29</td><td>11</td>
             <td class="days-val" style="text-align:center">12</td>
             <td>$3.11</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.43)</span></td>
             <td class="spx-val">7,528</td>
-            <td class="spx-val">7,401</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.69%</td>
             <td class="pnl-neg">–$1,078.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-neg">–$1,114.16</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/17</td><td>06/29</td><td>1</td>
             <td class="days-val" style="text-align:center">12</td>
             <td>$3.52</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.88)</span></td>
             <td class="spx-val">7,504</td>
-            <td class="spx-val">7,401</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-1.38%</td>
             <td class="pnl-neg">–$57.00</td>
             <td class="fee-val">–$3.28</td>
             <td class="pnl-neg">–$60.28</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6950 / Long Put 6900</div></td>
+            <td><div class="leg-main side-put">6950 / 6900</div></td>
             <td>06/23</td><td>06/29</td><td>6</td>
             <td class="days-val" style="text-align:center">6</td>
             <td>$5.03</td>
             <td>$4.09</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(19.33)</span></td>
             <td class="spx-val">7,398</td>
-            <td class="spx-val">7,401</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.03%</td>
             <td class="pnl-pos">+$564.00</td>
             <td class="fee-val">–$19.72</td>
             <td class="pnl-pos">+$544.28</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8075 / Long Call 8125</div></td>
+            <td><div class="leg-main side-call">8075 / 8125</div></td>
             <td>06/15</td><td>06/16</td><td>49</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$3.02</td>
             <td>$2.52</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.27)</span></td>
             <td class="spx-val">7,549</td>
-            <td class="spx-val">7,546</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.05%</td>
             <td class="pnl-pos">+$2,472.00</td>
             <td class="fee-val">–$161.08</td>
             <td class="pnl-pos">+$2,310.92</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8050 / Long Call 8100</div></td>
+            <td><div class="leg-main side-call">8050 / 8100</div></td>
             <td>06/16</td><td>06/16</td><td>49</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.97</td>
             <td>$2.45</td>
             <td class="credit-val">+$0.45</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(15.88)</span></td>
             <td class="spx-val">7,546</td>
-            <td class="spx-val">7,520</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.35%</td>
             <td class="pnl-pos">+$2,548.00</td>
             <td class="fee-val">–$161.08</td>
             <td class="pnl-pos">+$2,386.92</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8040 / Long Call 8090</div></td>
+            <td><div class="leg-main side-call">8040 / 8090</div></td>
             <td>06/16</td><td>06/17</td><td>49</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.60</td>
             <td>$2.30</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.15)</span></td>
             <td class="spx-val">7,520</td>
-            <td class="spx-val">7,502</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.23%</td>
             <td class="pnl-pos">+$1,470.00</td>
             <td class="fee-val">–$161.08</td>
             <td class="pnl-pos">+$1,308.92</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8040 / Long Call 8090</div></td>
+            <td><div class="leg-main side-call">8040 / 8090</div></td>
             <td>06/17</td><td>06/17</td><td>11</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.69</td>
             <td>$2.30</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.43)</span></td>
             <td class="spx-val">7,528</td>
-            <td class="spx-val">7,502</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.34%</td>
             <td class="pnl-pos">+$429.00</td>
             <td class="fee-val">–$36.16</td>
             <td class="pnl-pos">+$392.84</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td><div class="leg-main side-call">8030 / 8080</div></td>
             <td>06/17</td><td>06/17</td><td>60</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.45</td>
             <td>$1.95</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.89)</span></td>
             <td class="spx-val">7,502</td>
-            <td class="spx-val">7,460</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.56%</td>
             <td class="pnl-pos">+$3,000.00</td>
             <td class="fee-val">–$197.26</td>
             <td class="pnl-pos">+$2,802.74</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8030 / Long Call 8080</div></td>
+            <td><div class="leg-main side-call">8030 / 8080</div></td>
             <td>06/17</td><td>06/17</td><td>1</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.43</td>
             <td>$1.95</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.88)</span></td>
             <td class="spx-val">7,504</td>
-            <td class="spx-val">7,460</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.59%</td>
             <td class="pnl-pos">+$48.00</td>
             <td class="fee-val">–$3.28</td>
             <td class="pnl-pos">+$44.72</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8020 / Long Call 8070</div></td>
+            <td><div class="leg-main side-call">8020 / 8070</div></td>
             <td>06/17</td><td>06/17</td><td>61</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.05</td>
             <td>$1.47</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.76)</span></td>
             <td class="spx-val">7,460</td>
-            <td class="spx-val">7,409</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.68%</td>
             <td class="pnl-pos">+$3,538.00</td>
             <td class="fee-val">–$200.56</td>
             <td class="pnl-pos">+$3,337.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 8000 / Long Call 8050</div></td>
+            <td><div class="leg-main side-call">8000 / 8050</div></td>
             <td>06/17</td><td>06/23</td><td>61</td>
             <td class="days-val" style="text-align:center">6</td>
             <td>$1.67</td>
             <td>$0.95</td>
             <td class="credit-val">+$0.20</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.72)</span></td>
             <td class="spx-val">7,409</td>
-            <td class="spx-val">7,364</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.61%</td>
             <td class="pnl-pos">+$4,392.00</td>
             <td class="fee-val">–$200.56</td>
             <td class="pnl-pos">+$4,191.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7975 / Long Call 8025</div></td>
+            <td><div class="leg-main side-call">7975 / 8025</div></td>
             <td>06/23</td><td>06/24</td><td>61</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.15</td>
             <td>$0.87</td>
             <td class="credit-val">+$0.20</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.21)</span></td>
             <td class="spx-val">7,364</td>
-            <td class="spx-val">7,339</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.34%</td>
             <td class="pnl-pos">+$1,708.00</td>
             <td class="fee-val">–$200.56</td>
             <td class="pnl-pos">+$1,507.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7975 / Long Call 8025</div></td>
+            <td><div class="leg-main side-call">7975 / 8025</div></td>
             <td>06/23</td><td>06/24</td><td>6</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$1.47</td>
             <td>$0.87</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(19.33)</span></td>
             <td class="spx-val">7,398</td>
-            <td class="spx-val">7,339</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.80%</td>
             <td class="pnl-pos">+$360.00</td>
             <td class="fee-val">–$19.72</td>
             <td class="pnl-pos">+$340.28</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7950 / Long Call 8000</div></td>
+            <td><div class="leg-main side-call">7950 / 8000</div></td>
             <td>06/24</td><td>06/26</td><td>67</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$1.07</td>
             <td>$0.86</td>
             <td class="credit-val">+$0.20</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.18)</span></td>
             <td class="spx-val">7,339</td>
-            <td class="spx-val">7,313</td>
             <td class="pnl-neg" style="font-family:var(--mono);font-size:0.72rem">-0.35%</td>
             <td class="pnl-pos">+$1,407.00</td>
             <td class="fee-val">–$220.28</td>
             <td class="pnl-pos">+$1,186.72</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7925 / Long Call 7975</div></td>
+            <td><div class="leg-main side-call">7925 / 7975</div></td>
             <td>06/26</td><td>06/29</td><td>67</td>
             <td class="days-val" style="text-align:center">3</td>
             <td>$1.01</td>
             <td>$1.26</td>
             <td class="credit-val">+$0.15</td>
-            <td class="spx-val">7,313</td>
-            <td class="spx-val">7,401</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(20.32)</span></td>
+            <td class="spx-val">7,313 <span style='color:var(--text-dim);font-size:0.68rem'>(7,401)</span></td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+1.20%</td>
             <td class="pnl-neg">–$1,675.00</td>
             <td class="fee-val">–$220.28</td>
@@ -2482,7 +2512,10 @@
           <div class="badge badge-active" style="margin-bottom:2px">Active</div>
           <div class="badge-exp" style="margin-bottom:4px">2 legs open</div>
           <div class="stat-label">Days Open</div>
-          <div class="stat-value neutral" id="days-ind_735_080726"></div>
+          <div style="display:flex;align-items:baseline;gap:6px;justify-content:flex-end">
+            <div class="stat-value neutral" id="days-ind_735_080726"></div>
+            <span style='color:var(--text-muted);font-size:0.68rem'>(33 DTE)</span>
+          </div>
           <div class="stat-label" style="margin-top:6px">SPX Δ%</div>
           <div class="stat-value neutral" style="text-align:right;font-size:0.75rem;line-height:1.6">rolled: <span style="color:var(--green)">+0.53%</span><br>current: <span style="color:var(--green)">+1.07%</span></div>
         </div>
@@ -2508,105 +2541,105 @@
       <thead><tr>
         <th>Spread</th><th>Open Date</th><th>Close Date</th><th>Qty</th>
         <th>Days Held</th><th>Net Open</th><th>Net Close</th><th>Net Credit</th>
-        <th>SPX Open</th><th>SPX Close</th><th>SPX Δ%</th>
+        <th>IV (VIX)</th><th>SPX Open (Close)</th><th>SPX Δ%</th>
         <th>Gross P&L</th><th>Fees</th><th>Net P&L</th>
       </tr></thead>
       <tbody>
-        <tr class="section-divider put-divider"><td colspan="11">Put Spreads</td></tr>
+        <tr class="section-divider put-divider"><td colspan="11">Put Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6800 / Long Put 6750</div></td>
+            <td><div class="leg-main side-put">6800 / 6750</div></td>
             <td>06/29</td><td>06/29</td><td>68</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.86</td>
             <td>$2.60</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.21)</span></td>
             <td class="spx-val">7,404</td>
-            <td class="spx-val">7,433</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.39%</td>
             <td class="pnl-pos">+$1,768.00</td>
             <td class="fee-val">–$223.56</td>
             <td class="pnl-pos">+$1,544.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6825 / Long Put 6775</div></td>
+            <td><div class="leg-main side-put">6825 / 6775</div></td>
             <td>06/29</td><td>06/30</td><td>68</td>
             <td class="days-val" style="text-align:center">1</td>
             <td>$2.75</td>
             <td>$2.35</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.77)</span></td>
             <td class="spx-val">7,433</td>
-            <td class="spx-val">7,472</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.52%</td>
             <td class="pnl-pos">+$2,720.00</td>
             <td class="fee-val">–$223.56</td>
             <td class="pnl-pos">+$2,496.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6850 / Long Put 6800</div></td>
+            <td><div class="leg-main side-put">6850 / 6800</div></td>
             <td>06/30</td><td>06/30</td><td>68</td>
             <td class="days-val" style="text-align:center">0</td>
             <td>$2.50</td>
             <td>$2.21</td>
             <td class="credit-val">+$0.15</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(17.17)</span></td>
             <td class="spx-val">7,472</td>
-            <td class="spx-val">7,491</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.26%</td>
             <td class="pnl-pos">+$1,952.00</td>
             <td class="fee-val">–$223.56</td>
             <td class="pnl-pos">+$1,728.44</td>
           </tr>
           <tr>
-            <td><div class="leg-main side-put">Short Put 6875 / Long Put 6825</div></td>
+            <td><div class="leg-main side-put">6875 / 6825</div></td>
             <td>06/30</td><td>07/02</td><td>68</td>
             <td class="days-val" style="text-align:center">2</td>
             <td>$2.33</td>
             <td>$2.05</td>
             <td class="credit-val">+$0.12</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(16.64)</span></td>
             <td class="spx-val">7,491</td>
-            <td class="spx-val">7,511</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.27%</td>
             <td class="pnl-pos">+$1,908.00</td>
             <td class="fee-val">–$223.74</td>
             <td class="pnl-pos">+$1,684.26</td>
           </tr>
           <tr class="row-open">
-            <td><div class="leg-main side-put">Short Put 6900 / Long Put 6850 <span class="open-tag">Open</span></div></td>
+            <td><div class="leg-main side-put">6900 / 6850 <span class="open-tag">Open</span></div></td>
             <td>07/02</td><td>—</td><td>68</td>
             <td class="days-open-val" style="text-align:center" data-open="2026-07-02"></td>
             <td>$2.15</td>
             <td>—</td>
             <td class="credit-val">+$0.10</td>
+            <td class="spx-val">19.8% <span style='color:var(--text-dim);font-size:0.68rem'>(16.15)</span></td>
             <td class="spx-val">7,511</td>
-            <td class="spx-val">—</td>
             <td class="pnl-open" style="font-family:var(--mono);font-size:0.72rem">—</td>
             <td class="pnl-open">—</td>
             <td class="fee-val">–$111.96</td>
             <td class="pnl-open">—</td>
           </tr>
-        <tr class="section-divider call-divider"><td colspan="11">Call Spreads</td></tr>
+        <tr class="section-divider call-divider"><td colspan="11">Call Spreads (S/L)</td></tr>
           <tr>
-            <td><div class="leg-main side-call">Short Call 7900 / Long Call 7950</div></td>
+            <td><div class="leg-main side-call">7900 / 7950</div></td>
             <td>06/29</td><td>07/02</td><td>68</td>
             <td class="days-val" style="text-align:center">3</td>
             <td>$2.69</td>
             <td>$2.29</td>
             <td class="pnl-open">—</td>
+            <td class="spx-val">— <span style='color:var(--text-dim);font-size:0.68rem'>(18.21)</span></td>
             <td class="spx-val">7,404</td>
-            <td class="spx-val">7,443</td>
             <td class="pnl-pos" style="font-family:var(--mono);font-size:0.72rem">+0.53%</td>
             <td class="pnl-pos">+$2,720.00</td>
             <td class="fee-val">–$223.74</td>
             <td class="pnl-pos">+$2,496.26</td>
           </tr>
           <tr class="row-open">
-            <td><div class="leg-main side-call">Short Call 7875 / Long Call 7925 <span class="open-tag">Open</span></div></td>
+            <td><div class="leg-main side-call">7875 / 7925 <span class="open-tag">Open</span></div></td>
             <td>07/02</td><td>—</td><td>68</td>
             <td class="days-open-val" style="text-align:center" data-open="2026-07-02"></td>
             <td>$2.84</td>
             <td>—</td>
             <td class="credit-val">+$0.55</td>
+            <td class="spx-val">11.5% <span style='color:var(--text-dim);font-size:0.68rem'>(16.75)</span></td>
             <td class="spx-val">7,443</td>
-            <td class="spx-val">—</td>
             <td class="pnl-open" style="font-family:var(--mono);font-size:0.72rem">—</td>
             <td class="pnl-open">—</td>
             <td class="fee-val">–$111.96</td>
