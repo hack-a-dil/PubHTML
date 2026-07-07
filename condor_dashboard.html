@@ -90,26 +90,26 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 // ════════════════════════════════════════════════════════════
 // POSITION STRUCTURE (declared early — narrative/news reference CONTRACTS/STRIKES)
 // POSITION STRUCTURE
-const STRIKES = { putLong:6850.0, putShort:6900.0, callShort:7875.0, callLong:7925.0 };
+const STRIKES = { putLong:6875.0, putShort:6925.0, callShort:7875.0, callLong:7925.0 };
 const CONTRACTS = 68;
 const EXPIRY = `August 7, 2026`;
 
-const SPX = 7483.24;   // Schwab close (authority)
+const SPX = 7537.43;   // Schwab close (authority)
 const SPX_AH = 0;
 const SPY = 0;
-const SPX_CHANGE_PTS = 0.01;
-const SPX_CHANGE_PCT = 0.00013363;
-const TIMESTAMP = `Jul 2, 2026  4:00 PM ET`;
-const SESSION = `neutral`;
-const SESSION_NOTE   = `Jobs day: flat close (+0.00% to 7,483) but a wild ~113pt intraday range — spiked up ~57pts then reversed ~55pts below the close. June payrolls shocked at 57K (vs ~113K est), soft enough to break the hot streak and support Fed-on-hold. Big rotation under the flat tape: Dow to a record, Nasdaq -0.8% (semis -4.5%, Tesla -7%). Rolled both wings for credit into the spike — puts up to 6850/6900, CALLS DOWN to 7875/7925 (harvesting the high). Blended credit up to $6.62/ct. Mark $5.70 → +$6,256.00. Call short 7875 is the tightest of the campaign (392pts) but still 192pts above the EM ceiling after the vol crush. 32pts above flip.`;
+const SPX_CHANGE_PTS = 54.19;
+const SPX_CHANGE_PCT = 0.72;
+const TIMESTAMP = `Jul 6, 2026  4:00 PM ET`;
+const SESSION = `bullish`;
+const SESSION_NOTE   = `Post-holiday melt-up +0.72% — tech-led (Nasdaq +1.12%, semis surged on MS target hikes, Dow record). Oil soft on OPEC+ supply. Services PMI in-line. Rolled the put side up again for a dime; mark green at +$5,916.00. The grind higher cut the call buffer to the tightest of the campaign — call short now just 143pts above the EM ceiling — while the puts sit 612pts away. Still above the flip = positive gamma, γ the most negative yet. Calls are the wing to watch.`;
 
-const CANDLE = { open:7495.14, high:7540.75, low:7427.55, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:16.15, brent:71.54, wti:68.46 };
+const CANDLE = { open:7488.42, high:7561.03, low:7486.55, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:15.83, brent:70.12, wti:66.91 };
 
-const GREEKS = { delta:"-74.8", theta:"+1380.4", gamma:"-1.28", vega:"-8153.2" };
+const GREEKS = { delta:"-80.0", theta:"+1340.0", gamma:"-1.53", vega:"-7780.0" };
 
-const INITIAL_CREDIT = 6.62;   // blended all-in credit/ct (authoritative, via --credit)
-const MARK = 5.7;   // Schwab net MV / ct / 100 = cost to close
+const INITIAL_CREDIT = 6.72;   // blended all-in credit/ct (authoritative, via --credit)
+const MARK = 5.85;   // Schwab net MV / ct / 100 = cost to close
 
 const CONDOR_OPEN_DATE = `Jun 29`;
 
@@ -132,7 +132,7 @@ const TD_DTE       = (()=>{
 })();
 
 // GEX DATA — Barchart
-const GEX = { flipPoint:7451.65, putWall:7500.0, callWall:7500.0, iv:13.05, hv:14.47, ivRank:15.23, ivPct:30, expectedMoveUp:7683.4, expectedMoveDown:7259.58 };
+const GEX = { flipPoint:7435.36, putWall:7500.0, callWall:7500.0, iv:12.92, hv:14.57, ivRank:14.41, ivPct:26, expectedMoveUp:7732.08, expectedMoveDown:7342.78 };
 
 const COMPLETED_CATALYSTS = [
   { date:"Jun 17", event:"FOMC Decision", outcome:"HAWKISH", detail:"Warsh Fed held at 3.50-3.75% but turned projections sharply hawkish — dot median to 3.8%, an October hike floated. Set the rate-path backdrop the position still trades against.", color:"#f59e0b" },
@@ -158,6 +158,7 @@ const HISTORY_LOG = [
   { date:"Jun 30",spx:7499.36, callBuf:401, putBuf:624, gexFlip:null, session:"bullish", note:"Rally continued +0.79% to 7,499 (dashboard build skipped this day). Rolled the put side UP twice on the strength — 6775/6825 → 6800/6850 (+$0.15) → 6825/6875 (+$0.12) — harvesting premium from the far wing, blended credit to $5.97. Call side tightened to ~401pts as SPX pushed higher." },
   { date:"Jul 1",spx:7483.23, callBuf:417, putBuf:608, gexFlip:7418.46, session:"neutral", note:"Modest pullback -0.22% (vs 6/30's 7,499), gapping down to a 7,479 open, running to a 7,522 high, dipping to 7,449, closing 7,483. ISM Manufacturing 53.3 (soft, below 54.0 est) but input prices fell 9.1pts — disinflationary tint; oil kept sliding (WTI 67.8). VIX eased to 16.6, IV pct compressed to 41. Still ABOVE flip 7,418 = positive gamma. Mark $5.80 → +$1,156.00 (GREEN). Δ-81.6 and γ-1.17 both most negative yet — call side the pressured wing (417pts, EM ceiling now just 176pts below the 7900 short). Jobs report tomorrow." },
   { date:"Jul 2",spx:7483.24, callBuf:392, putBuf:583, gexFlip:7451.65, session:"neutral", note:"JOBS DAY, flat close (+0.00% to 7,483.24) but a wild 113pt range — ran to 7,540 then dropped to 7,428. June payrolls SHOCKED at just 57K (vs ~113K est), a soft print that broke the hot streak and supports Fed-on-hold; Oct hike odds fell. Big rotation under the flat headline: Dow to a record (+1.14%) while Nasdaq -0.8% (semis -4.5%, Tesla -7%). Rolled both wings for credit into the spike — puts up to 6850/6900 (+$0.10), CALLS DOWN to 7875/7925 (+$0.55, harvesting the 7,540 high). Blended credit jumped to $6.62. Mark $5.70 → +$6,256.00. Call short now 7875 (tightest yet, 392pts); still 192pts above EM ceiling 7,683 after the vol crush (IV pct 30). Still ABOVE flip 7,452 but only 32pts of cushion. γ-1.28 most negative yet." },
+  { date:"Jul 6",spx:7537.43, callBuf:338, putBuf:612, gexFlip:7435.36, session:"bullish", note:"Post-holiday melt-up +0.72% to 7,537.43 (official close; Schwab intraday printed 7,549, reconciled to Barchart). Tech-led: Nasdaq +1.12%, semis surged (WDC +7%, Lam/AMAT/KLA ~+4% on MS target hikes), Dow record 53,055.91. Oil soft on OPEC+ +188K bpd (5th monthly increase). S&P Global Services PMI 51.3 (in-line). Rolled the put side up to 6875/6925 (+$0.10), blended $6.72. Mark $5.85 → +$5,916.00. The grind higher cut the call buffer to 338pts (tightest of the campaign); call short 7875 now just 143pts above the EM ceiling 7,732. Still ABOVE flip 7,435 by 102pts = positive gamma. γ-1.53 most negative yet. Put side a comfortable 612pts." },
 ];;
 
 const ROLL_LOG = [
@@ -167,15 +168,16 @@ const ROLL_LOG = [
   { date:"Jun 30", side:"PUT", from:"6800/6850", to:"6825/6875", dir:"↑ +25pts", credit:"$0.12", note:"Rolled the put side up once more, same session. Blended all-in credit now $5.97/ct ($40,596.00). Put short now 6875, still ~608pts below spot." },
   { date:"Jul 2", side:"PUT", from:"6825/6875", to:"6850/6900", dir:"↑ +25pts", credit:"$0.10", note:"Rolled the put side up again on jobs day. Put short now 6900. Blended credit $6.07." },
   { date:"Jul 2", side:"CALL", from:"7900/7950", to:"7875/7925", dir:"↓ -25pts", credit:"$0.55", note:"Rolled the CALL side DOWN toward spot into the intraday jobs-day spike to 7,540, harvesting a rich $0.55/ct. Narrows the condor and banks premium, but moves the pressured wing closer — short call now 7875 (tightest of the campaign). Blended all-in credit now $6.62/ct ($45,016.00)." },
+  { date:"Jul 6", side:"PUT", from:"6850/6900", to:"6875/6925", dir:"↑ +25pts", credit:"$0.10", note:"Rolled the put side up again on the post-holiday melt-up. Put short now 6925, a comfortable ~612pts below spot. Blended all-in credit now $6.72/ct ($45,696.00). Premium harvested from the safe wing while the call side keeps compressing." },
 ];;
 
 const NEWS = [
-  { time:"Jul 2",  text:"📋 JOBS SHOCK — SOFT: June payrolls rose just 57K vs ~113K expected, the lowest in four months, with April+May revised down 74K combined. Unemployment ticked to 4.2% but mostly on a participation drop. It broke a 3-month hot streak and supports the Fed holding — October hike odds fell, December now the market's base case. A benign read for the rate path.", impact:"bullish", hot:true },
-  { time:"Jul 2",  text:"〰️ Flat SPX, violent internals: the S&P closed +0.00% at 7,483.24 but ran a 113pt range (7,540 high to 7,428 low). The Dow hit a record (+1.14%) on rotation into broad/cyclical names, while the Nasdaq fell 0.8% — semiconductors slid a second day (semis ETF -4.5%, Teradyne -13.6%, Micron -5.5%), and Tesla sank ~7% despite strong deliveries. A rotation, not broad selling.", impact:"neutral", hot:true },
-  { time:"Jul 2",  text:"🔧 Rolled both wings for credit into the spike: puts up to 6850/6900 (+$0.10) and — the notable move — the CALL side DOWN to 7875/7925 (+$0.55), harvesting the rich premium at the 7,540 intraday high. Blended credit jumped to $6.62 ($45,016.00), mark $5.70 → P&L +$6,256.00 (from +$1,156.00). Narrowed the condor and banked premium.", impact:"bullish", hot:true },
-  { time:"Jul 2",  text:"⚠️ The call short 7,875 is now the tightest strike of the campaign — 392pt buffer, and gamma -1.28 the most negative yet, so a rally now bites faster. The cushion: the jobs vol-crush (IV pct 30, from 41) pulled the EM ceiling down to 7,683, so the call short still sits 192pts above the expected move despite rolling toward spot. Positive gamma holds but with only 32pts above the flip (7,452).", impact:"bearish", hot:false },
-  { time:"🛢️ Jul 2", text:"Oil steadied (WTI 68.46, Brent 71.54) after Qatar called US-Iran mediation talks positive despite no breakthrough. VIX fell to 16.15 on the vol crush.", impact:"neutral", hot:false },
-  { time:"FRI 7/3", text:"🇺🇸 Markets CLOSED — Independence Day holiday. Next session Monday 7/6 (ISM Services PMI).", impact:"neutral", hot:false },
+  { time:"Jul 6",  text:"📈 Post-holiday melt-up: SPX +0.72% to 7,537.43, Nasdaq +1.12% to 26,121, Dow to a record 53,055.91. Momentum carried over from last week's strong run (S&P +1.8%). Broad tech leadership — a risk-on start to the week.", impact:"bullish", hot:true },
+  { time:"Jul 6",  text:"🔌 Semis surged: Western Digital +7%, Lam Research / Applied Materials / KLA all up ~4% after Morgan Stanley hiked price targets; Dell +7.7% on a White House promo. The AI/semis trade that sold off on jobs day roared back — the tape that's grinding toward your call side.", impact:"bearish", hot:true },
+  { time:"Jul 6",  text:"🔧 Rolled the put side up to 6875/6925 (+$0.10), blended credit now $6.72 ($45,696.00). Mark $5.85 → +$5,916.00, still green. But the melt-up cut the call buffer to 338pts — tightest of the campaign — and the 7875 short is now just 143pts above the EM ceiling (7,732). γ-1.53, most negative yet.", impact:"bearish", hot:false },
+  { time:"🛢️ Jul 6", text:"Oil soft: WTI 66.91, Brent 70.12. OPEC+ added 188K bpd for August — its 5th straight monthly increase — restoring ~940K bpd of supply as the Strait of Hormuz reopens and the US-Iran ceasefire holds. VIX eased to 15.83.", impact:"neutral", hot:false },
+  { time:"Jul 6",  text:"📋 S&P Global Services PMI (June) 51.3, a modest improvement and in-line — no surprise. The week's bigger items are ahead: ADP (Tue), Fed Minutes (Wed), jobless claims (Thu).", impact:"neutral", hot:false },
+  { time:"WED 7/8", text:"🏦 FED MEETING MINUTES — the week's key catalyst. Markets will parse the June hawkish-hold minutes for the October-hike debate. A hawkish read could pressure the rally; a dovish one could extend the melt-up toward your calls.", impact:"neutral", hot:true },
 ];;
 
 // ════════════════════════════════════════════════════════════
@@ -241,8 +243,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `Jobs day closed flat (SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)}) but ran a 113pt range on a soft 57K payrolls print. Rolled both wings into the intraday spike — calls down to ${fmt(STRIKES.callShort)} — banking credit to ${usd(UNREALIZED_PL*100*CONTRACTS, true)}.`;
-const REC = `Green and ${Math.round(SPX-GEX.flipPoint)}pts above the flip (positive gamma), but the calls are the pressure point: ${fmt(STRIKES.callShort)} is the tightest wing of the campaign at ${Math.round(CALL_BUF)}pts (still 192 above the EM ceiling), gamma ${GREEKS.gamma}. Set a call-side defend/roll level if SPX rallies toward today's high. Put side a non-issue at ${Math.round(PUT_BUF)}pts.`;
+const SESSION_SUMMARY = `Post-holiday melt-up: SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)}, tech-led (semis surged, Dow record). Rolled the put side up to ${fmt(STRIKES.putShort)}/${fmt(STRIKES.putLong)} (+$0.10, blended ${usd(TOTAL_COLLECTED)}); still green at ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. The rally ground the call buffer to the tightest of the campaign.`;
+const REC = `Green and ${Math.round(SPX-GEX.flipPoint)}pts above the flip (positive gamma), but the calls are now the clear pressure point: the melt-up cut the buffer to ${Math.round(CALL_BUF)}pts (tightest of the campaign) and the short ${fmt(STRIKES.callShort)} sits just 143pts above the EM ceiling ${fmt(GEX.expectedMoveUp)}, with gamma ${GREEKS.gamma} the most negative yet. Rolling the puts up keeps harvesting dimes from the safe wing (${Math.round(PUT_BUF)}pts) but does nothing for the calls. Set a call-side defend/roll level if the tech bid pushes SPX toward 7,600+.`;
 
 const CALENDAR = [
   { day:"WED 6/10", event:"🔥 May CPI 4.2% (hot, core soft)",   done:true, impact:"high",   verified:"✓ BLS"     },
@@ -262,7 +264,11 @@ const CALENDAR = [
   { day:"WED 7/1", event:"🏭 ISM Mfg 53.3 (soft, prices cooled); -0.22%",   done:true, impact:"high", verified:"✓ ISM" },
   { day:"THU 7/2", event:"📋 Jobs SHOCK: 57K vs 113K est (soft); SPX flat, Dow record",   done:true, impact:"high", verified:"✓ BLS" },
   { day:"FRI 7/3", event:"🇺🇸 Markets closed — Independence Day",   done:false, impact:"low", verified:"✓" },
-  { day:"MON 7/6", event:"📋 ISM Services PMI",   done:false, impact:"medium", verified:"✓ ISM" },
+  { day:"MON 7/6", event:"📈 Melt-up +0.72%; S&P Global Services PMI 51.3 (in-line)",   done:true, impact:"medium", verified:"✓ S&P" },
+  { day:"TUE 7/7", event:"📋 ADP Employment Change",   done:false, impact:"medium", verified:"✓ ADP" },
+  { day:"WED 7/8", event:"🏦 Fed Meeting Minutes",   done:false, impact:"high", verified:"✓ FOMC" },
+  { day:"THU 7/9", event:"📋 Jobless Claims + Existing Home Sales",   done:false, impact:"medium", verified:"✓" },
+  { day:"FRI 7/10", event:"🛢️ IEA Monthly Report",   done:false, impact:"low", verified:"✓ IEA" },
   { day:"FRI 8/7", event:"🎯 YOUR EXPIRATION",     done:false, impact:"high",   verified:"✓"         },
 ];;
 
@@ -289,9 +295,9 @@ const KEY_LEVELS = [
 ].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
-  { label:"🟢 RANGEBOUND / DECAY",   desc:`The soft-jobs, Fed-on-hold backdrop keeps SPX chopping in positive-gamma territory between the EM bounds (${fmt(GEX.expectedMoveDown)}–${fmt(GEX.expectedMoveUp)}). The narrowed condor now decays faster — theta +$1,380.00/day across ${CONTRACTS} lots toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max — and the position is already +$6,256.00. The ideal path; the tighter wings mean richer decay if spot behaves.`, color:"#34d399", impact:"IDEAL ✓" },
-  { label:"🔴 RALLY RETESTS 7,540",  desc:`The rotation flips back to risk-on and SPX pushes toward the day's 7,540 high and beyond, toward the call short ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away — the tightest wing of the campaign). Gamma ${GREEKS.gamma} (most negative yet) means the mark accelerates against you. The call short still sits 192pts above the EM ceiling ${fmt(GEX.expectedMoveUp)}, so it's not imminent — but this is the primary risk. Have a call-side defend/roll level set. Max risk/side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}.`, color:"#f87171", impact:"PRIMARY RISK ⚠️" },
-  { label:"🟡 VOL RE-EXPANDS",       desc:`IV is cheap after the jobs crush (${GEX.ivPct} pct). Any catalyst that re-expands vol lifts the mark against you via vega ${GREEKS.vega} (the largest yet), and a pullback of just ${Math.round(SPX-GEX.flipPoint)}pts tips SPX below the flip ${fmt(GEX.flipPoint)} into negative gamma — where moves amplify. Watch the semis rotation; if it turns into broad selling, both the vega and a flip-crossing come into play.`, color:"#fbbf24", impact:"VEGA / FLIP RISK" },
+  { label:"🟢 RANGEBOUND / DECAY",   desc:`The melt-up stalls and SPX holds in positive-gamma territory below the EM ceiling ${fmt(GEX.expectedMoveUp)}. Both wings stay OTM, dealers dampen moves, and theta harvests ~$1,340/day across ${CONTRACTS} lots toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. Green and the clock helps — but needs the tech bid to cool.`, color:"#34d399", impact:"IDEAL ✓" },
+  { label:"🔴 TECH MELT-UP CONTINUES", desc:`The semis/AI bid keeps running and SPX pushes toward 7,600+ and the call short ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away — tightest of the campaign). Gamma ${GREEKS.gamma} (most negative yet) accelerates the mark against you, and the short is only 143pts above the EM ceiling now. The primary risk — set a call-side defend/roll level before the open. Max risk/side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}.`, color:"#f87171", impact:"PRIMARY RISK ⚠️" },
+  { label:"🟡 FED MINUTES / FLIP",    desc:`Wednesday's Fed minutes are the swing factor. A hawkish read could stall the rally (good for the calls); a dovish surprise extends it (bad). Note the flip is ${fmt(GEX.flipPoint)} — SPX is ${Math.round(SPX-GEX.flipPoint)}pts above it, so a pullback through there tips into negative gamma where moves amplify. IV is cheap (${GEX.ivPct} pct), so a vol pop would also hit the ${GREEKS.vega} vega.`, color:"#fbbf24", impact:"CATALYST / FLIP" },
 ];;
 
 function gaugeArc(pct){
