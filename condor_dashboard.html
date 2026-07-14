@@ -90,35 +90,35 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 // ════════════════════════════════════════════════════════════
 // POSITION STRUCTURE (declared early — narrative/news reference CONTRACTS/STRIKES)
 // POSITION STRUCTURE
-const STRIKES = { putLong:6925.0, putShort:6975.0, callShort:7825.0, callLong:7875.0 };
-const CONTRACTS = 68;
-const EXPIRY = `August 7, 2026`;
+const STRIKES = { putLong:6850.0, putShort:6900.0, callShort:7970.0, callLong:8020.0 };
+const CONTRACTS = 69;
+const EXPIRY = `August 21, 2026`;
 
-const SPX = 7575.39;   // Schwab close (authority)
+const SPX = 7515.34;   // Schwab close (authority)
 const SPX_AH = 0;
 const SPY = 0;
-const SPX_CHANGE_PTS = 31.75;
-const SPX_CHANGE_PCT = 0.42;
-const TIMESTAMP = `Jul 10, 2026  4:00 PM ET`;
-const SESSION = `bullish`;
-const SESSION_NOTE   = `Melt-up extended to a new closing high (+0.42%) — the scenario flagged yesterday. A broadening rally (comms + financials led, not just chips); SK Hynix soared 13% in a record debut, Meta +6%. Oil fell despite Hormuz attacks; VIX crushed near 15. Rolled the put side up again for a dime. The position went RED for the first time (-$3,604) as spot pushed toward the calls. Call buffer the tightest of the campaign, the short just 71pts above the EM ceiling, and delta/gamma/vega all at campaign extremes. Still above the flip (positive gamma), and the call wall at 7,600 sits just above spot as possible resistance. The call side needs a decision now, not just watching.`;
+const SPX_CHANGE_PTS = -60.05;
+const SPX_CHANGE_PCT = -0.79;
+const TIMESTAMP = `Jul 13, 2026  4:00 PM ET`;
+const SESSION = `bearish`;
+const SESSION_NOTE   = `New condor day. Closed the 8/7 condor for a +$10,880 realized win (5th straight) rather than defend last week's stressed 7825 call short, and opened a fresh 8/21 condor, re-centered with far more room. SPX fell -0.79% (Barchart authoritative; the fetch printed a stale higher number), so spot moved away from the new calls on day one. The reset shows in the greeks: call buffer 455pts, delta and gamma roughly a third of Friday's. Green at +$1,725, positive gamma. VIX ticked up and oil is back near $80 on Iran. CPI, Warsh testimony, and bank earnings all land tomorrow.`;
 
-const CANDLE = { open:7550.12, high:7581.2, low:7544.3, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:15.03, brent:75.1, wti:71.59 };
+const CANDLE = { open:7570.0, high:7581.0, low:7508.0, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:17.16, brent:85.37, wti:80.08 };
 
-const GREEKS = { delta:"-278.8", theta:"+2298.0", gamma:"-1.94", vega:"-10050.0", gammaSource:"TOS", gammaDerived:"-1.80", gammaVsTos:"-7.4%" };
+const GREEKS = { delta:"-64.4", theta:"+1512.0", gamma:"-1.05", vega:"-8110.0", gammaSource:"TOS", gammaDerived:"-0.99", gammaVsTos:"-5.4%" };
 
-const INITIAL_CREDIT = 8.17;   // blended all-in credit/ct (authoritative, via --credit)
-const MARK = 8.7;   // Schwab net MV / ct / 100 = cost to close
+const INITIAL_CREDIT = 5.2;   // blended all-in credit/ct (authoritative, via --credit)
+const MARK = 4.95;   // Schwab net MV / ct / 100 = cost to close
 
-const CONDOR_OPEN_DATE = `Jun 29`;
+const CONDOR_OPEN_DATE = `Jul 13`;
 
 // ════════════════════════════════════════════════════════════
 //  DATE / DTE — fully dynamic (EXPIRY_DATE auto-derived from expiry code)
 // ════════════════════════════════════════════════════════════
 const TODAY        = new Date();
-const EXPIRY_DATE  = new Date(2026, 7, 7);   // auto-derived — stays in sync with EXPIRY
-const HOLIDAYS     = ["2026-06-19","2026-07-03","2026-09-07","2026-11-26","2026-12-25"];
+const EXPIRY_DATE  = new Date(2026, 7, 21);   // auto-derived — stays in sync with EXPIRY
+const HOLIDAYS     = ["2026-09-07"];
 const localDateStr = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 const CD_DTE       = Math.ceil((EXPIRY_DATE - new Date(TODAY.getFullYear(),TODAY.getMonth(),TODAY.getDate())) / (1000*60*60*24));
 const TD_DTE       = (()=>{
@@ -132,13 +132,14 @@ const TD_DTE       = (()=>{
 })();
 
 // GEX DATA — Barchart
-const GEX = { flipPoint:7441.12, putWall:7500.0, callWall:7600.0, iv:12.72, hv:14.78, ivRank:13.15, ivPct:23, expectedMoveUp:7753.9, expectedMoveDown:7396.88 };
+const GEX = { flipPoint:7464.57, putWall:7500.0, callWall:7500.0, iv:13.99, hv:14.87, ivRank:21.24, ivPct:50, expectedMoveUp:7859.02, expectedMoveDown:7171.66 };
 
 const COMPLETED_CATALYSTS = [
-  { date:"Jun 17", event:"FOMC Decision", outcome:"HAWKISH", detail:"Warsh Fed held at 3.50-3.75% but turned projections sharply hawkish — dot median to 3.8%, an October hike floated. Set the rate-path backdrop the position still trades against.", color:"#f59e0b" },
-  { date:"Jun 25", event:"May PCE", outcome:"IN-LINE", detail:"Headline hot at 4.1% y/y but core held 3.3% and monthly came in below estimate — no hawkish shock. SPX closed flat.", color:"#94a3b8" },
-  { date:"Jul 1", event:"ISM Manufacturing", outcome:"SOFT", detail:"53.3, a 6th expansion month but below the 54.0 estimate; input prices fell 9.1pts (largest drop since 2022) — a disinflationary signal.", color:"#34d399" },
-  { date:"Jul 2", event:"June Jobs (NFP)", outcome:"SOFT", detail:"Shock miss at 57K vs ~113K expected, lowest in 4 months; Apr+May revised down 74K. Broke the hot streak, supports Fed-on-hold — Oct hike odds fell. SPX flat, Dow record, semis sold off.", color:"#34d399" },
+  { date:"Jul 7",  event:"Reversal -0.45%; Iran risk back, oil +5%", color:"#f87171" },
+  { date:"Jul 8",  event:"Ceasefire declared over; hawkish Fed minutes; oil ~$80", color:"#f87171" },
+  { date:"Jul 9",  event:"Risk-on +0.81%; semis melt-up (Micron, SK Hynix)", color:"#34d399" },
+  { date:"Jul 10", event:"New high +0.42%; SK Hynix record debut; IEA cut oil demand", color:"#34d399" },
+  { date:"Jul 13", event:"-0.79% pullback ahead of CPI; oil back near $80", color:"#f59e0b" },
 ];;
 
 const HISTORY_LOG = [
@@ -163,29 +164,20 @@ const HISTORY_LOG = [
   { date:"Jul 8",spx:7482.71, callBuf:342, putBuf:558, gexFlip:7462.36, session:"bearish", note:"CEASEFIRE OVER: Trump declared the Iran ceasefire ended (US struck Kharg Island), driving a risk-off day — SPX -0.28% (down 600+ Dow points intraday, low 7,421), only Energy green. Oil surged (Brent ~$79, briefly $80; WTI 74.76), 10yr to 4.58% (4-wk high) on inflation fear. VIX popped to 18.91 intraday, closed 16.90. Fed minutes confirmed hawkish (several favored hiking, many see year-end rate above current range) but the war headline dominated. Rolled the CALL side DOWN TWICE for credit into the drop — 7875→7850→7825 (+$0.60, +$0.65), blended to $7.97 ($54,196). Mark $6.15 → +$12,376.00 (campaign best). BUT: only 20pts above the flip now (positive-gamma cushion nearly gone), call short 7825 the tightest of the campaign, γ-1.61 and vega -8,602 both most negative yet. IV pct jumped to 47." },
   { date:"Jul 9",spx:7543.64, callBuf:281, putBuf:594, gexFlip:7458.46, session:"bullish", note:"RISK-ON BOUNCE +0.81% to 7,543.64 — market shrugged off the war (US hit 90 Iranian sites, Iran struck back) on two catalysts: Trump hinted Iran called to negotiate (oil reversed DOWN, WTI 71.84/Brent 76.07) and a semis MELT-UP (Micron +7.5% on $3B US investment, SanDisk +7.6%, SMH +4-5%, SK Hynix IPO 7x oversubscribed). VIX crushed -6.3% to 15.84. Rolled the put side up to 6900/6950 (+$0.10), blended $8.07 ($54,876). BUT the rally moved spot TOWARD the calls: mark rose to $7.65 → P&L fell to +$2,856. Call buffer now 281pts — TIGHTEST of the campaign — and the 7825 short is just 97pts above the EM ceiling 7,728. Δ-224.4, γ-1.82, vega -9,629 ALL most stressed yet. Flip cushion restored to 85pts (positive gamma). The call side is now the clear, present risk." },
   { date:"Jul 10",spx:7575.39, callBuf:250, putBuf:600, gexFlip:7441.12, session:"bullish", note:"MELT-UP EXTENDED +0.42% to a new closing high 7,575.39 — the exact scenario flagged yesterday. Broadening rally (comms + financials led, not just chips); SK Hynix soared 13% in a record $26.5B debut, Meta +6% (+15% on the week), Nvidia +4%. Oil FELL ~1% (WTI 71.59) despite Hormuz attacks; VIX crushed to ~15.0; IEA cut 2026 oil demand. Rolled the put side up again to 6925/6975 (+$0.10), blended $8.17 ($55,556). POSITION WENT RED for the first time: mark $8.70 → -$3,604 (mark now exceeds credit). Call buffer 250pts (tightest yet), 7825 short just 71pts above the EM ceiling 7,754; call wall moved up to 7,600 (25pts above spot — potential resistance). Δ-278.8, γ-1.94, vega -10,050 ALL campaign extremes. Still 134pts above flip (positive gamma). The call side needs a decision, not just monitoring. CPI + Warsh testimony Tuesday 7/14." },
+  { date:"Jul 13",spx:7515.34, callBuf:455, putBuf:615, gexFlip:7464.57, session:"bearish", note:"NEW CONDOR + a down day. CLOSED the 8/7 condor at $6.57 for +$10,880 realized (5th straight win) — exited the call-pressured position for a solid gain rather than defend the stressed 7825 short. Opened a fresh 8/21 condor: 6850/6900 · 7980/8030, 69 ct, then rolled the call down to 7970/8020 (+$0.15), blended $5.20 ($35,880). SPX fell -0.79% to 7,515.34 (Barchart authoritative; fetch printed a stale 7,588) — spot moved AWAY from the new calls on day one. The reset worked: call buffer 455pts (vs 250 Friday), Δ-64.4 (vs -278.8), γ-1.05 (vs -1.94) — far less stressed. Mark $4.95 → +$1,725 green. 51pts above flip (positive gamma). EM computed for 8/21 (7,172-7,859) since the screenshot showed 8/7. CPI + Warsh + bank earnings TOMORROW." },
 ];;
 
 const ROLL_LOG = [
-  { date:"Jun 29", side:"OPEN", from:"—", to:"6750/6800 · 7900/7950", dir:"—", credit:"$5.55", note:"NEW condor opened. EXP 8/7/26. 68 contracts. Replaced the 7/31 condor (closed at $5.35 = +$15,008.00 realized). Re-centered lower after last week's selloff." },
-  { date:"Jun 29", side:"PUT", from:"6750/6800", to:"6775/6825", dir:"↑ +25pts", credit:"$0.15", note:"Rolled the put side UP toward spot for a net credit, same day as the open. Blended all-in credit now $5.70/ct ($38,760.00)." },
-  { date:"Jun 30", side:"PUT", from:"6775/6825", to:"6800/6850", dir:"↑ +25pts", credit:"$0.15", note:"Rolled the put side up again on the 6/30 rally (SPX to 7,499), harvesting premium from the far wing. Blended all-in credit now $5.85/ct." },
-  { date:"Jun 30", side:"PUT", from:"6800/6850", to:"6825/6875", dir:"↑ +25pts", credit:"$0.12", note:"Rolled the put side up once more, same session. Blended all-in credit now $5.97/ct ($40,596.00). Put short now 6875, still ~608pts below spot." },
-  { date:"Jul 2", side:"PUT", from:"6825/6875", to:"6850/6900", dir:"↑ +25pts", credit:"$0.10", note:"Rolled the put side up again on jobs day. Put short now 6900. Blended credit $6.07." },
-  { date:"Jul 2", side:"CALL", from:"7900/7950", to:"7875/7925", dir:"↓ -25pts", credit:"$0.55", note:"Rolled the CALL side DOWN toward spot into the intraday jobs-day spike to 7,540, harvesting a rich $0.55/ct. Narrows the condor and banks premium, but moves the pressured wing closer — short call now 7875 (tightest of the campaign). Blended all-in credit now $6.62/ct ($45,016.00)." },
-  { date:"Jul 6", side:"PUT", from:"6850/6900", to:"6875/6925", dir:"↑ +25pts", credit:"$0.10", note:"Rolled the put side up again on the post-holiday melt-up. Put short now 6925, a comfortable ~612pts below spot. Blended all-in credit now $6.72/ct ($45,696.00). Premium harvested from the safe wing while the call side keeps compressing." },
-  { date:"Jul 8", side:"CALL", from:"7875/7925", to:"7850/7900", dir:"↓ -25pts", credit:"$0.60", note:"Rolled the CALL side down on a falling market (Iran ceasefire declared over, SPX dropping). Harvested $0.60/ct as spot moved away from the calls. Blended $7.32." },
-  { date:"Jul 8", side:"CALL", from:"7850/7900", to:"7825/7875", dir:"↓ -25pts", credit:"$0.65", note:"Rolled the call side down AGAIN, same session, for another $0.65/ct. Short call now 7825 — tightest strike of the entire campaign — but the down day kept ~342pts of buffer. Blended all-in credit now $7.97/ct ($54,196.00). Big premium harvest, but call-side room and gamma are now the most stretched they've been." },
-  { date:"Jul 9", side:"PUT", from:"6875/6925", to:"6900/6950", dir:"↑ +25pts", credit:"$0.10", note:"Rolled the put side up on the risk-on bounce. Put short now 6950, still ~594pts below spot. Blended all-in credit now $8.07/ct ($54,876.00) — up from $5.55 at open, ~$2.52/ct harvested across the campaign. Note: the rally moved spot toward the calls; put roll adds credit but the risk is all on the call wing now." },
-  { date:"Jul 10", side:"PUT", from:"6900/6950", to:"6925/6975", dir:"↑ +25pts", credit:"$0.10", note:"Rolled the put side up again as the rally extended. Put short now 6975, ~600pts below spot — still a non-issue. Blended all-in credit now $8.17/ct ($55,556.00). But the calls are the problem, not the puts: the melt-up pushed the position RED for the first time (-$3,604). The put rolls keep harvesting the safe wing while the call side needs a decision." },
+  { date:"Jul 13", side:"OPEN", from:"—", to:"6850/6900 · 7980/8030", dir:"—", credit:"$5.05", note:"NEW condor opened. EXP 8/21/26. 69 contracts. Replaced the 8/7 condor, closed today at $6.57 for +$10,880 realized (5th straight condor win). Re-centered with the call short jumped up to 7980 (from the stressed 7825) — call room reclaimed after last week's melt-up scare." },
+  { date:"Jul 13", side:"CALL", from:"7980/8030", to:"7970/8020", dir:"↓ -10pts", credit:"$0.15", note:"Small call roll down for a $0.15 credit on the open day. Short call now 7970, still ~455pts above spot — comfortable-harvest roll, not defensive. Blended all-in credit now $5.20/ct ($35,880)." },
 ];;
 
 const NEWS = [
-  { time:"Jul 10", text:"📈 New closing high: SPX +0.42% to 7,575.39 on a BROADENING rally — communications and financials led (not just chips), with most sectors green. The melt-up flagged as the primary risk yesterday extended. Nasdaq +0.29%, Dow +0.28%. VIX crushed further toward 15.", impact:"bullish", hot:true },
-  { time:"Jul 10", text:"🔌 SK Hynix soared 13% in a record-breaking $26.5B Wall Street debut — the largest-ever US listing by a foreign company, 7x oversubscribed. Meta +6% on a positive AI-compute report (+15% on the week, top Mag-7 name), Nvidia +4%. AI/chip appetite remains the bull-market engine.", impact:"neutral", hot:true },
-  { time:"🛢️ Jul 10", text:"Oil FELL ~1% (WTI 71.59) despite continued Hormuz attacks — doubts that full-scale war returns kept crude tame. The IEA cut its 2026 global oil demand forecast (-1M bpd, first decline since 2020). Easing oil softened rate-hike worries and helped financials.", impact:"bullish", hot:false },
-  { time:"Jul 10", text:"🔴 POSITION WENT RED for the first time: mark $8.70 now exceeds the $8.17 collected credit → -$3,604. The melt-up pushed spot toward the calls; rolled the put side up again (+$0.10) but that harvests the safe wing. Call buffer 250pts (tightest of the campaign), short 7825 just 71pts above the EM ceiling.", impact:"bearish", hot:true },
-  { time:"Jul 10", text:"⚠️ Call side at campaign extremes: delta -278.8, gamma -1.94, vega -10,050 all the most stressed yet — the position loses fast and accelerating on further upside. A call roll up-and-out is the defend move if the bid persists. Mitigants: call wall moved up to 7,600 (25pts above spot, potential resistance) and VIX crushed near 15.", impact:"bearish", hot:false },
-  { time:"TUE 7/14", text:"📋 JUNE CPI + Fed Chair Warsh congressional testimony + big bank earnings (JPM, BAC, GS, WFC, C) — the week's key catalyst and the next real event for this position. A hot CPI that lifts yields could finally cap the rally and relieve the call side; a soft one could extend it.", impact:"neutral", hot:true },
+  { time:"Jul 13", text:"🔄 NEW CONDOR: closed the 8/7 condor at $6.57 for +$10,880 realized — the 5th straight condor win — rather than defend last week's stressed 7825 call short. Opened a fresh 8/21 condor (6850/6900 · 7980/8030, 69 ct), rolled the call to 7970/8020 (+$0.15), blended $5.20. Re-centered with 455pts of call room vs the 250 that was sweating Friday.", impact:"bullish", hot:true },
+  { time:"Jul 13", text:"📉 SPX fell -0.79% to 7,515.34 — a down day that moved spot AWAY from the new calls, a helpful start for the fresh condor. Pullback from Friday's record as the market paused ahead of tomorrow's inflation data. VIX ticked up to ~17; the melt-up cooled.", impact:"bearish", hot:false },
+  { time:"🛢️ Jul 13", text:"Oil back near $80 (WTI 80.08, Brent 85.37) — elevated on renewed Iran/Hormuz risk after last week's ceasefire breakdown. Rising crude keeps the inflation/rate-hike worry alive going into tomorrow's CPI, and is the fresh macro input for the new condor's life.", impact:"bearish", hot:false },
+  { time:"Jul 13", text:"🟢 New position green from day one: mark $4.95 vs $5.20 credit → +$1,725. The reset dropped every stress metric — Δ-64.4 (from -278.8), γ-1.05 (from -1.94), call buffer 455pts (from 250). Well-centered with 28 trading days and 51pts of positive-gamma cushion above the flip.", impact:"bullish", hot:false },
+  { time:"TUE 7/14", text:"📋 THE BIG ONE: June CPI + Fed Chair Warsh congressional testimony + big bank earnings (JPM, BAC, GS, WFC, C) all tomorrow — the first real test for the new condor. A hot CPI lifting yields, or a hawkish Warsh, could cap the rally (fine for the calls); a soft print could reignite the melt-up. Oil near $80 raises the inflation stakes.", impact:"neutral", hot:true },
 ];;
 
 // ════════════════════════════════════════════════════════════
@@ -251,8 +243,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `Melt-up extended: SPX ${sign(SPX_CHANGE_PCT)}% to a new closing high ${fmt(SPX)} on a broadening rally (comms/financials led; SK Hynix's record debut, Meta +6%). Oil fell, VIX near 15. Rolled the put side up again (blended ${usd(TOTAL_COLLECTED)}), but the position went RED for the first time (${usd(UNREALIZED_PL*100*CONTRACTS, true)}) as spot pushed toward the calls — now the tightest, most pressured wing of the campaign.`;
-const REC = `First red day (${usd(UNREALIZED_PL*100*CONTRACTS, true)}) — mark now exceeds credit as the melt-up extended to a new high. The call side is the active problem, not a warning: buffer ${Math.round(CALL_BUF)}pts (tightest yet), short ${fmt(STRIKES.callShort)} just 71pts above the EM ceiling ${fmt(GEX.expectedMoveUp)}, and delta ${GREEKS.delta} / gamma ${GREEKS.gamma} at campaign extremes — loses fast and accelerating on further upside. This is a defend-or-roll decision: a call roll up-and-out is the natural move if the bid persists. Two possible stalls in your favor: the call wall ${fmt(GEX.callWall)} (25pts above spot) as resistance, and a crushed VIX with analysts wary of chasing. Still ${Math.round(SPX-GEX.flipPoint)}pts above the flip (positive gamma). CPI + Warsh Tuesday is the catalyst that could cap it. Put side a non-issue (${Math.round(PUT_BUF)}pts).`;
+const SESSION_SUMMARY = `New condor: closed the 8/7 for +$10,880 realized (5th straight win) and opened a fresh 8/21 (6850/6900 / 7970/8020, 69 ct, blended ${usd(TOTAL_COLLECTED)}), re-centered with far more call room. SPX fell ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} - spot moved away from the new calls. The reset shows: buffer ${Math.round(CALL_BUF)}pts, gamma ${GREEKS.gamma} (vs -1.94 Friday). Green at ${usd(UNREALIZED_PL*100*CONTRACTS, true)}. CPI + Warsh tomorrow.`;
+const REC = `Clean reset. Taking the +$10,880 on the 8/7 condor and redeploying into the 8/21 turned a call-pressured position into a well-centered one: call buffer ${Math.round(CALL_BUF)}pts (vs 250 Friday), put ${Math.round(PUT_BUF)}pts, delta ${GREEKS.delta} and gamma ${GREEKS.gamma} both far calmer, and 28 trading days of fresh runway. Green from day one (${usd(UNREALIZED_PL*100*CONTRACTS, true)}), ${Math.round(SPX-GEX.flipPoint)}pts above the flip. No wing is pressured - a monitor-and-let-theta-work setup. Near-term watch: tomorrow CPI + Warsh + bank earnings, plus oil back near $80 on renewed Iran risk. Note the EM band is computed for 8/21 (7,172-7,859), not the Barchart tooltip - the screenshot showed 8/7.`;
 
 const CALENDAR = [
   { day:"WED 6/10", event:"🔥 May CPI 4.2% (hot, core soft)",   done:true, impact:"high",   verified:"✓ BLS"     },
@@ -271,7 +263,6 @@ const CALENDAR = [
   { day:"TUE 6/30", event:"📈 Rally +0.79% to 7,499; rolled puts up to 6825/6875",   done:true, impact:"medium", verified:"✓" },
   { day:"WED 7/1", event:"🏭 ISM Mfg 53.3 (soft, prices cooled); -0.22%",   done:true, impact:"high", verified:"✓ ISM" },
   { day:"THU 7/2", event:"📋 Jobs SHOCK: 57K vs 113K est (soft); SPX flat, Dow record",   done:true, impact:"high", verified:"✓ BLS" },
-  { day:"FRI 7/3", event:"🇺🇸 Markets closed — Independence Day",   done:false, impact:"low", verified:"✓" },
   { day:"MON 7/6", event:"📈 Melt-up +0.72%; S&P Global Services PMI 51.3 (in-line)",   done:true, impact:"medium", verified:"✓ S&P" },
   { day:"TUE 7/7", event:"📋 ADP +98K (soft); reversal -0.45%, Iran/oil spike",   done:true, impact:"medium", verified:"✓ ADP" },
   { day:"WED 7/8", event:"🏦 Fed Minutes hawkish; Iran ceasefire declared over, oil surges",   done:true, impact:"high", verified:"✓ FOMC" },
@@ -279,16 +270,16 @@ const CALENDAR = [
   { day:"FRI 7/10", event:"📈 New high +0.42%; IEA cut 2026 oil demand; oil fell",   done:true, impact:"low", verified:"✓ IEA" },
   { day:"TUE 7/14", event:"📋 June CPI + Warsh testimony + bank earnings",   done:false, impact:"high", verified:"✓ BLS" },
   { day:"WED 7/15", event:"📋 June PPI + Fed Beige Book",   done:false, impact:"medium", verified:"✓ BLS" },
-  { day:"FRI 8/7", event:"🎯 YOUR EXPIRATION",     done:false, impact:"high",   verified:"✓"         },
+  { day:"FRI 8/21", event:"🎯 YOUR EXPIRATION (8/21 condor)", done:false, impact:"high", verified:"✓" },
 ];;
 
 const TIMELINE = [
-  { date:"Jun 17",    label:"FOMC — hawkish hold (backdrop)", color:"#f59e0b" },
-  { date:"Jun 29",    label:"🔄 Opened 8/7 condor",   color:"#38bdf8" },
-  { date:"Jul 2",     label:"June Jobs (NFP) — soft 57K 📋", color:"#f59e0b" },
-  { date:"Jul 3",     label:"July 4th obs (closed)",color:"#475569" },
-  { date:"Jul 6",     label:"ISM Services PMI",     color:"#f59e0b" },
-  { date:"Aug 7",     label:"🎯 YOUR EXPIRATION",   color:"#38bdf8" },
+  { date:"Jun 29",    label:"Opened 8/7 condor", color:"#475569" },
+  { date:"Jul 10",    label:"8/7 melt-up scare", color:"#f87171" },
+  { date:"Jul 13",    label:"Closed 8/7 +$10,880; opened 8/21", color:"#38bdf8" },
+  { date:"Jul 14",    label:"CPI + Warsh + bank earnings", color:"#f59e0b" },
+  { date:"Jul 15",    label:"PPI + Beige Book", color:"#f59e0b" },
+  { date:"Aug 21",    label:"YOUR EXPIRATION", color:"#38bdf8" },
 ];;
 
 const KEY_LEVELS = [
@@ -305,9 +296,9 @@ const KEY_LEVELS = [
 ].sort((a,b) => b.price - a.price);
 
 const SCENARIOS = [
-  { label:"🔴 MELT-UP CONTINUES", desc:`THE active risk. The AI/broadening bid keeps running, pushing SPX through the call wall ${fmt(GEX.callWall)} and the EM ceiling ${fmt(GEX.expectedMoveUp)} toward the call short ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away). Delta ${GREEKS.delta} and gamma ${GREEKS.gamma} (campaign extremes) accelerate the loss hard. Already red at ${usd(UNREALIZED_PL*100*CONTRACTS, true)} — this is the defend-or-roll trigger. A call roll up-and-out restores room. Max risk/side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}.`, color:"#f87171", impact:"PRIMARY RISK ⚠️" },
-  { label:"🟡 STALL AT THE WALL", desc:`The call wall ${fmt(GEX.callWall)} (25pts above spot) acts as resistance — dealer gamma there can slow the advance — and the crushed VIX / analyst caution about chasing lets SPX pause. Theta then harvests ~$2,298/day (highest yet) across ${CONTRACTS} lots and the red mark recovers toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. The hoped-for path — needs the melt-up to cool near the wall.`, color:"#fbbf24", impact:"HOPED-FOR" },
-  { label:"🟢 CPI CAPS THE RALLY", desc:`Tuesday's CPI runs hot, lifting yields and finally capping the AI melt-up (or a war re-escalation flips risk-off) — SPX pulls back from the calls and the position recovers fast given the tight, high-theta structure. Still ${Math.round(SPX-GEX.flipPoint)}pts above the flip; a pullback toward it is fine for the calls, though a break below ${fmt(GEX.flipPoint)} would flip into negative gamma. The catalyst that relieves the call side.`, color:"#34d399", impact:"RELIEF" },
+  { label:"RANGEBOUND / DECAY", desc:`The ideal path for a fresh, well-centered condor. SPX chops between the EM bounds (${fmt(GEX.expectedMoveDown)}-${fmt(GEX.expectedMoveUp)}, computed for 8/21) and CPI does not shock. Both wings far OTM (call ${Math.round(CALL_BUF)}pts, put ${Math.round(PUT_BUF)}pts); theta harvests ~$1,512/day across ${CONTRACTS} lots toward the ${usd(TOTAL_COLLECTED*100*CONTRACTS)} max. 28 trading days to let it work.`, color:"#34d399", impact:"IDEAL" },
+  { label:"CPI SHOCK (either way)", desc:`Tomorrow CPI + Warsh is the swing factor. A hot print lifts yields and could cap the AI rally (a pullback is fine for the calls, though a drop toward the flip ${fmt(GEX.flipPoint)}, ${Math.round(SPX-GEX.flipPoint)}pts below spot, tips into negative gamma). A soft print could reignite the melt-up toward the calls. IV pct 50 and vega ${GREEKS.vega} mean a vol move hits the mark. The event to watch.`, color:"#fbbf24", impact:"CATALYST" },
+  { label:"MELT-UP RESUMES", desc:`The AI/de-escalation bid returns and SPX pushes back toward the call short ${fmt(STRIKES.callShort)} (${Math.round(CALL_BUF)}pts away). Far less urgent than last week: the reset bought 155pts of call room and gamma is half what it was. But it is the directional risk that ended the last condor, so worth watching if the rally reaccelerates. Max risk/side ${usd((SPREAD_WIDTH-TOTAL_COLLECTED)*100*CONTRACTS)}.`, color:"#f87171", impact:"WATCH" },
 ];;
 
 function gaugeArc(pct){
