@@ -90,26 +90,26 @@ html,body{background:var(--bg);color:var(--text);font-family:var(--font);min-hei
 // ════════════════════════════════════════════════════════════
 // POSITION STRUCTURE (declared early — narrative/news reference CONTRACTS/STRIKES)
 // POSITION STRUCTURE
-const STRIKES = { putLong:6850.0, putShort:6900.0, callShort:7970.0, callLong:8020.0 };
+const STRIKES = { putLong:6875.0, putShort:6925.0, callShort:7970.0, callLong:8020.0 };
 const CONTRACTS = 69;
 const EXPIRY = `August 21, 2026`;
 
-const SPX = 7543.59;   // Schwab close (authority)
+const SPX = 7572.4;   // Schwab close (authority)
 const SPX_AH = 0;
 const SPY = 0;
-const SPX_CHANGE_PTS = 28.25;
+const SPX_CHANGE_PTS = 28.81;
 const SPX_CHANGE_PCT = 0.38;
-const TIMESTAMP = `Jul 14, 2026  4:00 PM ET`;
+const TIMESTAMP = `Jul 15, 2026  4:00 PM ET`;
 const SESSION = `bullish`;
-const SESSION_NOTE   = `Soft CPI, hawkish Warsh. June inflation fell -0.4% m/m (annual to 3.5%, core 2.6%) on lower energy - rate-hike odds for the next meeting collapsed to ~15% from 35%. But Warsh's debut testimony stayed hawkish ("inflation is a choice"), still no forward guidance. Banks beat (JPM/WFC/BAC; GS +3.8%) while IBM crashed ~22% on a revenue miss. Iran re-escalated - blockade, airstrikes, tanker hits - Brent to a 1-month high before Trump dropped the Hormuz fee demand. SPX +0.38%, Nasdaq leading. No roll; mark eased to +$1,380.00 green. Both wings comfortable, positive gamma intact. PPI + Beige Book tomorrow.`;
+const SESSION_NOTE   = `Soft PPI confirms the disinflation. June producer prices FELL 0.3% m/m (vs no change expected), core +0.2% - nearly two-thirds of the goods decline from gasoline dropping 12%. Aligns with Tuesday's CPI; markets are reading the Iran war as less inflationary than feared. Rotation out of semis into Big Tech drove the tape - Apple +4% to a record on gen-AI approval in China, Alphabet/Amazon/Microsoft ~+3%, while Micron -8%. Rolled the put side up for a dime. Mark eased to +$3,450.00 green, both wings comfortably outside the expected move. Flip rose but still 72pts below spot = positive gamma. Caveat: traders still price ~60% odds of higher rates by October.`;
 
-const CANDLE = { open:7536.7, high:7557.44, low:7513.23, close:SPX, volume:"n/a", avgVol:"n/a" };
-const MACRO  = { vix:16.28, brent:86.22, wti:80.61 };
+const CANDLE = { open:7571.72, high:7581.5, low:7526.95, close:SPX, volume:"n/a", avgVol:"n/a" };
+const MACRO  = { vix:15.67, brent:85.63, wti:80.24 };
 
-const GREEKS = { delta:"-69.0", theta:"+1200.6", gamma:"-1.14", vega:"-7617.6", gammaSource:"TOS", gammaDerived:"-1.11", gammaVsTos:"-2.4%" };
+const GREEKS = { delta:"-82.8", theta:"+1269.6", gamma:"-1.26", vega:"-7976.4", gammaSource:"TOS", gammaDerived:"-1.22", gammaVsTos:"-3.3%" };
 
-const INITIAL_CREDIT = 5.2;   // blended all-in credit/ct (authoritative, via --credit)
-const MARK = 5.0;   // Schwab net MV / ct / 100 = cost to close
+const INITIAL_CREDIT = 5.3;   // blended all-in credit/ct (authoritative, via --credit)
+const MARK = 4.8;   // Schwab net MV / ct / 100 = cost to close
 
 const CONDOR_OPEN_DATE = `Jul 13`;
 
@@ -132,7 +132,7 @@ const TD_DTE       = (()=>{
 })();
 
 // GEX DATA — Barchart
-const GEX = { flipPoint:7477.99, putWall:7500.0, callWall:7600.0, iv:13.42, hv:14.9, ivRank:17.63, ivPct:41, expectedMoveUp:7769.83, expectedMoveDown:7317.35 };
+const GEX = { flipPoint:7500.45, putWall:7600.0, callWall:7600.0, iv:12.77, hv:14.92, ivRank:13.49, ivPct:24, expectedMoveUp:7772.75, expectedMoveDown:7372.06 };
 
 const COMPLETED_CATALYSTS = [
   { date:"Jul 7",  event:"Reversal -0.45%; Iran risk back, oil +5%", color:"#f87171" },
@@ -141,6 +141,7 @@ const COMPLETED_CATALYSTS = [
   { date:"Jul 10", event:"New high +0.42%; SK Hynix record debut; IEA cut oil demand", color:"#34d399" },
   { date:"Jul 13", event:"-0.79% pullback ahead of CPI; oil back near $80", color:"#f59e0b" },
   { date:"Jul 14", event:"Soft CPI (3.5% y/y); Warsh hawkish; banks beat, IBM -22%", color:"#34d399" },
+  { date:"Jul 15", event:"Soft PPI (-0.3% m/m); semis-to-BigTech rotation, Apple record", color:"#34d399" },
 ];;
 
 const HISTORY_LOG = [
@@ -167,20 +168,22 @@ const HISTORY_LOG = [
   { date:"Jul 10",spx:7575.39, callBuf:250, putBuf:600, gexFlip:7441.12, session:"bullish", note:"MELT-UP EXTENDED +0.42% to a new closing high 7,575.39 — the exact scenario flagged yesterday. Broadening rally (comms + financials led, not just chips); SK Hynix soared 13% in a record $26.5B debut, Meta +6% (+15% on the week), Nvidia +4%. Oil FELL ~1% (WTI 71.59) despite Hormuz attacks; VIX crushed to ~15.0; IEA cut 2026 oil demand. Rolled the put side up again to 6925/6975 (+$0.10), blended $8.17 ($55,556). POSITION WENT RED for the first time: mark $8.70 → -$3,604 (mark now exceeds credit). Call buffer 250pts (tightest yet), 7825 short just 71pts above the EM ceiling 7,754; call wall moved up to 7,600 (25pts above spot — potential resistance). Δ-278.8, γ-1.94, vega -10,050 ALL campaign extremes. Still 134pts above flip (positive gamma). The call side needs a decision, not just monitoring. CPI + Warsh testimony Tuesday 7/14." },
   { date:"Jul 13",spx:7515.34, callBuf:455, putBuf:615, gexFlip:7464.57, session:"bearish", note:"NEW CONDOR + a down day. CLOSED the 8/7 condor at $6.57 for +$10,880 realized (5th straight win) — exited the call-pressured position for a solid gain rather than defend the stressed 7825 short. Opened a fresh 8/21 condor: 6850/6900 · 7980/8030, 69 ct, then rolled the call down to 7970/8020 (+$0.15), blended $5.20 ($35,880). SPX fell -0.79% to 7,515.34 (Barchart authoritative; fetch printed a stale 7,588) — spot moved AWAY from the new calls on day one. The reset worked: call buffer 455pts (vs 250 Friday), Δ-64.4 (vs -278.8), γ-1.05 (vs -1.94) — far less stressed. Mark $4.95 → +$1,725 green. 51pts above flip (positive gamma). EM computed for 8/21 (7,172-7,859) since the screenshot showed 8/7. CPI + Warsh + bank earnings TOMORROW." },
   { date:"Jul 14",spx:7543.59, callBuf:426, putBuf:644, gexFlip:7477.99, session:"bullish", note:"SOFT CPI + hawkish Warsh. June CPI FELL -0.4% m/m (vs -0.2% est), annual down to 3.5% (vs 3.8% est); core unchanged m/m, 12-mo core 2.6% (vs 2.9% est) - driven mostly by lower energy. Rate-hike odds for the next meeting collapsed to ~15% from 35%. But Warsh stayed hawkish in his debut testimony ('Inflation is a choice... we need to choose lower prices'), still refusing forward guidance. Banks kicked off earnings strong (JPM, WFC, BAC all beat; GS +3.8% on record equities revenue) while IBM CRASHED ~22%, its worst since 1987, on a preannounced revenue miss. Iran re-escalated - the MoU collapsed, US reimposed a naval blockade + airstrikes, Tehran hit more tankers; Brent spiked to $85.77 (1-month high) before Trump dropped the 20% Hormuz transit fee demand. SPX +0.38% to 7,543.59, Nasdaq +0.90% leading. No roll. Mark $5.00 -> +$1,380.00 green. Buffers comfortable: call 426pts, put 644pts. Flip rose to 7,478 - still 66pts above = positive gamma. Call wall 7,600 sits 56pts overhead as resistance. PPI + Beige Book tomorrow." },
+  { date:"Jul 15",spx:7572.40, callBuf:398, putBuf:647, gexFlip:7500.45, session:"bullish", note:"SOFT PPI confirms the disinflation. June PPI FELL 0.3% m/m (vs no change est), core +0.2% (vs +0.3% est) - nearly two-thirds of the goods decline traced to gasoline, which dropped 12%. Aligns with Tuesday's soft CPI and further trims July hike risk; markets read the Iran war as less inflationary than feared. BUT traders still price ~60% odds rates are a quarter- or half-point higher by the October meeting - no hike now, not no hike. SPX +0.38% to 7,572.40, Nasdaq +0.62%. Notable ROTATION: out of semis, into Big Tech - Apple +4% to a record (gen-AI approval in China), Alphabet/Amazon/Microsoft ~+3%, ASML bullish outlook; while Micron -8%, Lam -3%, AMD lower. Rolled the put side up to 6875/6925 (+$0.10), blended $5.30 ($36,570). Mark $4.80 -> +$3,450.00 green. Flip jumped to 7,500 - still 72pts above = positive gamma. Both walls now at 7,600, ~28pts overhead. Call short 7970 sits 197pts above the EM ceiling 7,773; put short 447pts below the floor. gamma -1.26." },
 ];;
 
 const ROLL_LOG = [
   { date:"Jul 13", side:"OPEN", from:"—", to:"6850/6900 · 7980/8030", dir:"—", credit:"$5.05", note:"NEW condor opened. EXP 8/21/26. 69 contracts. Replaced the 8/7 condor, closed today at $6.57 for +$10,880 realized (5th straight condor win). Re-centered with the call short jumped up to 7980 (from the stressed 7825) — call room reclaimed after last week's melt-up scare." },
   { date:"Jul 13", side:"CALL", from:"7980/8030", to:"7970/8020", dir:"↓ -10pts", credit:"$0.15", note:"Small call roll down for a $0.15 credit on the open day. Short call now 7970, still ~455pts above spot — comfortable-harvest roll, not defensive. Blended all-in credit now $5.20/ct ($35,880)." },
+  { date:"Jul 15", side:"PUT", from:"6850/6900", to:"6875/6925", dir:"up +25pts", credit:"$0.10", note:"Rolled the put side up as the market drifted higher. Put short now 6925, still ~647pts below spot and 447pts below the EM floor - the comfortable wing. Blended all-in credit now $5.30/ct ($36,570.00)." },
 ];;
 
 const NEWS = [
-  { time:"Jul 14", text:"📉 SOFT CPI: June consumer prices FELL 0.4% m/m (vs -0.2% expected), annual inflation down to 3.5% (vs 3.8% est). Core was unchanged m/m, putting the 12-month core rate at 2.6% vs 2.9% expected — the mildest core print since Jan 2021. Mostly driven by lower energy. Rate-hike odds for the upcoming meeting collapsed to ~15% from 35%.", impact:"bullish", hot:true },
-  { time:"Jul 14", text:"🏦 But Warsh stayed HAWKISH in his debut congressional testimony: 'Inflation is a choice,' he said, adding policymakers 'need to choose lower prices,' and again refused to give forward guidance. He called the CPI print 'positive relative to expectations.' Goolsbee cautioned one month of data isn't enough. The soft print eases pressure, but this Fed isn't pivoting.", impact:"bearish", hot:true },
-  { time:"Jul 14", text:"💰 Bank earnings kicked off strong: JPMorgan ($6.14 vs $5.85 est), Wells Fargo, and Bank of America ($1.21 vs $1.13) all beat; Goldman +3.8% on record equities revenue from war-driven volatility. But IBM CRASHED ~22% — its worst day since 1987 — after preannouncing a big Q2 revenue miss, dragging software peers (ServiceNow -7.6%, Accenture -7.4%).", impact:"neutral", hot:false },
-  { time:"🛢️ Jul 14", text:"Iran RE-ESCALATED: the interim peace MoU effectively collapsed — US forces reimposed a naval blockade and launched another wave of airstrikes while Tehran attacked more tankers in Hormuz. Brent surged to $85.77, a 1-month high, before easing after Trump abandoned his demand for a 20% Hormuz transit fee. WTI back over $80 (Brent 86.22, WTI 80.61).", impact:"bearish", hot:true },
-  { time:"Jul 14", text:"🟢 Position quiet and comfortable: no roll, mark $5.00 → +$1,380.00 green. Call buffer 426pts, put 644pts, both wings well outside the 8/21 EM band (7,317-7,770). Flip rose to 7,478 — still 66pts above = positive gamma. Call wall 7,600 sits ~56pts overhead as potential resistance. Theta ~$1,201/day.", impact:"bullish", hot:false },
-  { time:"WED 7/15", text:"📋 June PPI + Fed Beige Book tomorrow. PPI feeds core PCE later this month — the Fed's preferred gauge — so it matters more than usual after today's soft CPI. Warsh also testifies to the Senate Banking Committee.", impact:"neutral", hot:false },
+  { time:"Jul 15", text:"📉 SOFT PPI: June producer prices FELL 0.3% m/m (vs no change expected); core PPI +0.2% vs +0.3% est. Nearly two-thirds of the decline in final-demand goods traced to gasoline, which dropped 12%. Aligns with Tuesday's soft CPI and further trims the risk of a July hike — markets read the Iran war as less inflationary than feared.", impact:"bullish", hot:true },
+  { time:"Jul 15", text:"🔄 ROTATION: out of semis, into Big Tech. Apple +4% to a record high after a report it won approval to launch generative-AI features in China; Alphabet, Amazon and Microsoft each ~+3%; ASML +2% on a bullish outlook. Meanwhile Micron -8%, Lam Research -3%, AMD lower. SPX +0.38% to 7,572.40, Nasdaq +0.62%, Dow +150 to 52,658.", impact:"bullish", hot:true },
+  { time:"Jul 15", text:"⚠️ The catch: despite two soft inflation prints, traders still price a nearly 60% chance rates will be a quarter- or half-point HIGHER by the October meeting. This is 'no hike now,' not 'no hike.' With WTI 80.24 / Brent 85.63 still elevated on Iran, energy remains the input that could reverse the disinflation.", impact:"bearish", hot:false },
+  { time:"Jul 15", text:"🔧 Rolled the put side up to 6875/6925 (+$0.10), blended $5.30 ($36,570). Mark $4.80 → +$3,450.00 green. Both wings sit well outside the 8/21 expected move (7,372–7,773): call short 7970 is 197pts above the ceiling, put short 6925 is 447pts below the floor. Nothing to defend.", impact:"bullish", hot:false },
+  { time:"Jul 15", text:"📊 GEX shift: the flip jumped to 7,500.45 (from 7,478) — SPX still 72pts above it, so positive gamma holds. Both put and call walls are now stacked at 7,600, ~28pts overhead — a gamma concentration that can act as resistance if the Big Tech bid keeps running. IV pct dropped to 24; vega -7,976.", impact:"neutral", hot:false },
+  { time:"THU 7/16", text:"📋 Earnings pick up: TSMC, Netflix, GE Aerospace, UnitedHealth, Abbott. Friday brings June housing starts, industrial production, and preliminary UMich sentiment.", impact:"neutral", hot:false },
 ];;
 
 // ════════════════════════════════════════════════════════════
@@ -246,8 +249,8 @@ const usd       = (n, showPlus=false) => {
   return neg ? "-" + body : (showPlus ? "+" + body : body);
 };
 
-const SESSION_SUMMARY = `Soft CPI (-0.4% m/m, annual 3.5%) knocked rate-hike odds to ~15%, but Warsh stayed hawkish in his debut testimony. Banks beat; IBM crashed ~22%. Iran re-escalated, oil spiked then eased. SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)}, Nasdaq leading. No roll - mark ${usd(MARK)} -> ${usd(UNREALIZED_PL*100*CONTRACTS, true)} green, both wings comfortable.`;
-const REC = `Quiet, comfortable day for the new condor: green at ${usd(UNREALIZED_PL*100*CONTRACTS, true)}, call ${Math.round(CALL_BUF)}pts / put ${Math.round(PUT_BUF)}pts, and ${Math.round(SPX-GEX.flipPoint)}pts above the flip (positive gamma). Nothing to defend. The macro cross-current worth tracking: soft CPI cut hike odds to ~15% (supportive), but Warsh stayed hawkish and Iran re-escalated with oil back over $80 - which is exactly the input that could push July's CPI back up. Gamma ${GREEKS.gamma}, vega ${GREEKS.vega}, IV pct ${GEX.ivPct}. The call wall ${fmt(GEX.callWall)} sits ~56pts overhead as potential resistance if the tech bid resumes. PPI + Beige Book tomorrow. Let theta work - ~$1,201/day.`;
+const SESSION_SUMMARY = `Soft PPI (-0.3% m/m, core +0.2%) confirmed the disinflation - two-thirds of it gasoline. SPX ${sign(SPX_CHANGE_PCT)}% to ${fmt(SPX)} on a rotation out of semis into Big Tech (Apple +4% record, Alphabet/Amazon/MSFT ~+3%; Micron -8%). Rolled the put side up (blended ${usd(TOTAL_COLLECTED)}); mark ${usd(MARK)} -> ${usd(UNREALIZED_PL*100*CONTRACTS, true)} green, both wings well outside the EM.`;
+const REC = `Comfortable and green (${usd(UNREALIZED_PL*100*CONTRACTS, true)}). Two soft inflation prints in two days have trimmed near-term hike risk, and both wings sit well outside the 8/21 expected move (${fmt(GEX.expectedMoveDown)}-${fmt(GEX.expectedMoveUp)}): call ${Math.round(CALL_BUF)}pts / 197pts above the EM ceiling, put ${Math.round(PUT_BUF)}pts / 447pts below the floor. Still ${Math.round(SPX-GEX.flipPoint)}pts above the flip (positive gamma). Nothing to defend. Two things to keep an eye on: SPX has drifted +57pts in three sessions and gamma has crept ${GREEKS.gamma} as spot approaches the walls at ${fmt(GEX.callWall)} (~28pts overhead - potential resistance); and despite soft CPI/PPI, traders still price ~60% odds of higher rates by October, with oil over $80 the input that could flip it. Let theta work.`;
 
 const CALENDAR = [
   { day:"WED 6/10", event:"🔥 May CPI 4.2% (hot, core soft)",   done:true, impact:"high",   verified:"✓ BLS"     },
@@ -272,7 +275,7 @@ const CALENDAR = [
   { day:"THU 7/9", event:"📈 Risk-on +0.81% (semis); home sales -2.4% (soft)",   done:true, impact:"medium", verified:"✓" },
   { day:"FRI 7/10", event:"📈 New high +0.42%; IEA cut 2026 oil demand; oil fell",   done:true, impact:"low", verified:"✓ IEA" },
   { day:"TUE 7/14", event:"📉 CPI soft (-0.4% m/m, 3.5% y/y); Warsh hawkish; banks beat, IBM -22%",   done:true, impact:"high", verified:"✓ BLS" },
-  { day:"WED 7/15", event:"📋 June PPI + Fed Beige Book",   done:false, impact:"medium", verified:"✓ BLS" },
+  { day:"WED 7/15", event:"📉 PPI soft (-0.3% m/m); rotation into Big Tech, Apple record",   done:true, impact:"medium", verified:"✓ BLS" },
   { day:"FRI 8/21", event:"🎯 YOUR EXPIRATION (8/21 condor)", done:false, impact:"high", verified:"✓" },
 ];;
 
