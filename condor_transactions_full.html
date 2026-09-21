@@ -357,6 +357,17 @@
   .profit-progress-track { height: 8px; background: rgba(100,116,139,0.15); border-radius: 4px; overflow: hidden; display: flex; }
   .profit-progress-fill { height: 100%; border-radius: 4px 0 0 4px; transition: width 0.3s ease; flex-shrink: 0; }
   .profit-progress-unrealized { height: 100%; transition: width 0.3s ease, background 0.3s ease; flex-shrink: 0; }
+  /* zero-centred bar: -max credit .. 0 .. +max credit */
+  .profit-progress-track.zc { position: relative; height: 10px; display: block; overflow: visible; border-radius: 5px; }
+  .pp-seg { position: absolute; top: 0; height: 100%; transition: left 0.3s ease, width 0.3s ease; }
+  .pp-zero { position: absolute; left: 50%; top: -3px; width: 2px; height: 16px; background: var(--text-dim); transform: translateX(-1px); }
+  .pp-over, .pp-over-r { display: none; position: absolute; top: -4px; font-size: 13px; line-height: 18px; }
+  .pp-over { left: -14px; color: var(--red); }
+  .pp-over-r { right: -14px; color: var(--green); }
+  .pp-tick { display: none; position: absolute; top: -4px; width: 2px; height: 18px; background: var(--text); transform: translateX(-1px); }
+  .pp-tick-lab { display: none; position: absolute; top: 16px; font-size: 10px; color: var(--text); font-family: var(--mono); white-space: nowrap; }
+  .pp-axis { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 10px; color: var(--text-muted); margin-top: 6px; }
+  .profit-progress.has-tick .pp-axis { margin-top: 20px; }
   .profit-progress-sub { font-size: 11px; color: var(--text-muted); margin-top: 6px; font-family: var(--mono); }
   .unrealized-gain { color: var(--green-dim); }
   .unrealized-loss { color: var(--red-dim); }
@@ -440,10 +451,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_061826">-38.6%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:0%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_061826">–$18,222.84 captured of +$47,250.00 max credit ($7.50/ct &times; 63)</div>
       </div>
     </summary>
@@ -674,10 +690,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_071026">20.2%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:20.2%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_071026">+$5,666.56 captured of +$28,000.00 max credit ($5.00/ct &times; 56)</div>
       </div>
     </summary>
@@ -796,10 +817,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_071726">16.7%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:16.7%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_071726">+$5,664.24 captured of +$33,930.00 max credit ($5.85/ct &times; 58)</div>
       </div>
     </summary>
@@ -1002,10 +1028,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_073126">33.3%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:33.3%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_073126">+$12,001.60 captured of +$35,990.00 max credit ($6.10/ct &times; 59)</div>
       </div>
     </summary>
@@ -1264,10 +1295,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_080726">18.9%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:18.9%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_080726">+$6,493.72 captured of +$34,410.00 max credit ($5.55/ct &times; 62)</div>
       </div>
     </summary>
@@ -1498,10 +1534,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_082126">12.0%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:12.0%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_082126">+$3,756.76 captured of +$31,310.00 max credit ($5.05/ct &times; 62)</div>
       </div>
     </summary>
@@ -1648,10 +1689,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_082826">282.8%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:100%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_082826">+$19,115.52 captured of +$6,760.00 max credit ($5.20/ct &times; 13)</div>
       </div>
     </summary>
@@ -1980,10 +2026,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_093026">17.3%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:17.3%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_093026">+$31,480.68 captured of +$182,104.00 max credit ($26.78/ct &times; 68)</div>
       </div>
     </summary>
@@ -2228,10 +2279,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_101626">30.4%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:30.4%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_101626">+$13,963.92 captured of +$45,900.00 max credit ($15.30/ct &times; 30)</div>
       </div>
     </summary>
@@ -2406,10 +2462,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ira_941_103026">56.3%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:56.3%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ira_941_103026">+$11,978.48 captured of +$21,280.00 max credit ($7.60/ct &times; 28)</div>
       </div>
     </summary>
@@ -2639,10 +2700,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-roth_425_093026">741.4%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:100%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-roth_425_093026">+$8,970.96 captured of +$1,210.00 max credit ($6.05/ct &times; 2)</div>
       </div>
     </summary>
@@ -2817,10 +2883,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-roth_425_101626">30.4%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:30.4%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-roth_425_101626">+$17,687.52 captured of +$58,140.00 max credit ($15.30/ct &times; 38)</div>
       </div>
     </summary>
@@ -2995,10 +3066,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-roth_425_103026">51.5%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:51.5%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-roth_425_103026">+$14,091.32 captured of +$27,360.00 max credit ($7.60/ct &times; 36)</div>
       </div>
     </summary>
@@ -3214,10 +3290,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_061826">-42.3%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:0%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_061826">–$11,659.04 captured of +$27,550.00 max credit ($7.25/ct &times; 38)</div>
       </div>
     </summary>
@@ -3462,10 +3543,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_062626">56.9%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:56.9%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_062626">+$3,158.40 captured of +$5,555.00 max credit ($5.05/ct &times; 11)</div>
       </div>
     </summary>
@@ -3668,10 +3754,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_071026">25.7%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:25.7%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_071026">+$4,361.64 captured of +$17,000.00 max credit ($5.00/ct &times; 34)</div>
       </div>
     </summary>
@@ -3818,10 +3909,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_071726">17.2%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:17.2%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_071726">+$4,719.16 captured of +$27,495.00 max credit ($5.85/ct &times; 47)</div>
       </div>
     </summary>
@@ -4024,10 +4120,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_073126">40.3%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:40.3%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_073126">+$11,962.84 captured of +$29,694.00 max credit ($6.06/ct &times; 49)</div>
       </div>
     </summary>
@@ -4314,10 +4415,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_080726">21.7%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:21.7%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_080726">+$8,184.40 captured of +$37,740.00 max credit ($5.55/ct &times; 68)</div>
       </div>
     </summary>
@@ -4548,10 +4654,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_082126">17.2%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:17.2%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_082126">+$4,266.04 captured of +$24,745.00 max credit ($5.05/ct &times; 49)</div>
       </div>
     </summary>
@@ -4698,10 +4809,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_082826">58.0%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:58.0%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_082826">+$20,914.28 captured of +$36,050.00 max credit ($5.15/ct &times; 70)</div>
       </div>
     </summary>
@@ -4918,10 +5034,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_093026">22.6%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:22.6%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_093026">+$54,516.80 captured of +$241,110.00 max credit ($26.79/ct &times; 90)</div>
       </div>
     </summary>
@@ -5166,10 +5287,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_101626">30.6%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:30.6%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_101626">+$42,179.76 captured of +$137,700.00 max credit ($15.30/ct &times; 90)</div>
       </div>
     </summary>
@@ -5344,10 +5470,15 @@
           <span>% of Max Profit Captured</span>
           <span class="profit-progress-pct" id="pct-det-ind_735_103026">57.4%</span>
         </div>
-        <div class="profit-progress-track">
-          <div class="profit-progress-fill" style="width:57.4%;background:var(--green)"></div>
-          <div class="profit-progress-unrealized" style="width:0%;background:transparent"></div>
+        <div class="profit-progress-track zc">
+          <div class="pp-seg pp-main"></div>
+          <div class="pp-seg pp-extra"></div>
+          <div class="pp-zero"></div>
+          <div class="pp-over" title="Loss is beyond the scale of this bar">&#9664;</div>
+          <div class="pp-over-r" title="Gain is beyond the scale of this bar">&#9654;</div>
+          <div class="pp-tick"></div><div class="pp-tick-lab"></div>
         </div>
+        <div class="pp-axis"></div>
         <div class="profit-progress-sub" id="sub-det-ind_735_103026">+$35,308.72 captured of +$61,560.00 max credit ($7.60/ct &times; 81)</div>
       </div>
     </summary>
@@ -5584,6 +5715,7 @@
   }
   function uh(){const results=[sh('ira_xxx941-gross','ira_xxx941-fees','ira_xxx941-net',["IRA_941_061826", "IRA_941_071026", "IRA_941_071726", "IRA_941_073126", "IRA_941_080726", "IRA_941_082126", "IRA_941_082826", "IRA_941_093026", "IRA_941_101626", "IRA_941_103026"]),sh('roth_xxx425-gross','roth_xxx425-fees','roth_xxx425-net',["ROTH_425_093026", "ROTH_425_101626", "ROTH_425_103026"]),sh('ind_xxx735-gross','ind_xxx735-fees','ind_xxx735-net',["IND_735_061826", "IND_735_062626", "IND_735_071026", "IND_735_071726", "IND_735_073126", "IND_735_080726", "IND_735_082126", "IND_735_082826", "IND_735_093026", "IND_735_101626", "IND_735_103026"])];let ag=0,af=0,an=0,hg=false,hf=false,hn=false;results.forEach(x=>{if(x.gross!==null){ag+=x.gross;hg=true;}if(x.fees!==null){af+=x.fees;hf=true;}if(x.net!==null){an+=x.net;hn=true;}});[['all-gross',hg?ag:null],['all-fees',hf?af:null],['all-net',hn?an:null]].forEach(([id,v])=>{const e=document.getElementById(id);if(!e)return;const r=fv(v);e.textContent=r.text;e.className='account-stat-value '+r.cls;});}
   function fmtMoney(v,showPlus=true){const neg=v<0;const s='$'+Math.abs(v).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});return (neg?'-':(showPlus&&v>0?'+':''))+s;}
+
   function renderProgress(){
     document.querySelectorAll('.profit-progress').forEach(el=>{
       const realized   = parseFloat(el.dataset.realized   || 0);
@@ -5592,55 +5724,60 @@
       const openQty    = parseFloat(el.dataset.openQty    || 0);
       const unrealized = parseFloat(el.dataset.unrealized || 0);
       if(maxCredit<=0) return;
-      const fill   = el.querySelector('.profit-progress-fill');
-      const unreal = el.querySelector('.profit-progress-unrealized');
-      const pctEl  = el.querySelector('.profit-progress-pct');
-      const subEl  = el.querySelector('.profit-progress-sub');
-      const realPct   = Math.round((realized / maxCredit) * 1000) / 10;
-      const realPctC  = Math.max(0, Math.min(100, realPct));
-      // Set realized fill
-      fill.style.width = realPctC + '%';
-      fill.style.background = realized >= 0 ? 'var(--green)' : 'var(--red-dim)';
-      fill.style.borderRadius = unrealized !== 0 ? '4px 0 0 4px' : '4px';
-      if(unrealized === 0){
-        // No unrealized data — plain display
-        unreal.style.width = '0%';
-        if(pctEl) pctEl.innerHTML = realPct + '%';
-        if(subEl) subEl.innerHTML = fmtMoney(realized) + ' captured of ' + fmtMoney(maxCredit,false) + ' max credit ($' + initCredit.toFixed(2) + '/ct &times; ' + openQty + ')';
+      const q = s => el.querySelector(s);
+      const main = q('.pp-main'), extra = q('.pp-extra');
+      const overL = q('.pp-over'), overR = q('.pp-over-r');
+      const tick = q('.pp-tick'), tickLab = q('.pp-tick-lab'), axis = q('.pp-axis');
+      const pctEl = q('.profit-progress-pct'), subEl = q('.profit-progress-sub');
+      // Scale: -max credit .. 0 .. +max credit, zero line at the centre of the track.
+      const combined = realized + unrealized;
+      const realPct  = Math.round((realized / maxCredit) * 1000) / 10;
+      const combPct  = Math.round((combined / maxCredit) * 1000) / 10;
+      const clamp = v => Math.max(-100, Math.min(100, v));
+      const rC = clamp(realPct), cC = clamp(combPct);
+      const seg = (node, a, b, bg, radius) => {   // a,b on the -100..+100 scale
+        const lo = Math.min(a, b), hi = Math.max(a, b);
+        node.style.left = (50 + lo/2) + '%';
+        node.style.width = ((hi - lo)/2) + '%';
+        node.style.background = bg;
+        node.style.borderRadius = radius;
+      };
+      extra.style.width = '0%';
+      if(combined >= 0){
+        seg(main, 0, cC, 'var(--green)', '0 5px 5px 0');
+        if(unrealized < 0) seg(extra, cC, rC, 'rgba(255,77,106,0.45)', '0 5px 5px 0');
+        else if(unrealized > 0 && realized > 0) seg(extra, rC, cC, 'rgba(0,184,125,0.35)', '0 5px 5px 0');
       } else {
-        const combined    = realized + unrealized;
-        const combPct     = Math.round((combined / maxCredit) * 1000) / 10;
-        const combPctC    = Math.max(0, Math.min(100, combPct));
-        const isGain      = unrealized >= 0;
-        const unrCls      = isGain ? 'unrealized-gain' : 'unrealized-loss';
-        const unrSign     = isGain ? '+' : '';
-        if(isGain){
-          // Gain: green fill (realized) + light green extension (unrealized)
-          const unrPctC = Math.max(0, combPctC - realPctC);
-          fill.style.width          = realPctC + '%';
-          fill.style.background     = 'var(--green)';
-          fill.style.borderRadius   = '4px 0 0 4px';
-          unreal.style.width        = unrPctC + '%';
-          unreal.style.background   = 'rgba(0,184,125,0.35)';
-          unreal.style.borderRadius = '0 4px 4px 0';
-        } else {
-          // Loss: green fill shrunk to combined %, then red segment showing the loss portion
-          const lossPctC = Math.max(0, realPctC - combPctC);
-          fill.style.width          = combPctC + '%';
-          fill.style.background     = 'var(--green)';
-          fill.style.borderRadius   = combPctC > 0 ? '4px 0 0 4px' : '4px';
-          unreal.style.width        = lossPctC + '%';
-          unreal.style.background   = 'rgba(255,77,106,0.45)';
-          unreal.style.borderRadius = '0 4px 4px 0';
-        }
+        seg(main, cC, 0, 'var(--red-dim)', '5px 0 0 5px');
+      }
+      overL.style.display = combPct < -100 ? 'block' : 'none';
+      overR.style.display = combPct >  100 ? 'block' : 'none';
+      const showTick = combined < 0 && realized > 0;
+      tick.style.display = tickLab.style.display = showTick ? 'block' : 'none';
+      if(showTick){
+        tick.style.left = tickLab.style.left = (50 + rC/2) + '%';
+        tickLab.style.transform = rC > 70 ? 'translateX(-100%)' : 'translateX(-50%)';
+        tickLab.textContent = 'realized ' + fmtMoney(realized);
+      }
+      el.classList.toggle('has-tick', showTick);
+      axis.innerHTML = '<span>-' + fmtMoney(maxCredit,false) + '</span><span>0</span><span>+' + fmtMoney(maxCredit,false) + '</span>';
+      const tail = ' captured of ' + fmtMoney(maxCredit,false) + ' max credit ($' + initCredit.toFixed(2) + '/ct &times; ' + openQty + ')';
+      if(unrealized === 0){
+        if(pctEl) pctEl.innerHTML = realPct + '%';
+        if(subEl) subEl.innerHTML = fmtMoney(realized) + tail;
+      } else {
+        const isGain  = unrealized >= 0;
+        const unrCls  = isGain ? 'unrealized-gain' : 'unrealized-loss';
+        const unrSign = isGain ? '+' : '';
         const combCls = combined >= 0 ? 'unrealized-gain' : 'unrealized-loss';
+        const edge = combPct < -100 ? ' <span class="unrealized-loss">&mdash; beyond the left edge of the bar</span>'
+                   : combPct >  100 ? ' <span class="unrealized-gain">&mdash; beyond the right edge of the bar</span>' : '';
         if(pctEl) pctEl.innerHTML = realPct + '% <span class="arrow-sep">→</span> <span class="' + combCls + '">' + combPct + '%</span>';
         if(subEl) subEl.innerHTML =
           fmtMoney(realized) +
           ' <span class="' + unrCls + '">(' + unrSign + fmtMoney(unrealized) + ' unrealized)</span>' +
           ' <span class="arrow-sep">→</span> ' +
-          '<span class="' + combCls + '">' + fmtMoney(combined) + '</span>' +
-          ' captured of ' + fmtMoney(maxCredit,false) + ' max credit ($' + initCredit.toFixed(2) + '/ct &times; ' + openQty + ')';
+          '<span class="' + combCls + '">' + fmtMoney(combined) + '</span>' + tail + edge;
       }
     });
   }
